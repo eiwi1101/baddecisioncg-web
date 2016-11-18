@@ -9,6 +9,7 @@ class CreateRounds < ActiveRecord::Migration[5.0]
       t.integer :second_pc_id
       t.integer :third_pc_id
       t.integer :story_card_id
+      t.string :status
       t.timestamps
     end
 
