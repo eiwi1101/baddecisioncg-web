@@ -8,9 +8,13 @@
 #  round_id  :integer
 #
 
-require 'rails_helper'
+FactoryGirl.define do
+  factory :player_card do
+    player
+    card
 
-describe PlayerCard, type: :model do
-  it { is_expected.to belong_to :player }
-  it { is_expected.to belong_to :card }
+    trait :discarded do
+      round
+    end
+  end
 end

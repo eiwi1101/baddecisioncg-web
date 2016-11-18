@@ -6,7 +6,7 @@ class CreateFriendships < ActiveRecord::Migration[5.0]
       t.integer :friend_user_id
     end
 
-    add_index :friendships, :user_id
-    add_index :friendships, :friend_user_id
+    add_index :friendships, [:user_id, :friend_user_id]
+    add_index :friendships, [:friend_user_id, :user_id]
   end
 end

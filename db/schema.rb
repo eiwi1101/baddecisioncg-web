@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117230942) do
+ActiveRecord::Schema.define(version: 20161117230854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 20161117230942) do
   create_table "friendships", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_user_id"
-    t.index ["friend_user_id"], name: "index_friendships_on_friend_user_id", using: :btree
-    t.index ["user_id"], name: "index_friendships_on_user_id", using: :btree
+    t.index ["friend_user_id", "user_id"], name: "index_friendships_on_friend_user_id_and_user_id", using: :btree
+    t.index ["user_id", "friend_user_id"], name: "index_friendships_on_user_id_and_friend_user_id", using: :btree
   end
 
   create_table "game_lobbies", force: :cascade do |t|
@@ -78,10 +78,10 @@ ActiveRecord::Schema.define(version: 20161117230942) do
   create_table "player_cards", force: :cascade do |t|
     t.integer "player_id"
     t.integer "card_id"
-    t.boolean "discarded"
+    t.integer "round_id"
     t.index ["card_id"], name: "index_player_cards_on_card_id", using: :btree
-    t.index ["discarded"], name: "index_player_cards_on_discarded", using: :btree
     t.index ["player_id"], name: "index_player_cards_on_player_id", using: :btree
+    t.index ["round_id"], name: "index_player_cards_on_round_id", using: :btree
   end
 
   create_table "players", force: :cascade do |t|
@@ -91,13 +91,6 @@ ActiveRecord::Schema.define(version: 20161117230942) do
     t.integer "order"
     t.index ["game_id"], name: "index_players_on_game_id", using: :btree
     t.index ["user_id"], name: "index_players_on_user_id", using: :btree
-  end
-
-  create_table "round_player_cards", id: false, force: :cascade do |t|
-    t.integer "round_id"
-    t.integer "player_card_id"
-    t.index ["player_card_id"], name: "index_round_player_cards_on_player_card_id", using: :btree
-    t.index ["round_id"], name: "index_round_player_cards_on_round_id", using: :btree
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -119,8 +112,8 @@ ActiveRecord::Schema.define(version: 20161117230942) do
   create_table "user_expansions", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "expansion_id"
-    t.index ["expansion_id"], name: "index_user_expansions_on_expansion_id", using: :btree
-    t.index ["user_id"], name: "index_user_expansions_on_user_id", using: :btree
+    t.index ["expansion_id", "user_id"], name: "index_user_expansions_on_expansion_id_and_user_id", using: :btree
+    t.index ["user_id", "expansion_id"], name: "index_user_expansions_on_user_id_and_expansion_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

@@ -6,7 +6,7 @@ class CreateUserExpansions < ActiveRecord::Migration[5.0]
       t.integer :expansion_id
     end
 
-    add_index :user_expansions, :user_id
-    add_index :user_expansions, :expansion_id
+    add_index :user_expansions, [:user_id, :expansion_id]
+    add_index :user_expansions, [:expansion_id, :user_id]
   end
 end
