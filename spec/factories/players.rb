@@ -12,7 +12,7 @@
 FactoryGirl.define do
   factory :player do
     game
-    user
+    user { build :user, :with_expansions }
 
     trait :with_hand do
       after :build do |player|

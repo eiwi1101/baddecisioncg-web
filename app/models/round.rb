@@ -30,6 +30,8 @@ class Round < ApplicationRecord
   validates_presence_of :bard_player
 
   state_machine :status, initial: nil do
+    before_transition nil => :setup, do: [:draw_story]
+
     state :setup do
       validates_presence_of :story_card
     end
@@ -47,6 +49,22 @@ class Round < ApplicationRecord
       validates_presence_of :third_pc
       validates_presence_of :winning_player
     end
+
+    event :draw do
+      transition nil => :setup
+    end
+
+    event :reveal do
+      transition :setup => :player_pick
+    end
+
+    event :all_in do
+      transition :player_pick => :bard_pick
+    end
+
+    event :finish do
+      transition :bard_pick => :finished
+    end
   end
 
   def all_in?
@@ -54,6 +72,10 @@ class Round < ApplicationRecord
   end
 
   private
+
+  def draw_story
+    self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').limit(1).first
+  end
 
   def validate_all_players_submitted
     unless self.all_in?

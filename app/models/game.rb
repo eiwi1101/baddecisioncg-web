@@ -16,6 +16,8 @@ class Game < ApplicationRecord
   belongs_to :winning_user, class_name: User
   has_many :players
   has_many :rounds
+  has_many :expansions, through: :players
+  has_many :cards, through: :expansions
 
   validates_presence_of :game_lobby
 

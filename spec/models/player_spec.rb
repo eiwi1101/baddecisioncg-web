@@ -16,6 +16,7 @@ describe Player, type: :model do
   it { is_expected.to belong_to :user }
   it { is_expected.to have_many :player_cards }
   it { is_expected.to have_many :cards }
+  it { is_expected.to have_many :expansions }
 
   it 'has a valid factory' do
     expect(build :player).to be_valid

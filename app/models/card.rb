@@ -10,6 +10,7 @@
 
 class Card < ApplicationRecord
   belongs_to :expansion
+  has_many :player_cards
 
   validates_presence_of :expansion
   validates_presence_of :text

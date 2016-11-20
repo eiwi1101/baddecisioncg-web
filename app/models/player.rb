@@ -14,6 +14,7 @@ class Player < ApplicationRecord
   belongs_to :game
   has_many :player_cards
   has_many :cards, through: :player_cards
+  has_many :expansions, through: :user
 
   validates_presence_of :user
   validates_presence_of :game

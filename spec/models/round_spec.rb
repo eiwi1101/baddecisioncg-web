@@ -64,6 +64,19 @@ describe Round, type: :model do
     it { is_expected.to validate_presence_of :winning_player }
   end
 
+  describe '#draw!' do
+    let(:game)  { create :game, :with_player_cards }
+    let(:round) { create :round, game: game, story_card: game.cards.stories.first }
+
+    it { expect(Card::Story.for_game(round.game).count).to eq 25 }
+    it { expect(Card::Story.discarded_for_game(round.game).count).to eq 1 }
+
+    # TODO BUG: The #in_hand_for_game doesn't properly work if Game has no rounds with story cards.
+    it { expect(Card::Story.in_hand_for_game(round.game).count).to_not eq 0 }
+    it { expect(round.tap(&:draw!).story_card).to_not be_nil }
+    it { expect(round.tap(&:draw!).story_card).to_not eq game.cards.stories.first }
+  end
+
   it 'has a valid factory' do
     expect(build :round).to be_valid
     expect(build :round, :setup).to be_valid

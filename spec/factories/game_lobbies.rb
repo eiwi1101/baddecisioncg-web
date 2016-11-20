@@ -25,7 +25,7 @@ FactoryGirl.define do
       end
 
       after :build do |game_lobby, evaluator|
-        game_lobby.users << build_list(:user, evaluator.user_count)
+        game_lobby.users << build_list(:user, evaluator.user_count, :with_expansions)
         game_lobby.game_lobby_users.first.admin = true
       end
     end
