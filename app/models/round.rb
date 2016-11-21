@@ -119,13 +119,13 @@ class Round < ApplicationRecord
   end
 
   def validate_bard_submitted
-    self.errors[story_order.first  + '_pc'] << 'is required' if card_blanks.first.nil?
-    self.errors[story_order.second + '_pc'] << 'is required' if card_blanks.second.nil?
+    self.errors[story_order.first  + '_pc'] << "can't be blank" if card_blanks.first.nil?
+    self.errors[story_order.second + '_pc'] << "can't be blank" if card_blanks.second.nil?
     self.bard_in?
   end
 
   def validate_bard_picked
-    self.errors[story_order.third + '_pc'] << 'is required' if card_blanks.third.nil?
+    self.errors[story_order.third + '_pc'] << "can't be blank" if card_blanks.third.nil?
     self.bard_picked?
   end
 end

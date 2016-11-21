@@ -2,3 +2,10 @@ language: ruby
 
 notifications:
   slack: diamonddustdreams:qByn4swUHtxnl16Cb4IPMbB6
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - cp config/database.yml.travis config/database.yml

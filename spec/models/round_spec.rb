@@ -44,15 +44,15 @@ describe Round, type: :model do
     it { is_expected.to validate_presence_of :crisis_pc }
   end
 
-  context 'when bard_play' do
+  context 'when bard_pick' do
     context 'without submissions' do
-      let(:round) { build :round, :bard_play, :without_submissions }
+      let(:round) { build :round, :bard_pick, :without_submissions }
       it { is_expected.to_not be_valid }
       it { is_expected.to have(1).errors_on :player_cards }
     end
 
     context 'with submissions' do
-      let(:round) { build :round, :bard_play }
+      let(:round) { build :round, :bard_pick }
       it { is_expected.to be_valid }
       it { is_expected.to have_at_least(1).player_cards }
     end

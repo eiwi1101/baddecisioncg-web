@@ -32,14 +32,19 @@ FactoryGirl.define do
     end
 
     trait :player_pick do
-      status 'player_pick'
+      setup
       bard_in
+      status 'player_pick'
+    end
+
+    trait :players_in do
+      player_cards { game.players.collect { |p| p.player_cards.first } }
     end
 
     trait :bard_pick do
       player_pick
+      players_in
       status 'bard_pick'
-      player_cards { game.players.collect { |p| p.player_cards.first } }
     end
 
     trait :finished do
