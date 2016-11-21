@@ -14,6 +14,7 @@ FactoryGirl.define do
     text { Faker::Lorem.sentence }
 
     factory :story, class: Card::Story do
+      text '%{fool} + %{crisis} = %{bad_decision}'
     end
 
     factory :fool, class: Card::Fool do

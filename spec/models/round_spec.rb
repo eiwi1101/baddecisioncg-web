@@ -2,18 +2,18 @@
 #
 # Table name: rounds
 #
-#  id                :integer          not null, primary key
-#  game_id           :integer
-#  number            :integer
-#  bard_player_id    :integer
-#  winning_player_id :integer
-#  first_pc_id       :integer
-#  second_pc_id      :integer
-#  third_pc_id       :integer
-#  story_card_id     :integer
-#  status            :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                 :integer          not null, primary key
+#  game_id            :integer
+#  number             :integer
+#  bard_player_id     :integer
+#  winning_player_id  :integer
+#  fool_pc_id         :integer
+#  crisis_pc_id       :integer
+#  bad_decision_pc_id :integer
+#  story_card_id      :integer
+#  status             :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 require 'rails_helper'
@@ -23,9 +23,9 @@ describe Round, type: :model do
   it { is_expected.to belong_to :bard_player }
   it { is_expected.to belong_to :winning_player }
   it { is_expected.to belong_to :story_card }
-  it { is_expected.to belong_to :first_pc }
-  it { is_expected.to belong_to :second_pc }
-  it { is_expected.to belong_to :third_pc }
+  it { is_expected.to belong_to :fool_pc }
+  it { is_expected.to belong_to :crisis_pc }
+  it { is_expected.to belong_to :bad_decision_pc }
   it { is_expected.to have_many :player_cards }
   it { is_expected.to validate_presence_of :game }
   it { is_expected.to validate_presence_of :bard_player }
@@ -40,8 +40,8 @@ describe Round, type: :model do
 
   context 'when player_pick' do
     let(:round) { build :round, :player_pick }
-    it { is_expected.to validate_presence_of :first_pc }
-    it { is_expected.to validate_presence_of :second_pc }
+    it { is_expected.to validate_presence_of :fool_pc }
+    it { is_expected.to validate_presence_of :crisis_pc }
   end
 
   context 'when bard_pick' do
@@ -60,7 +60,7 @@ describe Round, type: :model do
 
   context 'when finished' do
     let(:round) { build :round, :finished }
-    it { is_expected.to validate_presence_of :third_pc }
+    it { is_expected.to validate_presence_of :bad_decision_pc }
     it { is_expected.to validate_presence_of :winning_player }
   end
 

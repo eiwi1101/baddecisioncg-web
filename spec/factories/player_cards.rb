@@ -11,7 +11,11 @@
 FactoryGirl.define do
   factory :player_card do
     player
-    card
+    card { build :card, text: card_text }
+
+    transient do
+      card_text { Faker::Lorem.sentence }
+    end
 
     trait :discarded do
       round

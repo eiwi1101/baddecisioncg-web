@@ -20,7 +20,7 @@ describe Player, type: :model do
 
   it 'has a valid factory' do
     expect(build :player).to be_valid
-    expect(build(:player, :with_hand).cards.length).to eq 3
-    expect(create(:player, :with_hand, :with_discarded).player_cards.length).to eq 13
+    expect(build :player, :with_hand).to be_valid
+    expect(build :player, :with_discarded).to be_valid
   end
 end

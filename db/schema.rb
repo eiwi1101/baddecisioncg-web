@@ -98,13 +98,13 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.integer  "number"
     t.integer  "bard_player_id"
     t.integer  "winning_player_id"
-    t.integer  "first_pc_id"
-    t.integer  "second_pc_id"
-    t.integer  "third_pc_id"
+    t.integer  "fool_pc_id"
+    t.integer  "crisis_pc_id"
+    t.integer  "bad_decision_pc_id"
     t.integer  "story_card_id"
     t.string   "status"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.index ["game_id"], name: "index_rounds_on_game_id", using: :btree
     t.index ["winning_player_id"], name: "index_rounds_on_winning_player_id", using: :btree
   end

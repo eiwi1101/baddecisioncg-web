@@ -2,18 +2,18 @@
 #
 # Table name: rounds
 #
-#  id                :integer          not null, primary key
-#  game_id           :integer
-#  number            :integer
-#  bard_player_id    :integer
-#  winning_player_id :integer
-#  first_pc_id       :integer
-#  second_pc_id      :integer
-#  third_pc_id       :integer
-#  story_card_id     :integer
-#  status            :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                 :integer          not null, primary key
+#  game_id            :integer
+#  number             :integer
+#  bard_player_id     :integer
+#  winning_player_id  :integer
+#  fool_pc_id         :integer
+#  crisis_pc_id       :integer
+#  bad_decision_pc_id :integer
+#  story_card_id      :integer
+#  status             :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 FactoryGirl.define do
@@ -28,8 +28,8 @@ FactoryGirl.define do
 
     trait :player_pick do
       status 'player_pick'
-      first_pc { bard_player.player_cards.first }
-      second_pc { bard_player.player_cards.last }
+      fool_pc { bard_player.player_cards.first }
+      crisis_pc { bard_player.player_cards.last }
     end
 
     trait :bard_pick do
@@ -42,8 +42,8 @@ FactoryGirl.define do
       bard_pick
       status 'finished'
 
-      third_pc { player_cards.last }
-      winning_player { third_pc.player }
+      bad_decision_pc { player_cards.last }
+      winning_player { bad_decision_pc.player }
     end
 
     trait :without_submissions do

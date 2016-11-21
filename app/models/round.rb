@@ -2,27 +2,27 @@
 #
 # Table name: rounds
 #
-#  id                :integer          not null, primary key
-#  game_id           :integer
-#  number            :integer
-#  bard_player_id    :integer
-#  winning_player_id :integer
-#  first_pc_id       :integer
-#  second_pc_id      :integer
-#  third_pc_id       :integer
-#  story_card_id     :integer
-#  status            :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                 :integer          not null, primary key
+#  game_id            :integer
+#  number             :integer
+#  bard_player_id     :integer
+#  winning_player_id  :integer
+#  fool_pc_id         :integer
+#  crisis_pc_id       :integer
+#  bad_decision_pc_id :integer
+#  story_card_id      :integer
+#  status             :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class Round < ApplicationRecord
   belongs_to :game
   belongs_to :bard_player, class_name: Player
   belongs_to :winning_player, class_name: Player
-  belongs_to :first_pc, class_name: PlayerCard
-  belongs_to :second_pc, class_name: PlayerCard
-  belongs_to :third_pc, class_name: PlayerCard
+  belongs_to :fool_pc, class_name: PlayerCard
+  belongs_to :crisis_pc, class_name: PlayerCard
+  belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
   has_many :player_cards
 
@@ -37,8 +37,8 @@ class Round < ApplicationRecord
     end
 
     state :player_pick do
-      validates_presence_of :first_pc
-      validates_presence_of :second_pc
+      validates_presence_of :fool_pc
+      validates_presence_of :crisis_pc
     end
 
     state :bard_pick do
@@ -46,7 +46,7 @@ class Round < ApplicationRecord
     end
 
     state :finished do
-      validates_presence_of :third_pc
+      validates_presence_of :bad_decision_pc
       validates_presence_of :winning_player
     end
 
