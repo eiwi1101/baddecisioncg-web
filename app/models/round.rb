@@ -37,8 +37,7 @@ class Round < ApplicationRecord
     end
 
     state :player_pick do
-      validates_presence_of :fool_pc
-      validates_presence_of :crisis_pc
+      validate :validate_bard_submitted
     end
 
     state :bard_pick do
@@ -46,7 +45,7 @@ class Round < ApplicationRecord
     end
 
     state :finished do
-      validates_presence_of :bad_decision_pc
+      validate :validate_bard_picked
       validates_presence_of :winning_player
     end
 
@@ -67,8 +66,45 @@ class Round < ApplicationRecord
     end
   end
 
+  def bard_play(player_card)
+    raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
+    raise Exceptions::PlayerHandViolation.new if player_card.player != self.bard_player
+    raise Exceptions::RoundOrderViolation.new unless self.setup?
+
+    if self.story_card.card_order.last == player_card.card.type_string
+      return false
+    end
+
+    self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
+    true
+  end
+
+  def story_text
+    self.story_card.try(:display_text, self)
+  end
+
   def all_in?
     self.player_cards.length == self.game.players.length
+  end
+
+  def bard_in?
+    !(self.card_blanks.first.nil? || self.card_blanks.second.nil?)
+  end
+
+  def bard_picked?
+    !self.card_blanks.third.nil?
+  end
+
+  def card_blanks
+    raise Exceptions::RoundOrderViolation.new if self.story_card.nil?
+
+    self.story_order.collect do |type|
+      self.send(type + '_pc')
+    end
+  end
+
+  def story_order
+    self.story_card.card_order
   end
 
   private
@@ -78,10 +114,18 @@ class Round < ApplicationRecord
   end
 
   def validate_all_players_submitted
-    unless self.all_in?
-      self.errors[:player_cards] << 'must be submitted from all players'
-      false
-    end
-    true
+    self.errors[:player_cards] << 'must be submitted from all players' unless self.all_in?
+    self.all_in?
+  end
+
+  def validate_bard_submitted
+    self.errors[story_order.first  + '_pc'] << 'is required' if card_blanks.first.nil?
+    self.errors[story_order.second + '_pc'] << 'is required' if card_blanks.second.nil?
+    self.bard_in?
+  end
+
+  def validate_bard_picked
+    self.errors[story_order.third + '_pc'] << 'is required' if card_blanks.third.nil?
+    self.bard_picked?
   end
 end

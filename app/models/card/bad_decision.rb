@@ -9,5 +9,7 @@
 #
 
 class Card::BadDecision < Card
-
+  def type_string
+    'bad_decision'
+  end
 end

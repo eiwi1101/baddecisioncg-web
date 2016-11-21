@@ -17,6 +17,10 @@ class Card < ApplicationRecord
 
   scope :fools, -> { where(type: 'Card::Fool') }
   scope :crisis, -> { where(type: 'Card::Crisis') }
-  scope :bad_decisions, -> { where(type: 'Card::BadDecisions') }
+  scope :bad_decisions, -> { where(type: 'Card::BadDecision') }
   scope :stories, -> { where(type: 'Card::Story') }
+
+  def type_string
+    nil
+  end
 end

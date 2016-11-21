@@ -15,4 +15,8 @@ class PlayerCard < ApplicationRecord
 
   scope :discarded, -> { where.not(round: nil) }
   scope :in_hand,   -> { where(round: nil) }
+
+  def discarded?
+    !round.nil?
+  end
 end

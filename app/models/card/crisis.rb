@@ -9,5 +9,7 @@
 #
 
 class Card::Crisis < Card
-
+  def type_string
+    'crisis'
+  end
 end

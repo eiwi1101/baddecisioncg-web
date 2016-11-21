@@ -28,7 +28,6 @@ class Card::Story < Card
   end
 
   def display_text(round)
-    # round.includes(fool_pc: [:card], crisis_pc: [:card], bad_decision_pc: [:card])
     blanks = {
         fool: round.fool_pc.try(:card).try(:text) || 'FOOL',
         crisis: round.crisis_pc.try(:card).try(:text) || 'CRISIS',
@@ -36,6 +35,10 @@ class Card::Story < Card
     }
 
     text % blanks
+  end
+
+  def type_string
+    'story'
   end
 
   private

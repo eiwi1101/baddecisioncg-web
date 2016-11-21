@@ -26,10 +26,14 @@ FactoryGirl.define do
       association :story_card, factory: :story
     end
 
+    trait :bard_in do
+      fool_pc { build :player_card, player: bard_player, card: build(:fool) }
+      crisis_pc { build :player_card, player: bard_player, card: build(:crisis) }
+    end
+
     trait :player_pick do
       status 'player_pick'
-      fool_pc { bard_player.player_cards.first }
-      crisis_pc { bard_player.player_cards.last }
+      bard_in
     end
 
     trait :bard_pick do

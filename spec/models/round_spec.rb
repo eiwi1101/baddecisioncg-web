@@ -44,15 +44,15 @@ describe Round, type: :model do
     it { is_expected.to validate_presence_of :crisis_pc }
   end
 
-  context 'when bard_pick' do
+  context 'when bard_play' do
     context 'without submissions' do
-      let(:round) { build :round, :bard_pick, :without_submissions }
+      let(:round) { build :round, :bard_play, :without_submissions }
       it { is_expected.to_not be_valid }
       it { is_expected.to have(1).errors_on :player_cards }
     end
 
     context 'with submissions' do
-      let(:round) { build :round, :bard_pick }
+      let(:round) { build :round, :bard_play }
       it { is_expected.to be_valid }
       it { is_expected.to have_at_least(1).player_cards }
     end
@@ -89,7 +89,46 @@ describe Round, type: :model do
   end
 
   describe 'picking bard cards' do
+    let(:round) { build :round, :setup }
 
+    it 'rejects third blank' do
+      decision = build :player_card, player: round.bard_player, card: build(:bad_decision)
+      expect(round.bard_play(decision)).to eq false
+    end
+
+    it 'accepts first two blanks' do
+      fool_1 = build :player_card, player: round.bard_player, card: build(:fool, text: 'A')
+      crisis = build :player_card, player: round.bard_player, card: build(:crisis, text: 'B')
+      fool_2 = build :player_card, player: round.bard_player, card: build(:fool, text: 'Z')
+
+      expect(round.bard_play(fool_2)).to eq true
+      expect(round.bard_play(crisis)).to eq true
+      expect(round.bard_play(fool_1)).to eq true
+
+      # TODO Move into own example.
+      expect(round.fool_pc.card.text).to eq 'A'
+      expect(round.crisis_pc.card.text).to eq 'B'
+      expect(round.story_text).to eq 'A + B = BAD DECISION'
+    end
+
+    it 'rejects card violations' do
+      fool = build :player_card, card: build(:fool)
+      expect { round.bard_play(fool) }.to raise_exception Exceptions::PlayerHandViolation
+    end
+  end
+
+  describe '#reveal!' do
+    let(:round) { build :round, :setup }
+    before { round.reveal }
+
+    context 'without proper selections' do
+      its(:status) { is_expected.to eq 'setup' }
+    end
+
+    context 'with first blanks filled' do
+      let(:round)  { build :round, :setup, :bard_in }
+      its(:status) { is_expected.to eq 'player_pick' }
+    end
   end
 
   it 'has a valid factory' do
