@@ -1,0 +1,4 @@
+language: ruby
+
+notifications:
+  slack: diamonddustdreams:qByn4swUHtxnl16Cb4IPMbB6
