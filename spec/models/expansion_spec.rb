@@ -16,6 +16,6 @@ describe Expansion, type: :model do
 
   it 'has a valid factory' do
     expect(build :expansion).to be_valid
-    expect(build(:expansion, :with_cards).cards.length).to eq 35
+    expect(build(:expansion, :with_cards).cards.length).to eq 5
   end
 end

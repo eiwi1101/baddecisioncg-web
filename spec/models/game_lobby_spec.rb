@@ -22,6 +22,6 @@ describe GameLobby, type: :model do
 
   it 'has a valid factory' do
     expect(build :game_lobby).to be_valid
-    expect(build(:game_lobby, :with_users).users.length).to eq 5
+    expect(build(:game_lobby, :with_users).users.length).to eq 2
   end
 end

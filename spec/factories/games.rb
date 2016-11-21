@@ -17,7 +17,7 @@ FactoryGirl.define do
     game_lobby
 
     trait :with_players do
-      game_lobby { build :game_lobby, :with_users }
+      game_lobby { build :game_lobby, :with_users, user_attributes: [] }
 
       after :build do |game|
         game.players << game.game_lobby.users.collect { |u| build :player, user: u, game: game }

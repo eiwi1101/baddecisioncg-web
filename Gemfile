@@ -66,6 +66,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'bullet'
+  gem 'rspec-its'
 end
 
 group :development do

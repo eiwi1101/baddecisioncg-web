@@ -13,5 +13,5 @@ class Card::Story < Card
 
   scope :for_game, -> (game) { game.cards.stories }
   scope :discarded_for_game, -> (game) { for_game(game).where(id: game.rounds.select(:story_card_id)) }
-  scope :in_hand_for_game,   -> (game) { for_game(game).where.not(id: game.rounds.select(:story_card_id)) }
+  scope :in_hand_for_game,   -> (game) { for_game(game).where.not('EXISTS (?)', game.rounds.select(nil).where('rounds.story_card_id = cards.id')) }
 end

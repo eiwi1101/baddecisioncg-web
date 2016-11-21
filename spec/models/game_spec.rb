@@ -52,15 +52,9 @@ describe Game, type: :model do
     game_2.players << build(:player, user: user_2, game: game_2)
 
     expect(game.expansions.count).to eq 2
-    expect(game.cards.count).to eq 70
-    expect(game.cards.stories.count).to eq 10
+    expect(game.cards.count).to eq 10
+    expect(game.cards.stories.count).to eq 4
     expect(game_2.expansions.count).to eq 1
-
-    game.rounds << build(:round, game: game, story_card: game.cards.stories.first)
-
-    expect(Card::Story.discarded_for_game(game).count).to eq 1
-    expect(Card::Story.in_hand_for_game(game).count).to  eq 9
-    expect(Card::Story.in_hand_for_game(game_2).count).to eq 5
   end
 
   it 'has valid factory' do

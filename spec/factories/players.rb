@@ -12,13 +12,17 @@
 FactoryGirl.define do
   factory :player do
     game
-    user { build :user, :with_expansions }
+    user
 
     trait :with_hand do
+      transient do
+        hand_size 1
+      end
+
       after :build do |player|
-        player.cards << build_list(:fool, 5)
-        player.cards << build_list(:crisis, 5)
-        player.cards << build_list(:bad_decision, 5)
+        player.cards << build_list(:fool, 1)
+        player.cards << build_list(:crisis, 1)
+        player.cards << build_list(:bad_decision, 1)
       end
     end
 

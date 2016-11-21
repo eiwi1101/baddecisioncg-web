@@ -216,6 +216,9 @@ GEM
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
+    rspec-its (1.2.0)
+      rspec-core (>= 3.0.0)
+      rspec-expectations (>= 3.0.0)
     rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
@@ -337,6 +340,7 @@ DEPENDENCIES
   responders
   rspec-collection_matchers
   rspec-expectations
+  rspec-its
   rspec-rails
   sass-rails (~> 5.0)
   scoped_search

@@ -21,11 +21,12 @@ FactoryGirl.define do
 
     trait :with_users do
       transient do
-        user_count 5
+        user_count 2
+        user_attributes [:with_expansions]
       end
 
       after :build do |game_lobby, evaluator|
-        game_lobby.users << build_list(:user, evaluator.user_count, :with_expansions)
+        game_lobby.users << build_list(:user, evaluator.user_count, *evaluator.user_attributes)
         game_lobby.game_lobby_users.first.admin = true
       end
     end

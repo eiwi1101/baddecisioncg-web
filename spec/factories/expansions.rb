@@ -14,10 +14,10 @@ FactoryGirl.define do
 
     trait :with_cards do
       transient do
-        story_count 5
-        fool_count 10
-        crisis_count 10
-        bad_decision_count 10
+        story_count 2
+        fool_count 1
+        crisis_count 1
+        bad_decision_count 1
       end
 
       after :build do |expansion, evaluator|

@@ -64,17 +64,32 @@ describe Round, type: :model do
     it { is_expected.to validate_presence_of :winning_player }
   end
 
-  describe '#draw!' do
+  describe 'drawing story card' do
     let(:game)  { create :game, :with_player_cards }
     let(:round) { create :round, game: game, story_card: game.cards.stories.first }
 
-    it { expect(Card::Story.for_game(round.game).count).to eq 25 }
-    it { expect(Card::Story.discarded_for_game(round.game).count).to eq 1 }
+    subject { round }
+    before  { round.draw }
 
-    # TODO BUG: The #in_hand_for_game doesn't properly work if Game has no rounds with story cards.
-    it { expect(Card::Story.in_hand_for_game(round.game).count).to_not eq 0 }
-    it { expect(round.tap(&:draw!).story_card).to_not be_nil }
-    it { expect(round.tap(&:draw!).story_card).to_not eq game.cards.stories.first }
+    its(:status) { is_expected.to eq 'setup' }
+    its(:story_card) { is_expected.to_not be_nil }
+    its(:story_card) { is_expected.to_not eq game.cards.stories.first }
+
+    context 'with empty story deck' do
+      let(:game) { create :game, :with_players }
+
+      its(:status) { is_expected.to be_nil }
+      its(:story_card) { is_expected.to be_nil }
+
+      describe '#game' do
+        subject { round.game }
+        its(:cards) { is_expected.to be_empty }
+      end
+    end
+  end
+
+  describe 'picking bard cards' do
+
   end
 
   it 'has a valid factory' do
