@@ -3,6 +3,7 @@ module Exceptions
   class RuleViolation < RuntimeError; end
 
   # Round Things
+  class CardTypeViolation < RuleViolation; end
   class PlayerHandViolation < RuleViolation; end
   class DiscardedCardViolation < RuleViolation; end
   class RoundOrderViolation < RuleViolation; end

@@ -91,11 +91,6 @@ describe Round, type: :model do
   describe 'picking bard cards' do
     let(:round) { build :round, :setup }
 
-    it 'rejects third blank' do
-      decision = build :player_card, player: round.bard_player, card: build(:bad_decision)
-      expect(round.bard_play(decision)).to eq false
-    end
-
     it 'accepts first two blanks' do
       fool_1 = build :player_card, player: round.bard_player, card: build(:fool, text: 'A')
       crisis = build :player_card, player: round.bard_player, card: build(:crisis, text: 'B')
@@ -105,15 +100,30 @@ describe Round, type: :model do
       expect(round.bard_play(crisis)).to eq true
       expect(round.bard_play(fool_1)).to eq true
 
-      # TODO Move into own example.
-      expect(round.fool_pc.card.text).to eq 'A'
-      expect(round.crisis_pc.card.text).to eq 'B'
-      expect(round.story_text).to eq 'A + B = BAD DECISION'
+      expect(fool_1.discarded?).to eq true
+      expect(fool_2.discarded?).to eq false
     end
 
-    it 'rejects card violations' do
+    it 'rejects third blank' do
+      decision = build :player_card, player: round.bard_player, card: build(:bad_decision)
+      expect { round.bard_play(decision) }.to raise_exception Exceptions::CardTypeViolation
+    end
+
+    it 'raises card hand violations' do
       fool = build :player_card, card: build(:fool)
       expect { round.bard_play(fool) }.to raise_exception Exceptions::PlayerHandViolation
+    end
+
+    it 'raises a round violation' do
+      round = build :round, :player_pick
+      fool  = build :player_card, card: build(:fool), player: round.bard_player
+      expect { round.bard_play(fool) }.to raise_exception Exceptions::RoundOrderViolation
+    end
+
+    it 'raises discarded card violations' do
+      round = build :round, :player_pick
+      fool = build :player_card, card: build(:fool), player: round.bard_player, round: round
+      expect { round.bard_play(fool) }.to raise_exception Exceptions::DiscardedCardViolation
     end
   end
 
@@ -129,6 +139,46 @@ describe Round, type: :model do
       let(:round)  { build :round, :setup, :bard_in }
       its(:status) { is_expected.to eq 'player_pick' }
     end
+  end
+
+  describe 'player submitting cards' do
+    let(:round) { build :round, :player_pick }
+
+    it 'accepts third blank' do
+      decision_1 = create :player_card, player: round.game.players.last, card: build(:bad_decision)
+      decision_2 = create :player_card, player: round.game.players.last, card: build(:bad_decision)
+
+      expect(round.player_play(decision_1)).to eq true
+      expect(round.player_cards.length).to eq 1
+      expect(round.player_play(decision_2)).to eq true
+      expect(decision_1.reload.discarded?).to eq false
+      expect(decision_2.discarded?).to eq true
+    end
+
+    it 'rejects first blank' do
+      fool = build :player_card, player: round.game.players.last, card: build(:fool)
+      expect { round.player_play(fool) }.to raise_exception Exceptions::CardTypeViolation
+    end
+
+    it 'rejects card hand violations' do
+      decision = build :player_card, card: build(:bad_decision), player: round.bard_player
+      expect { round.player_play(decision) }.to raise_exception Exceptions::PlayerHandViolation
+    end
+
+    it 'raises a round violation' do
+      round = build :round, :setup
+      decision = build :player_card, card: build(:bad_decision), player: round.game.players.last
+      expect { round.player_play(decision) }.to raise_exception Exceptions::RoundOrderViolation
+    end
+
+    it 'raises discarded card violations' do
+      decision = build :player_card, card: build(:bad_decision), player: round.game.players.last, round: round
+      expect { round.player_play(decision) }.to raise_exception Exceptions::DiscardedCardViolation
+    end
+  end
+
+  describe '#all_in!' do
+
   end
 
   it 'has a valid factory' do

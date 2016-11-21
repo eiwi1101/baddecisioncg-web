@@ -70,12 +70,26 @@ class Round < ApplicationRecord
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player != self.bard_player
     raise Exceptions::RoundOrderViolation.new unless self.setup?
+    raise Exceptions::CardTypeViolation.new if self.story_card.card_order.last == player_card.card.type_string
 
-    if self.story_card.card_order.last == player_card.card.type_string
-      return false
-    end
+    slot = self.send(player_card.card.type_string + '_pc')
+    slot.try(:update_attributes, round: nil)
 
+    player_card.assign_attributes(round: self)
     self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
+    true
+  end
+
+  def player_play(player_card)
+    raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
+    raise Exceptions::PlayerHandViolation.new if player_card.player == self.bard_player
+    raise Exceptions::RoundOrderViolation.new unless self.player_pick?
+    raise Exceptions::CardTypeViolation.new unless self.story_card.card_order.last == player_card.card.type_string
+
+    slot = self.player_cards.where(player: player_card.player)
+    slot.try(:update_attributes, round: nil)
+
+    self.player_cards << player_card
     true
   end
 
