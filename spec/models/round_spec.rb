@@ -178,7 +178,19 @@ describe Round, type: :model do
   end
 
   describe '#all_in!' do
+    let(:round) { build :round, :player_pick, :players_in }
+    before { round.all_in }
 
+    context 'with all in' do
+      its(:all_in?) { is_expected.to eq true }
+      its(:status) { is_expected.to eq 'bard_pick' }
+    end
+
+    context 'without all in' do
+      let(:round) { build :round, :player_pick }
+      its(:all_in?) { is_expected.to eq false }
+      its(:status) { is_expected.to eq 'player_pick' }
+    end
   end
 
   it 'has a valid factory' do
