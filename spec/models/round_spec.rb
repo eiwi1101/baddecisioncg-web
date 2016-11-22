@@ -68,7 +68,6 @@ describe Round, type: :model do
     let(:game)  { create :game, :with_player_cards }
     let(:round) { create :round, game: game, story_card: game.cards.stories.first }
 
-    subject { round }
     before  { round.draw }
 
     its(:status) { is_expected.to eq 'setup' }
@@ -191,6 +190,65 @@ describe Round, type: :model do
       its(:all_in?) { is_expected.to eq false }
       its(:status) { is_expected.to eq 'player_pick' }
     end
+  end
+
+  describe 'bard picking winner' do
+    let(:round) { build :round, :bard_pick }
+
+    it 'accepts a winning card' do
+      decision = round.player_cards.last
+      expect(round.bard_pick(decision)).to eq true
+    end
+
+    it 'rejects the bard cards' do
+      decision = round.fool_pc
+      expect { round.bard_pick(decision) }.to raise_exception Exceptions::CardTypeViolation
+    end
+
+    it 'raises a round violation' do
+      round = build :round, :player_pick
+      round.player_cards << build(:player_card, card: build(:bad_decision))
+      decision = round.player_cards.last
+      expect { round.bard_pick(decision) }.to raise_exception Exceptions::RoundOrderViolation
+    end
+
+    it 'rejects other round cards' do
+      round = build :round, :player_pick
+      decision = build :player_card, card: build(:bad_decision)
+      expect { round.bard_pick(decision) }.to raise_exception Exceptions::RoundMismatchViolation
+    end
+  end
+
+  describe '#finish!' do
+    let(:round) { create :round, :bard_pick, :winner_picked }
+    before { round.finish }
+
+    context 'with bard picked' do
+      its(:bard_picked?) { is_expected.to eq true }
+      its(:status) { is_expected.to eq 'finished' }
+      its(:winning_player) { is_expected.to_not be_nil }
+
+      describe 'winning player score' do
+        it { expect(round.winning_player.score).to eq 1 }
+      end
+    end
+
+    context 'without bard picked' do
+      let(:round) { build :round, :bard_pick }
+
+      it { expect(round.errors[:bad_decision_pc]).to have(1).items }
+      its(:bard_picked?) { is_expected.to eq false }
+      its(:status) { is_expected.to eq 'bard_pick' }
+      its(:winning_player) { is_expected.to be_nil }
+    end
+  end
+
+  it 'filters player cards' do
+    round = create :round, :bard_pick
+    expect(round.fool_pc.round).to eq round
+    expect(round.player_cards).to_not include round.fool_pc
+    expect(round.player_cards).to_not include round.crisis_pc
+    expect(round.player_cards.collect { |pc| pc.card.type_string }.uniq).to eq %w{bad_decision}
   end
 
   it 'has a valid factory' do

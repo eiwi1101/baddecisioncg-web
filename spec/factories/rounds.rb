@@ -27,8 +27,10 @@ FactoryGirl.define do
     end
 
     trait :bard_in do
-      fool_pc { build :player_card, player: bard_player, card: build(:fool) }
-      crisis_pc { build :player_card, player: bard_player, card: build(:crisis) }
+      after :build do |round|
+        round.fool_pc   = build :player_card, player: round.bard_player, card: build(:fool), round: round
+        round.crisis_pc = build :player_card, player: round.bard_player, card: build(:crisis), round: round
+      end
     end
 
     trait :player_pick do
@@ -38,7 +40,12 @@ FactoryGirl.define do
     end
 
     trait :players_in do
-      player_cards { game.players.collect { |p| p.player_cards.first } }
+      after :build do |round|
+        round.game.players.each do |player|
+          card = player.player_cards.select { |pc| pc.card.type == 'Card::BadDecision' }.first
+          round.player_cards << card
+        end
+      end
     end
 
     trait :bard_pick do
@@ -47,16 +54,26 @@ FactoryGirl.define do
       status 'bard_pick'
     end
 
+    trait :winner_picked do
+      after :build do |round|
+        round.bad_decision_pc = round.player_cards.select { |pc| pc.card.type == 'Card::BadDecision' }.first
+      end
+    end
+
     trait :finished do
       bard_pick
+      winner_picked
       status 'finished'
 
-      bad_decision_pc { player_cards.last }
-      winning_player { bad_decision_pc.player }
+      after :build do |round|
+        round.winning_player = round.bad_decision_pc.player
+      end
     end
 
     trait :without_submissions do
-      player_cards { [] }
+      after :build do |round|
+        round.player_cards = round.player_cards.reject { |pc| pc.card.type == 'Card::BadDecision' }
+      end
     end
   end
 end

@@ -19,7 +19,7 @@
 class Round < ApplicationRecord
   belongs_to :game
   belongs_to :bard_player, class_name: Player
-  belongs_to :winning_player, class_name: Player
+  belongs_to :winning_player, class_name: Player, counter_cache: :score
   belongs_to :fool_pc, class_name: PlayerCard
   belongs_to :crisis_pc, class_name: PlayerCard
   belongs_to :bad_decision_pc, class_name: PlayerCard
@@ -31,6 +31,7 @@ class Round < ApplicationRecord
 
   state_machine :status, initial: nil do
     before_transition nil => :setup, do: [:draw_story]
+    before_transition any => :finished, do: [:mark_winner]
 
     state :setup do
       validates_presence_of :story_card
@@ -93,6 +94,15 @@ class Round < ApplicationRecord
     true
   end
 
+  def bard_pick(player_card)
+    raise Exceptions::RoundMismatchViolation.new unless player_card.round == self
+    raise Exceptions::CardTypeViolation.new unless self.story_card.card_order.last == player_card.card.type_string
+    raise Exceptions::RoundOrderViolation.new unless self.bard_pick?
+
+    self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
+    true
+  end
+
   def story_text
     self.story_card.try(:display_text, self)
   end
@@ -106,7 +116,7 @@ class Round < ApplicationRecord
   end
 
   def bard_picked?
-    !self.card_blanks.third.nil?
+    !self.card_blanks.last.nil?
   end
 
   def card_blanks
@@ -125,6 +135,10 @@ class Round < ApplicationRecord
 
   def draw_story
     self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').limit(1).first
+  end
+
+  def mark_winner
+    self.winning_player = self.card_blanks.last.player if self.bard_picked?
   end
 
   def validate_all_players_submitted

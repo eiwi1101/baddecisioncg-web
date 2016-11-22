@@ -7,4 +7,5 @@ module Exceptions
   class PlayerHandViolation < RuleViolation; end
   class DiscardedCardViolation < RuleViolation; end
   class RoundOrderViolation < RuleViolation; end
+  class RoundMismatchViolation < RuleViolation; end
 end
