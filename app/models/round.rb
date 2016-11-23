@@ -24,7 +24,7 @@ class Round < ApplicationRecord
   belongs_to :crisis_pc, class_name: PlayerCard
   belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
-  has_many :player_cards
+  has_many :player_cards, autosave: true
 
   validates_presence_of :game
   validates_presence_of :bard_player
@@ -73,8 +73,9 @@ class Round < ApplicationRecord
     raise Exceptions::RoundOrderViolation.new unless self.setup?
     raise Exceptions::CardTypeViolation.new if self.story_card.card_order.last == player_card.card.type_string
 
-    slot = self.send(player_card.card.type_string + '_pc')
-    slot.try(:update_attributes, round: nil)
+    if (slot = self.send(player_card.card.type_string + '_pc'))
+      slot.update_attributes(round: nil)
+    end
 
     player_card.assign_attributes(round: self)
     self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
@@ -87,8 +88,9 @@ class Round < ApplicationRecord
     raise Exceptions::RoundOrderViolation.new unless self.player_pick?
     raise Exceptions::CardTypeViolation.new unless self.story_card.card_order.last == player_card.card.type_string
 
-    slot = self.player_cards.where(player: player_card.player)
-    slot.try(:update_attributes, round: nil)
+    if (slot = self.player_cards.where(player: player_card.player)).any?
+      slot.each { |pc| pc.update_attributes(round: nil) }
+    end
 
     self.player_cards << player_card
     true
@@ -107,8 +109,12 @@ class Round < ApplicationRecord
     self.story_card.try(:display_text, self)
   end
 
+  def submitted_player_cards
+    self.player_cards.send(blank_scope)
+  end
+
   def all_in?
-    self.player_cards.length == self.game.players.length - 1
+    submitted_player_cards.length == self.game.players.length - 1
   end
 
   def bard_in?
@@ -132,6 +138,15 @@ class Round < ApplicationRecord
   end
 
   private
+
+  def blank_scope
+    case story_order.last
+      when 'crisis'
+        'crisis'
+      else
+        story_order.last.pluralize
+    end
+  end
 
   def draw_story
     self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').first

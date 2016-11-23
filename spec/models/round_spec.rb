@@ -141,14 +141,15 @@ describe Round, type: :model do
   end
 
   describe 'player submitting cards' do
-    let(:round) { build :round, :player_pick }
+    let(:round) { create :round, :player_pick }
 
     it 'accepts third blank' do
       decision_1 = create :player_card, player: round.game.players.last, card: build(:bad_decision)
       decision_2 = create :player_card, player: round.game.players.last, card: build(:bad_decision)
 
       expect(round.player_play(decision_1)).to eq true
-      expect(round.player_cards.length).to eq 1
+      expect(round.player_cards.length).to eq 3
+      expect(round.submitted_player_cards.length).to eq 1
       expect(round.player_play(decision_2)).to eq true
       expect(decision_1.reload.discarded?).to eq false
       expect(decision_2.discarded?).to eq true
@@ -196,7 +197,7 @@ describe Round, type: :model do
     let(:round) { build :round, :bard_pick }
 
     it 'accepts a winning card' do
-      decision = round.player_cards.last
+      decision = round.submitted_player_cards.last
       expect(round.bard_pick(decision)).to eq true
     end
 
@@ -246,9 +247,9 @@ describe Round, type: :model do
   it 'filters player cards' do
     round = create :round, :bard_pick
     expect(round.fool_pc.round).to eq round
-    expect(round.player_cards).to_not include round.fool_pc
-    expect(round.player_cards).to_not include round.crisis_pc
-    expect(round.player_cards.collect { |pc| pc.card.type_string }.uniq).to eq %w{bad_decision}
+    expect(round.submitted_player_cards).to_not include round.fool_pc
+    expect(round.submitted_player_cards).to_not include round.crisis_pc
+    expect(round.submitted_player_cards.collect { |pc| pc.card.type_string }.uniq).to eq %w{bad_decision}
   end
 
   it 'has a valid factory' do

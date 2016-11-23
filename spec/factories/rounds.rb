@@ -28,6 +28,7 @@ FactoryGirl.define do
 
     trait :bard_in do
       after :build do |round|
+        round.save(validate: false)
         round.fool_pc   = build :player_card, player: round.bard_player, card: build(:fool), round: round
         round.crisis_pc = build :player_card, player: round.bard_player, card: build(:crisis), round: round
       end
@@ -41,8 +42,17 @@ FactoryGirl.define do
 
     trait :players_in do
       after :build do |round|
+        round.save(validate: false)
+
         round.game.players.each do |player|
-          card = player.player_cards.select { |pc| pc.card.type == 'Card::BadDecision' }.first
+          player.save!
+          player.player_cards.collect(&:save!)
+
+          next if player == round.bard_player
+
+          card   = player.player_cards.select { |pc| pc.card.type == 'Card::BadDecision' }.first
+          card ||= player_card.new player: player, card: create(:bad_decision)
+
           round.player_cards << card
         end
       end

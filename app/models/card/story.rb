@@ -19,11 +19,9 @@ class Card::Story < Card
 
   def card_order
     order = []
-    Rails.logger.info "TEXT: #{text}"
     text.scan(/%{(\w+)}/i) do |match|
       order << match[0]
     end
-    Rails.logger.info "MATCH: #{order}"
     order
   end
 
