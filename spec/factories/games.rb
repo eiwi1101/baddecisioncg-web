@@ -28,6 +28,7 @@ FactoryGirl.define do
       game_lobby { build :game_lobby, :with_users }
 
       after :build do |game|
+        game.players.delete_all
         game.players << game.game_lobby.users.collect { |u| build :player, :with_hand, user: u, game: game }
       end
     end

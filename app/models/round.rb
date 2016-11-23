@@ -108,7 +108,7 @@ class Round < ApplicationRecord
   end
 
   def all_in?
-    self.player_cards.length == self.game.players.length
+    self.player_cards.length == self.game.players.length - 1
   end
 
   def bard_in?
@@ -134,7 +134,7 @@ class Round < ApplicationRecord
   private
 
   def draw_story
-    self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').limit(1).first
+    self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').first
   end
 
   def mark_winner

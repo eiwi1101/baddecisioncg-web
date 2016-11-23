@@ -64,6 +64,27 @@ class Game < ApplicationRecord
     end
   end
 
+  def current_round
+    self.rounds.last
+  end
+
+  def next_round
+    raise Exceptions::GameStatusViolation.new unless self.in_progress?
+    raise Exceptions::RoundOrderViolation.new unless self.current_round.nil? || self.current_round.finished?
+
+    if self.rounds.count < self.score_limit
+      bard   = self.players.where('players.id > ?', self.current_round&.bard_player&.id || 0).first
+      bard ||= self.players.first
+
+      new_round = self.rounds.build(bard_player: bard)
+      new_round.draw!
+      new_round
+    else
+      self.finish!
+      nil
+    end
+  end
+
   private
 
   def assign_winner

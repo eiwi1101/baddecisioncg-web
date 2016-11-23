@@ -154,6 +154,58 @@ describe Game, type: :model do
     end
   end
 
+  describe '#next_round' do
+    let(:game) { create :game, :in_progress, :with_player_cards }
+    let(:round) { game.next_round }
+    subject { round }
+
+    it 'rotates players' do
+      round.bard_play(round.bard_player.player_cards.fools.first)
+      round.bard_play(round.bard_player.player_cards.crisis.first)
+      round.reveal!
+      round.player_play(game.players.second.player_cards.bad_decisions.first)
+      round.all_in!
+      round.bard_pick(round.player_cards.bad_decisions.first)
+      round.finish!
+
+      new_round = game.next_round
+
+      expect(new_round).to be_setup
+      expect(new_round.bard_player).to eq game.players.second
+    end
+
+    context 'without current round' do
+      its(:status) { is_expected.to eq 'setup' }
+      its(:bard_player) { is_expected.to eq game.players.first }
+    end
+
+    context 'with game in invalid state' do
+      let(:game) { build :game }
+      it { expect { game.next_round }.to raise_exception Exceptions::GameStatusViolation }
+    end
+
+    context 'with current unfinished round' do
+      before { game.rounds << build(:round, :setup) }
+      it { expect { game.next_round }.to raise_exception Exceptions::RoundOrderViolation }
+    end
+
+    context 'with finished round' do
+      before { game.rounds << build(:round, :finished) }
+      its(:status) { is_expected.to eq 'setup' }
+    end
+
+    context 'when end of game' do
+      let(:game) { create :game, :in_progress, :with_player_cards, score_limit: 1 }
+      before { game.rounds << build(:round, :finished) }
+      it { is_expected.to be_nil }
+
+      it 'ends game' do
+        game.next_round
+        expect(game.status).to eq 'finished'
+      end
+    end
+  end
+
   it 'has valid factory' do
     expect(build :game).to be_valid
     expect(build :game, :in_progress).to be_valid
