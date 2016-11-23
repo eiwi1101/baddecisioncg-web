@@ -12,10 +12,14 @@
 #
 
 class GameLobby < ApplicationRecord
+  include HasGuid
+
   has_many :games
   has_many :game_lobby_users
   has_many :users, through: :game_lobby_users
   has_many :messages
+
+  has_guid :token, type: :token
 
   validates_presence_of :name
 end
