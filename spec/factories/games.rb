@@ -41,6 +41,7 @@ FactoryGirl.define do
     end
 
     trait :in_progress do
+      with_players
       status 'in_progress'
     end
 
