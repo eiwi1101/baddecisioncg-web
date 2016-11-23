@@ -6,6 +6,7 @@
 #  game_lobby_id :integer
 #  user_id       :integer
 #  message       :text
+#  guid          :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

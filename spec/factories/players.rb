@@ -7,6 +7,7 @@
 #  user_id :integer
 #  score   :integer
 #  order   :integer
+#  guid    :string
 #
 
 FactoryGirl.define do

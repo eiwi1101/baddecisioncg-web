@@ -7,6 +7,7 @@
 #  game_lobby_id   :integer
 #  winning_user_id :integer
 #  status          :string
+#  guid            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

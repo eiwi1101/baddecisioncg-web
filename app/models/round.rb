@@ -12,11 +12,14 @@
 #  bad_decision_pc_id :integer
 #  story_card_id      :integer
 #  status             :string
+#  guid               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
 
 class Round < ApplicationRecord
+  include HasGuid
+
   belongs_to :game
   belongs_to :bard_player, class_name: Player
   belongs_to :winning_player, class_name: Player, counter_cache: :score
@@ -25,6 +28,8 @@ class Round < ApplicationRecord
   belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
   has_many :player_cards, autosave: true
+
+  has_guid
 
   validates_presence_of :game
   validates_presence_of :bard_player

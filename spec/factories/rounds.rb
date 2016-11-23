@@ -12,6 +12,7 @@
 #  bad_decision_pc_id :integer
 #  story_card_id      :integer
 #  status             :string
+#  guid               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

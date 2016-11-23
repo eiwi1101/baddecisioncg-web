@@ -7,17 +7,22 @@
 #  game_lobby_id   :integer
 #  winning_user_id :integer
 #  status          :string
+#  guid            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 
 class Game < ApplicationRecord
+  include HasGuid
+
   belongs_to :game_lobby
   belongs_to :winning_user, class_name: User
   has_many :players, autosave: true
   has_many :rounds
   has_many :expansions, through: :players
   has_many :cards, through: :expansions
+
+  has_guid
 
   validates_presence_of :game_lobby
 

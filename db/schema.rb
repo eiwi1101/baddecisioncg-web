@@ -19,13 +19,17 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.string  "type"
     t.text    "text"
     t.integer "expansion_id"
+    t.string  "uuid"
     t.index ["expansion_id"], name: "index_cards_on_expansion_id", using: :btree
+    t.index ["uuid"], name: "index_cards_on_uuid", using: :btree
   end
 
   create_table "expansions", force: :cascade do |t|
     t.string   "name"
+    t.string   "uuid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["uuid"], name: "index_expansions_on_uuid", using: :btree
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -59,9 +63,11 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.integer  "game_lobby_id"
     t.integer  "winning_user_id"
     t.string   "status"
+    t.string   "guid"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["game_lobby_id"], name: "index_games_on_game_lobby_id", using: :btree
+    t.index ["guid"], name: "index_games_on_guid", using: :btree
     t.index ["status"], name: "index_games_on_status", using: :btree
     t.index ["winning_user_id"], name: "index_games_on_winning_user_id", using: :btree
   end
@@ -70,16 +76,20 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.integer  "game_lobby_id"
     t.integer  "user_id"
     t.text     "message"
+    t.string   "guid"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["game_lobby_id"], name: "index_messages_on_game_lobby_id", using: :btree
+    t.index ["guid"], name: "index_messages_on_guid", using: :btree
   end
 
   create_table "player_cards", force: :cascade do |t|
     t.integer "player_id"
     t.integer "card_id"
     t.integer "round_id"
+    t.string  "guid"
     t.index ["card_id"], name: "index_player_cards_on_card_id", using: :btree
+    t.index ["guid"], name: "index_player_cards_on_guid", using: :btree
     t.index ["player_id"], name: "index_player_cards_on_player_id", using: :btree
     t.index ["round_id"], name: "index_player_cards_on_round_id", using: :btree
   end
@@ -89,7 +99,9 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.integer "user_id"
     t.integer "score"
     t.integer "order"
+    t.string  "guid"
     t.index ["game_id"], name: "index_players_on_game_id", using: :btree
+    t.index ["guid"], name: "index_players_on_guid", using: :btree
     t.index ["user_id"], name: "index_players_on_user_id", using: :btree
   end
 
@@ -103,9 +115,11 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.integer  "bad_decision_pc_id"
     t.integer  "story_card_id"
     t.string   "status"
+    t.string   "guid"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.index ["game_id"], name: "index_rounds_on_game_id", using: :btree
+    t.index ["guid"], name: "index_rounds_on_guid", using: :btree
     t.index ["winning_player_id"], name: "index_rounds_on_winning_player_id", using: :btree
   end
 
@@ -121,11 +135,13 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.string   "email"
     t.string   "display_name"
     t.string   "password_digest"
+    t.string   "uuid"
     t.boolean  "admin"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["username"], name: "index_users_on_username", using: :btree
+    t.index ["uuid"], name: "index_users_on_uuid", using: :btree
   end
 
 end

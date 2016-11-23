@@ -7,6 +7,7 @@
 #  email           :string
 #  display_name    :string
 #  password_digest :string
+#  uuid            :string
 #  admin           :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

@@ -6,6 +6,7 @@
 #  type         :string
 #  text         :text
 #  expansion_id :integer
+#  uuid         :string
 #
 
 require 'rails_helper'

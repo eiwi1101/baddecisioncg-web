@@ -7,12 +7,15 @@
 #  email           :string
 #  display_name    :string
 #  password_digest :string
+#  uuid            :string
 #  admin           :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 
 class User < ApplicationRecord
+  include HasGuid
+
   has_and_belongs_to_many :expansions,
                           join_table: :user_expansions
 
@@ -21,6 +24,8 @@ class User < ApplicationRecord
                           join_table: :friendships,
                           foreign_key: :user_id,
                           association_foreign_key: :friend_user_id
+
+  has_guid :uuid, type: :uuid
 
   validates_presence_of :username
   validates_presence_of :email

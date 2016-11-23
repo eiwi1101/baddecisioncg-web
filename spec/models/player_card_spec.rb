@@ -6,6 +6,7 @@
 #  player_id :integer
 #  card_id   :integer
 #  round_id  :integer
+#  guid      :string
 #
 
 require 'rails_helper'
@@ -13,6 +14,7 @@ require 'rails_helper'
 describe PlayerCard, type: :model do
   it { is_expected.to belong_to :player }
   it { is_expected.to belong_to :card }
+  it { is_expected.to validate_uniqueness_of :guid }
 
   describe '#discarded?' do
     let(:player_card) { build :player_card }

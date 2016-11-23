@@ -12,6 +12,7 @@
 #  bad_decision_pc_id :integer
 #  story_card_id      :integer
 #  status             :string
+#  guid               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -29,6 +30,7 @@ describe Round, type: :model do
   it { is_expected.to have_many :player_cards }
   it { is_expected.to validate_presence_of :game }
   it { is_expected.to validate_presence_of :bard_player }
+  it { is_expected.to validate_uniqueness_of :guid }
 
   subject { round }
   let(:round) { build :round }

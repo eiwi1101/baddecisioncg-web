@@ -6,12 +6,17 @@
 #  player_id :integer
 #  card_id   :integer
 #  round_id  :integer
+#  guid      :string
 #
 
 class PlayerCard < ApplicationRecord
+  include HasGuid
+
   belongs_to :player
   belongs_to :card, autosave: true
   belongs_to :round
+
+  has_guid
 
   scope :fools, -> { joins(:card).where(cards: { type: 'Card::Fool' }) }
   scope :crisis, -> { joins(:card).where(cards: { type: 'Card::Crisis' }) }

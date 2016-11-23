@@ -59,7 +59,7 @@ module HasGuid
       self.errors[guid_column_name] << "can't be blank"
     end
 
-    if self.class.where(guid_scope).exists?(guid_column_name => self.send(guid_column_name))
+    if self.class.where(guid_scope).where.not(id: self.id).exists?(guid_column_name => self.send(guid_column_name))
       self.errors[guid_column_name] << 'has already been taken'
     end
 

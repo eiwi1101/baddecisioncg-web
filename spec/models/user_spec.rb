@@ -7,6 +7,7 @@
 #  email           :string
 #  display_name    :string
 #  password_digest :string
+#  uuid            :string
 #  admin           :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -22,6 +23,7 @@ describe User, type: :model do
   it { is_expected.to validate_presence_of :display_name }
   it { is_expected.to validate_uniqueness_of :username }
   it { is_expected.to validate_uniqueness_of :email }
+  it { is_expected.to validate_uniqueness_of :uuid }
 
   it 'has a valid factory' do
     expect(build :user).to be_valid

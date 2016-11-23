@@ -7,14 +7,19 @@
 #  user_id :integer
 #  score   :integer
 #  order   :integer
+#  guid    :string
 #
 
 class Player < ApplicationRecord
+  include HasGuid
+
   belongs_to :user
   belongs_to :game
   has_many :player_cards
   has_many :cards, through: :player_cards
   has_many :expansions, through: :user
+
+  has_guid
 
   validates_presence_of :user
   validates_presence_of :game

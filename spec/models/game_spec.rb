@@ -7,6 +7,7 @@
 #  game_lobby_id   :integer
 #  winning_user_id :integer
 #  status          :string
+#  guid            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
@@ -23,6 +24,7 @@ describe Game, type: :model do
   it { is_expected.to validate_presence_of :game_lobby }
   it { is_expected.to_not validate_presence_of :score_limit }
   it { is_expected.to_not validate_presence_of :winning_user }
+  it { is_expected.to validate_uniqueness_of :guid }
 
   subject { game }
   let(:game) { build :game }

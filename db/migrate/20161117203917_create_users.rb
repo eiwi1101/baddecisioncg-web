@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :email
       t.string :display_name
       t.string :password_digest
+      t.string :uuid
       t.boolean :admin
 
       t.timestamps
@@ -12,5 +13,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
 
     add_index :users, :username
     add_index :users, :email
+    add_index :users, :uuid
   end
 end

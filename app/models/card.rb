@@ -6,11 +6,16 @@
 #  type         :string
 #  text         :text
 #  expansion_id :integer
+#  uuid         :string
 #
 
 class Card < ApplicationRecord
+  include HasGuid
+
   belongs_to :expansion
   has_many :player_cards
+
+  has_guid :uuid, type: :uuid
 
   validates_presence_of :expansion
   validates_presence_of :text

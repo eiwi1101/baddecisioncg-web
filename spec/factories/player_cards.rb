@@ -6,6 +6,7 @@
 #  player_id :integer
 #  card_id   :integer
 #  round_id  :integer
+#  guid      :string
 #
 
 FactoryGirl.define do

@@ -6,6 +6,7 @@
 #  type         :string
 #  text         :text
 #  expansion_id :integer
+#  uuid         :string
 #
 
 require 'rails_helper'
@@ -14,6 +15,7 @@ describe Card, type: :model do
   it { is_expected.to belong_to :expansion }
   it { is_expected.to validate_presence_of :expansion }
   it { is_expected.to validate_presence_of :text }
+  it { is_expected.to validate_uniqueness_of :uuid }
 
   describe '#type_string' do
     let(:card) { build :card }
