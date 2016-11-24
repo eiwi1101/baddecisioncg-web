@@ -9,6 +9,7 @@
 #  password   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 
 class GameLobby < ApplicationRecord
@@ -20,6 +21,7 @@ class GameLobby < ApplicationRecord
   has_many :messages
 
   has_guid :token, type: :token
+  acts_as_paranoid
 
   validates_presence_of :name
 end

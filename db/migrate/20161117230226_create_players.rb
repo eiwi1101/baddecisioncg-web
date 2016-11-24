@@ -6,6 +6,7 @@ class CreatePlayers < ActiveRecord::Migration[5.0]
       t.integer :score
       t.integer :order
       t.string :guid
+      t.datetime :deleted_at
     end
 
     add_index :players, :game_id

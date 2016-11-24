@@ -5,6 +5,7 @@ class CreateGameLobbyUsers < ActiveRecord::Migration[5.0]
       t.integer :user_id
       t.boolean :moderator
       t.boolean :admin
+      t.datetime :deleted_at
     end
 
     add_index :game_lobby_users, :game_lobby_id

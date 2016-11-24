@@ -2,12 +2,13 @@
 #
 # Table name: players
 #
-#  id      :integer          not null, primary key
-#  game_id :integer
-#  user_id :integer
-#  score   :integer
-#  order   :integer
-#  guid    :string
+#  id         :integer          not null, primary key
+#  game_id    :integer
+#  user_id    :integer
+#  score      :integer
+#  order      :integer
+#  guid       :string
+#  deleted_at :datetime
 #
 
 class Player < ApplicationRecord
@@ -20,6 +21,7 @@ class Player < ApplicationRecord
   has_many :expansions, through: :user
 
   has_guid
+  act_as_paranoid
 
   validates_presence_of :user
   validates_presence_of :game

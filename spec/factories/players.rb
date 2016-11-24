@@ -2,12 +2,13 @@
 #
 # Table name: players
 #
-#  id      :integer          not null, primary key
-#  game_id :integer
-#  user_id :integer
-#  score   :integer
-#  order   :integer
-#  guid    :string
+#  id         :integer          not null, primary key
+#  game_id    :integer
+#  user_id    :integer
+#  score      :integer
+#  order      :integer
+#  guid       :string
+#  deleted_at :datetime
 #
 
 FactoryGirl.define do

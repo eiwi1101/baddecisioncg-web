@@ -6,6 +6,7 @@ class CreateGameLobbies < ActiveRecord::Migration[5.0]
       t.string :token
       t.string :password
       t.timestamps
+      t.datetime :deleted_at
     end
 
     add_index :game_lobbies, :token

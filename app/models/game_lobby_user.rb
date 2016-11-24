@@ -7,11 +7,14 @@
 #  user_id       :integer
 #  moderator     :boolean
 #  admin         :boolean
+#  deleted_at    :datetime
 #
 
 class GameLobbyUser < ApplicationRecord
   belongs_to :game_lobby
   belongs_to :user
+
+  acts_as_paranoid
 
   validates_presence_of :game_lobby
   validates_presence_of :user

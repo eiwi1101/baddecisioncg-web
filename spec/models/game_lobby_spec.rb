@@ -9,6 +9,7 @@
 #  password   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 
 require 'rails_helper'
@@ -20,9 +21,34 @@ describe GameLobby, type: :model do
   it { is_expected.to have_many :messages }
   it { is_expected.to have_many :users }
   it { is_expected.to have_many :game_lobby_users }
+  it { is_expected.to act_as_paranoid }
 
   let(:lobby) { build :game_lobby }
   subject { lobby }
+
+  describe '#join' do
+    context 'when alive' do
+      # doesn't do a whole lot
+    end
+
+    context 'when dead' do
+      # doesn't do anything
+    end
+  end
+
+  describe '#leave' do
+    context 'when spectating' do
+      # just gtfo's
+    end
+
+    context 'when in a game' do
+      # leaves the game as well.
+    end
+
+    context 'when last person' do
+      # shuts down lobby
+    end
+  end
 
   describe '#token' do
     context 'before validate' do

@@ -7,6 +7,7 @@
 #  user_id       :integer
 #  moderator     :boolean
 #  admin         :boolean
+#  deleted_at    :datetime
 #
 
 FactoryGirl.define do

@@ -46,14 +46,16 @@ ActiveRecord::Schema.define(version: 20161117230854) do
     t.string   "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["token"], name: "index_game_lobbies_on_token", using: :btree
   end
 
   create_table "game_lobby_users", force: :cascade do |t|
-    t.integer "game_lobby_id"
-    t.integer "user_id"
-    t.boolean "moderator"
-    t.boolean "admin"
+    t.integer  "game_lobby_id"
+    t.integer  "user_id"
+    t.boolean  "moderator"
+    t.boolean  "admin"
+    t.datetime "deleted_at"
     t.index ["game_lobby_id"], name: "index_game_lobby_users_on_game_lobby_id", using: :btree
     t.index ["user_id"], name: "index_game_lobby_users_on_user_id", using: :btree
   end
@@ -95,11 +97,12 @@ ActiveRecord::Schema.define(version: 20161117230854) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.integer "game_id"
-    t.integer "user_id"
-    t.integer "score"
-    t.integer "order"
-    t.string  "guid"
+    t.integer  "game_id"
+    t.integer  "user_id"
+    t.integer  "score"
+    t.integer  "order"
+    t.string   "guid"
+    t.datetime "deleted_at"
     t.index ["game_id"], name: "index_players_on_game_id", using: :btree
     t.index ["guid"], name: "index_players_on_guid", using: :btree
     t.index ["user_id"], name: "index_players_on_user_id", using: :btree
