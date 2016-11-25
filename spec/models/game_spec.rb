@@ -128,6 +128,7 @@ describe Game, type: :model do
     end
 
     it 'ends game if we drop below two people' do
+      game.next_round
       expect(game.leave(game_lobby.game_lobby_users.first)).to eq true
       expect(game.leave(game_lobby.game_lobby_users.last)).to eq true
       expect(game.status).to eq 'finished'
