@@ -28,25 +28,60 @@ describe GameLobby, type: :model do
 
   describe '#join' do
     context 'when alive' do
-      # doesn't do a whole lot
+      before { lobby.join(build :user) }
+      its(:game_lobby_users) { is_expected.to have(1).items }
+    end
+
+    context 'when password protected' do
+      let(:lobby) { build :game_lobby, password: 'fishsticks' }
+
+      context 'with invalid password' do
+        it { expect { lobby.join(build(:user), 'asdfasdf') }.to raise_exception Exceptions::LobbyPermissionViolation }
+      end
+
+      context 'with valid password' do
+        before { lobby.join(build(:user), 'fishsticks') }
+        its(:game_lobby_users) { is_expected.to have(1).items }
+      end
     end
 
     context 'when dead' do
-      # doesn't do anything
+      let(:lobby) { build :game_lobby, :deleted }
+      it { expect { lobby.join(build :user) }.to raise_exception Exceptions::LobbyClosedViolation }
     end
   end
 
   describe '#leave' do
+    let(:lobby) { create :game_lobby, :with_users, user_count: 3 }
+
+    context 'when dead' do
+      let(:lobby) { create :game_lobby, :deleted, :with_users, user_count: 3 }
+      it { expect { lobby.leave(lobby.game_lobby_users.last.user) }.to raise_exception Exceptions::LobbyClosedViolation }
+    end
+
     context 'when spectating' do
-      # just gtfo's
+      before { lobby.leave(lobby.game_lobby_users.last.user) }
+      its(:game_lobby_users) { is_expected.to have(2).items }
     end
 
     context 'when in a game' do
-      # leaves the game as well.
+      let(:game) { create :game, game_lobby: lobby }
+
+      before do
+        game.join(lobby.game_lobby_users.last)
+        lobby.leave(lobby.game_lobby_users.last.user)
+        game.reload
+      end
+
+      it { expect(game).to be_abandoned }
+      its(:game_lobby_users) { is_expected.to have(2).items }
     end
 
     context 'when last person' do
-      # shuts down lobby
+      let(:lobby) { create :game_lobby, :with_users, user_count: 1 }
+      before { lobby.leave(lobby.game_lobby_users.last.user) }
+
+      it { is_expected.to be_deleted }
     end
   end
 

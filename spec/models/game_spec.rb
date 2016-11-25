@@ -110,26 +110,26 @@ describe Game, type: :model do
     before { game_lobby.game_lobby_users.each { |u| game.join(u) } }
     before { game.start! }
 
-    it 'removes player' do
+    it 'leaves player' do
       expect(game.players.length).to eq 3
-      game.remove(game_lobby.game_lobby_users.last)
+      game.leave(game_lobby.game_lobby_users.last)
       expect(game.players.length).to eq 2
       expect(game.reload.players.length).to eq 2
     end
 
     it 'complains about unknown users' do
       user = build :game_lobby_user
-      expect { game.remove(user) }.to raise_exception Exceptions::UserLobbyViolation
+      expect { game.leave(user) }.to raise_exception Exceptions::UserLobbyViolation
     end
 
     it 'complains about users not in the game' do
-      expect(game.remove(game_lobby.game_lobby_users.last)).to eq true
-      expect { game.remove(game_lobby.game_lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
+      expect(game.leave(game_lobby.game_lobby_users.last)).to eq true
+      expect { game.leave(game_lobby.game_lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
     end
 
     it 'ends game if we drop below two people' do
-      expect(game.remove(game_lobby.game_lobby_users.first)).to eq true
-      expect(game.remove(game_lobby.game_lobby_users.last)).to eq true
+      expect(game.leave(game_lobby.game_lobby_users.first)).to eq true
+      expect(game.leave(game_lobby.game_lobby_users.last)).to eq true
       expect(game.status).to eq 'finished'
       expect(game.players.length).to eq 1
       expect(game.winning_user).to eq game_lobby.game_lobby_users.second.user

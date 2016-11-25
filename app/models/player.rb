@@ -21,7 +21,7 @@ class Player < ApplicationRecord
   has_many :expansions, through: :user
 
   has_guid
-  act_as_paranoid
+  acts_as_paranoid
 
   validates_presence_of :user
   validates_presence_of :game

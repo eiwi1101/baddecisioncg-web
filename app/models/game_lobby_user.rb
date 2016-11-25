@@ -18,4 +18,6 @@ class GameLobbyUser < ApplicationRecord
 
   validates_presence_of :game_lobby
   validates_presence_of :user
+
+  scope :admins, -> { where(admin: true) }
 end

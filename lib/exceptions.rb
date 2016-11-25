@@ -13,4 +13,8 @@ module Exceptions
   class GameStatusViolation < RuleViolation; end
   class UserLobbyViolation < RuleViolation; end
   class PlayerExistsViolation < RuleViolation; end
+
+  # Lobby Things
+  class LobbyClosedViolation < RuleViolation; end
+  class LobbyPermissionViolation < RuleViolation; end
 end

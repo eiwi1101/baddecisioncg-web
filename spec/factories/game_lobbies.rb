@@ -20,6 +20,10 @@ FactoryGirl.define do
       private :true
     end
 
+    trait :deleted do
+      deleted_at { DateTime.now }
+    end
+
     trait :with_users do
       transient do
         user_count 2

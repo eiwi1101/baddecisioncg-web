@@ -24,4 +24,41 @@ class GameLobby < ApplicationRecord
   acts_as_paranoid
 
   validates_presence_of :name
+
+  def join(user, password=nil)
+    raise Exceptions::LobbyClosedViolation.new if deleted?
+
+    if has_password?
+      raise Exceptions::LobbyPermissionViolation.new if password != self.password
+    end
+
+    game_lobby_users << GameLobbyUser.new(user: user)
+  end
+
+  def leave(user)
+    raise Exceptions::LobbyClosedViolation.new if deleted?
+
+    game_lobby_user = game_lobby_users.find_by!(user: user)
+    game_lobby_users.delete(game_lobby_user)
+
+    if current_game&.has_lobby_user?(game_lobby_user)
+      current_game.leave(game_lobby_user)
+    end
+
+    if game_lobby_users.admins.length == 0
+      game_lobby_users.first.try(:update_attributes, admin: true)
+    end
+
+    if game_lobby_users.length == 0
+      self.delete
+    end
+  end
+
+  def current_game
+    games.last
+  end
+
+  def has_password?
+    password.present?
+  end
 end

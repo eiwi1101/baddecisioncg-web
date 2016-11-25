@@ -37,12 +37,18 @@ class Game < ApplicationRecord
       validates_presence_of :winning_user
     end
 
+    state :abandoned
+
     event :start do
       transition nil => :in_progress
     end
 
     event :finish do
       transition :in_progress => :finished
+    end
+
+    event :abandon do
+      transition any => :abandoned
     end
   end
 
@@ -55,15 +61,15 @@ class Game < ApplicationRecord
     self.save
   end
 
-  def remove(game_lobby_user)
+  def leave(game_lobby_user)
     raise Exceptions::UserLobbyViolation.new unless game_lobby_user.game_lobby == self.game_lobby
-    raise Exceptions::PlayerExistsViolation.new unless self.players.exists?(user: game_lobby_user.user)
+    raise Exceptions::PlayerExistsViolation.new unless has_lobby_user?(game_lobby_user)
 
-    player = self.players.find_by(user: game_lobby_user.user)
+    player = self.players.find_by!(user: game_lobby_user.user)
     self.players.delete(player)
 
     if self.players.length < 2
-      self.finish
+      self.rounds.any? ? self.finish! : self.abandon!
     else
       true
     end
@@ -88,6 +94,10 @@ class Game < ApplicationRecord
       self.finish!
       nil
     end
+  end
+
+  def has_lobby_user?(game_lobby_user)
+    self.players.exists?(user: game_lobby_user.user)
   end
 
   private
