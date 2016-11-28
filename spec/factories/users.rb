@@ -19,6 +19,7 @@ FactoryGirl.define do
     sequence(:email) { |i| "user.#{i}@example.com" }
     display_name { Faker::Name.name }
     password 'fishsticks'
+    password_confirmation 'fishsticks'
 
     trait :with_expansions do
       transient do

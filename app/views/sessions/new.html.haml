@@ -1,0 +1,18 @@
+.container
+  .row
+    .col-md-4.col-md-offset-4
+      .form-group
+        = image_tag 'bd plain logo.jpg', alt: 'Bad Decisions Logo'
+
+      .well
+        = simple_form_for @user, url: login_path, method: :post do |f|
+          .form-group
+            = f.input_field :username, class: 'form-control', placeholder: 'Username'
+
+          .form-group
+            = f.input_field :password, class: 'form-control', placeholder: 'Password'
+
+          = f.submit t('session.login'), class: 'btn btn-primary'
+
+      .text-center.text-muted
+        We're really building it this time.

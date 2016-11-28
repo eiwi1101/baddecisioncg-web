@@ -1,0 +1,19 @@
+%nav.navbar.navbar-default{:role => "navigation"}
+  .container
+    %a.navbar-toggle{ data: { target: '#navbarCollapse', toggle: 'collapse' }, type: 'button'}
+      %span.sr-only Toggle navigation
+      = icon('bars')
+
+    = link_to root_url, class: 'navbar-brand' do
+      .site-name Bad Decisions
+
+    #navbarCollapse.collapse.navbar-collapse
+      -#= render 'public/site_nav'
+
+      %ul.nav.navbar-nav.navbar-right
+        - if logged_in?
+          %li= link_to current_user.name, '#'
+          %li= link_to logout_path, t('session.logout')
+
+        - else
+          %li= link_to 'Login', login_path

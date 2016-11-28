@@ -1,0 +1,13 @@
+en:
+  session:
+    login_invalid: "Invalid username or password."
+    access_denied: "Please sign in to access this resource."
+    invalid_permissions: "You do not have sufficient permissions to view this page."
+    email_confirmed: "Thank you, your email is confirmed."
+    password_reset: "Password reset successfully."
+    invalid_token: "invalid login token."
+    already_logged_in: "You are already logged in."
+    login: "Log In"
+    forgot_password: "Forgot password?"
+    register: "Create Account"
+    login_greeting: "Welcome back! (I missed you.)"
