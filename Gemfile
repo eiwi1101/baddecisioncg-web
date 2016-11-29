@@ -9,6 +9,7 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'redis', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
+gem 'therubyracer'
 gem 'responders'
 gem 'ahoy_matey'
 
