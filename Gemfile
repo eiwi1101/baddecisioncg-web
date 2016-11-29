@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+# ruby '2.3.0' # or 2.3.1 or something
 
 # == BACK END
 
@@ -18,7 +18,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'sass-rails', '~> 5.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'haml'
-gem 'react-rails'
+gem 'react-rails', github: 'vipulnsward/react-rails', branch: 'sprockets-3-compat'
 gem 'bootstrap-sass'
 
 gem 'rails-ujs'

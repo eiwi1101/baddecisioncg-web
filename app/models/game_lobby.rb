@@ -32,7 +32,15 @@ class GameLobby < ApplicationRecord
       raise Exceptions::LobbyPermissionViolation.new if password != self.password
     end
 
-    game_lobby_users << GameLobbyUser.new(user: user)
+    if has_user? user
+      game_lobby_user = game_lobby_users.find_by(user: user)
+    else
+      game_lobby_user = GameLobbyUser.new(user: user, admin: game_lobby_users.empty?)
+      game_lobby_users << game_lobby_user
+    end
+
+    broadcast game_lobby_user
+    game_lobby_user
   end
 
   def leave(user)
@@ -43,14 +51,19 @@ class GameLobby < ApplicationRecord
 
     if current_game&.has_lobby_user?(game_lobby_user)
       current_game.leave(game_lobby_user)
+      broadcast game_lobby_user
     end
 
     if game_lobby_users.admins.length == 0
-      game_lobby_users.first.try(:update_attributes, admin: true)
+      if (admin = game_lobby_users.first)
+        admin.update_attributes admin: true
+        broadcast admin
+      end
     end
 
     if game_lobby_users.length == 0
       self.delete
+      broadcast self
     end
   end
 
@@ -60,5 +73,15 @@ class GameLobby < ApplicationRecord
 
   def has_password?
     password.present?
+  end
+
+  def has_user?(user)
+    game_lobby_users.exists?(user: user)
+  end
+
+  private
+
+  def broadcast(object)
+    GamelobbyChannel.broadcast self, object if self.persisted?
   end
 end

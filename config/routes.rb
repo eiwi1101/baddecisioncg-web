@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   get :logout, to: 'sessions#destroy'
   post :login, to: 'sessions#create'
 
-  resources :game_lobbies, path: :play, only: [:index]
+  resources :game_lobbies, path: :play, only: [:index, :new, :show]
+  resources :game_lobby_users, only: [:show]
 end

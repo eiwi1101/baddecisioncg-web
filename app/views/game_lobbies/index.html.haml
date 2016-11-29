@@ -1,0 +1,22 @@
+.container
+  = link_to 'New Lobby', new_game_lobby_path, class: 'btn btn-default pull-right'
+  %h1 Game Lobbies
+
+  .row
+    - @game_lobbies.each do |game_lobby|
+      .col-xs-6.col-sm-4.col-md-3
+        .panel.panel-default
+          .panel-heading= game_lobby.name
+          .panel-body
+            - if game_lobby.users.empty?
+              %em.text-muted Nobody here?
+            .row
+              - game_lobby.users.first(4).each do |user|
+                .col-xs-3
+                  = gravatar_image_tag user.email, class: 'img-circle'
+
+          .panel-footer
+            .row
+              .col-xs-6
+              .col-xs-6.text-right
+                = link_to 'Join', game_lobby_path(game_lobby), class: 'btn btn-primary'

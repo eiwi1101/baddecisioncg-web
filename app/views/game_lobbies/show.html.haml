@@ -1,0 +1,18 @@
+.container
+  = link_to 'Leave Lobby', game_lobby_user_path(@game_lobby_user), method: :delete, class: 'btn btn-danger pull-right'
+  %h1= @game_lobby.name
+
+  .row
+    .col-md-9
+      .chat{data: { game_lobby: @game_lobby.token }}
+      .well [insert game here]
+
+    .col-md-3
+      - @game_lobby.game_lobby_users.each do |gl_user|
+        .panel{class: (gl_user.admin? ? 'panel-success' : (gl_user.moderator? ? 'panel-info' : 'panel-default')) }
+          .panel-heading
+            %strong= gl_user.user.display_name
+            .username= gl_user.user.username
+
+:javascript
+  GameLobby.subscribe("#{@game_lobby.token}")

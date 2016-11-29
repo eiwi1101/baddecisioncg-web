@@ -13,7 +13,7 @@ module HasGuid
   end
 
   def to_param
-    self.slug
+    self.send(self.guid_column_name)
   end
 
   module ClassMethods
