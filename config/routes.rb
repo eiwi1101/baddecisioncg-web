@@ -7,4 +7,8 @@ Rails.application.routes.draw do
 
   resources :game_lobbies, path: :play, only: [:index, :new, :show]
   resources :game_lobby_users, only: [:show]
+
+  if Rails.env.development?
+    get :styles, to: 'styles#index'
+  end
 end

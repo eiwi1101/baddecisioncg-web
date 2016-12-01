@@ -1,20 +1,13 @@
-%nav.navbar.navbar-default{:role => "navigation"}
-  .container
-    %a.navbar-toggle{ data: { target: '#navbarCollapse', toggle: 'collapse' }, type: 'button'}
-      %span.sr-only Toggle navigation
-      = icon('bars')
+%nav.blue-grey.darken-3
+  .nav-wrapper.container
+    = link_to '#!', class: 'brand-logo' do
+      Bad Decisions
 
-    = link_to root_url, class: 'navbar-brand' do
-      .site-name Bad Decisions
+    %ul.right.hide-on-med-and-down
+      %li= link_to 'Lobbies', game_lobbies_path
 
-    #navbarCollapse.collapse.navbar-collapse
-      %ul.nav.navbar-nav
-        %li= link_to 'Lobbies', game_lobbies_path
+      - if logged_in?
+        %li= link_to current_user.display_name, '#!'
 
-      %ul.nav.navbar-nav.navbar-right
-        - if logged_in?
-          %li= link_to current_user.display_name, '#'
-          %li= link_to t('session.logout'), logout_path
-
-        - else
-          %li= link_to 'Login', login_path
+      - else
+        %li= link_to t('session.login'), login_path

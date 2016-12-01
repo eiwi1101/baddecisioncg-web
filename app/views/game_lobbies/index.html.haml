@@ -1,22 +1,30 @@
 .container
-  = link_to 'New Lobby', new_game_lobby_path, class: 'btn btn-default pull-right'
-  %h1 Game Lobbies
+  .fixed-action-btn
+    = link_to new_game_lobby_path, class: 'btn-floating btn-large waves-effect waves-light red tooltipped', data: { tooltip: 'New Game', position: 'left' } do
+      %i.material-icons add
+
+  %h2.header Game Lobbies
+  %p.caption
+    Join your friends in a game lobby to chat, spectate the current game, and get dealt into the next round!
 
   .row
     - @game_lobbies.each do |game_lobby|
-      .col-xs-6.col-sm-4.col-md-3
-        .panel.panel-default
-          .panel-heading= game_lobby.name
-          .panel-body
-            - if game_lobby.users.empty?
-              %em.text-muted Nobody here?
-            .row
-              - game_lobby.users.first(4).each do |user|
-                .col-xs-3
-                  = gravatar_image_tag user.email, class: 'img-circle'
+      .col.s6.m4
+        .card
+          .card-content
+            .card-title
+              = game_lobby.name
+              - if game_lobby.has_password?
+                %i.tiny.material-icons.red-text.text-lighten-3.tooltipped{data: {tooltip: 'Password Required'}} lock
 
-          .panel-footer
-            .row
-              .col-xs-6
-              .col-xs-6.text-right
-                = link_to 'Join', game_lobby_path(game_lobby), class: 'btn btn-primary'
+            .blue-grey-text
+              = pluralize game_lobby.users.count, 'User'
+              online, started
+              = time_ago_in_words(game_lobby.created_at)
+              ago.
+
+          .card-action
+            = link_to 'Spectate', game_lobby_path(game_lobby)
+
+            - if game_lobby.current_game&.status.nil?
+              = link_to 'Join Game', game_lobby_path(game_lobby, join: true)

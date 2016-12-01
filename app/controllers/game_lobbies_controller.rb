@@ -2,7 +2,7 @@ class GameLobbiesController < ApplicationController
   before_action :get_game_lobby, only: [:show, :update, :destroy]
 
   def index
-    @game_lobbies = GameLobby.includes(:users).all
+    @game_lobbies = GameLobby.all.reverse
   end
 
   def new

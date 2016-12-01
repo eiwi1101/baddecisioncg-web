@@ -81,9 +81,6 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     bcrypt (3.1.11)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
     breadcrumbs_on_rails (3.0.1)
     browser (2.3.0)
     builder (3.2.2)
@@ -161,6 +158,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
+    materialize-sass (0.97.8)
+      sass (~> 3.3)
     meta-tags (2.3.1)
       actionpack (>= 3.2.0, <= 5.1.0)
     method_source (0.8.2)
@@ -329,7 +328,6 @@ DEPENDENCIES
   annotate
   autoprefixer-rails
   bcrypt (~> 3.1.7)
-  bootstrap-sass
   breadcrumbs_on_rails
   bullet
   byebug
@@ -346,6 +344,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   listen (~> 3.0.5)
+  materialize-sass
   meta-tags
   paranoia
   pg (~> 0.18)

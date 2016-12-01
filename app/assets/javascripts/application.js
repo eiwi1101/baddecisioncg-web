@@ -17,4 +17,5 @@
 //= require react_ujs
 //= require components
 //= require cable
+//= require materialize-sprockets
 //= require_tree .

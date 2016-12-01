@@ -82,6 +82,6 @@ class GameLobby < ApplicationRecord
   private
 
   def broadcast(object)
-    GamelobbyChannel.broadcast self, object if self.persisted?
+    GameLobbyChannel.broadcast_to self, object if self.persisted?
   end
 end

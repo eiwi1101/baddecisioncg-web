@@ -20,7 +20,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'haml'
 gem 'react-rails', github: 'vipulnsward/react-rails', branch: 'sprockets-3-compat'
-gem 'bootstrap-sass'
+gem 'materialize-sass'
 
 gem 'rails-ujs'
 gem 'turbolinks', '~> 5'
