@@ -9,12 +9,12 @@ class window.GameLobby
     
       appendLine: (data) ->
         html = @createLine(data)
-        $("[data-chat='#{token}']").append(html)
+        $("[data-game-lobby='#{token}']").append(html)
     
       createLine: (data) ->
         """
         <article class="chat-line">
-          <span class="speaker">#{data["sent_by"]}</span>
-          <span class="body">#{data["body"]}</span>
+          <span class="speaker">#{data["user_id"]}</span>
+          <span class="body">Joined the lobby!</span>
         </article>
         """
