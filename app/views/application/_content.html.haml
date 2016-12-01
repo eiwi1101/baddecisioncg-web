@@ -13,11 +13,6 @@
         - if has_search
           = render 'search_form'
 
-.flash-container
-  .container#flashes
-    - flash.each do |level, message|
-      = alert level, message
-
 - if has_leftnav || has_aside
   .container#content
     .row

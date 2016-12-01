@@ -1,18 +1,20 @@
+- body_class :blank
+
 .container
   .row
-    .col-md-4.col-md-offset-4
-      .form-group
-        = image_tag 'bd plain logo.jpg', alt: 'Bad Decisions Logo'
+    .col.s6.offset-s3
+      .center.bd-logo-fix= image_tag('bd plain logo.jpg')
+      = simple_form_for @user, url: login_path, method: :post, html: { class: 'well white top-margin-xl' } do |f|
+        .input-field
+          %i.material-icons.prefix perm_identity
+          = f.label :username, required: false
+          = f.input_field :username, class: 'form-control'
 
-      .well
-        = simple_form_for @user, url: login_path, method: :post do |f|
-          .form-group
-            = f.input_field :username, class: 'form-control', placeholder: 'Username'
+        .input-field
+          %i.material-icons.prefix lock
+          = f.label :password
+          = f.input_field :password, class: 'form-control'
 
-          .form-group
-            = f.input_field :password, class: 'form-control', placeholder: 'Password'
+        = f.submit t('session.login'), class: 'btn btn-large full-width light-blue darken-1'
 
-          = f.submit t('session.login'), class: 'btn btn-primary'
-
-      .text-center.text-muted
-        We're really building it this time.
+      = link_to 'Continue as Guest', '#', class: 'btn btn-large waves-effect full-width orange darken-1'

@@ -1,19 +1,27 @@
 module ApplicationHelper
-  def alert(level_or_hash=:notice, message='')
+  def toast(level_or_hash=:notice, message='')
     if level_or_hash.is_a? Hash
       message = level_or_hash.values.first
       level_or_hash = level_or_hash.keys.first
     end
 
     flash_map = {
-        notice: 'success',
-        info:   'info',
-        warn:   'warning',
-        error:  'danger'
+        notice: 'green',
+        info:   'blue',
+        warn:   'yellow',
+        error:  'red'
     }
 
     klass = flash_map[level_or_hash.to_sym] || level_or_hash.to_s
 
-    content_tag :div, message, class: 'alert alert-' + klass
+    <<-HTML.html_safe
+        <script type="text/javascript">
+            Materialize.toast("#{escape_javascript message}", 5000, "#{klass}")
+        </script>
+    HTML
+  end
+
+  def body_class(klass)
+    content_for(:body_class, klass)
   end
 end

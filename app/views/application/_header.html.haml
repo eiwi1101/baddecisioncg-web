@@ -1,13 +1,14 @@
-%nav.blue-grey.darken-3
-  .nav-wrapper.container
-    = link_to '#!', class: 'brand-logo' do
-      Bad Decisions
+.navbar-fixed
+  %nav
+    .nav-wrapper.container
+      = link_to '#!', class: 'brand-logo' do
+        Bad Decisions
 
-    %ul.right.hide-on-med-and-down
-      %li= link_to 'Lobbies', game_lobbies_path
+      %ul.right.hide-on-med-and-down
+        %li= link_to 'Lobbies', game_lobbies_path
 
-      - if logged_in?
-        %li= link_to current_user.display_name, '#!'
+        - if logged_in?
+          %li= link_to current_user.display_name, '#!'
 
-      - else
-        %li= link_to t('session.login'), login_path
+        - else
+          %li= link_to t('session.login'), login_path
