@@ -15,7 +15,7 @@ test:
   host: localhost
 
 production:
-  adapter: <%= ENV['RDS_DB_ADAPTER'] || 'mysql2' %>
+  adapter: <%= ENV['RDS_DB_ADAPTER'] || 'postgresql' %>
   database: <%= ENV['RDS_DB_NAME'] %>
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
