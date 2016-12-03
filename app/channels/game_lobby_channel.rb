@@ -11,6 +11,11 @@ class GameLobbyChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    Rails.logger.info "Unsubscribed from game lobby"
+    Rails.logger.info "Leaving game lobby #{params[:lobby]}"
+    game_lobby = GameLobby.find_by(token: params[:lobby])
+
+    game_lobby&.leave(current_user)
+  rescue Exceptions::UserLobbyViolation
+    nil
   end
 end

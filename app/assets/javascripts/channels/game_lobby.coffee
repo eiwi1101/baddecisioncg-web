@@ -14,7 +14,6 @@ class window.GameLobby
       createLine: (data) ->
         """
         <article class="chat-line">
-          <span class="speaker">#{data["user_id"]}</span>
-          <span class="body">Joined the lobby!</span>
+          <pre>#{JSON.stringify(data)}</pre>
         </article>
         """

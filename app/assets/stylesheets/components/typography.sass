@@ -1,45 +1,24 @@
+.larger
+  font-size: 1.25rem
+
+.smaller
+  font-size: 0.80rem
+
+.thinner
+  font-weight: 300
+
+
+.muted
+  @extend .grey-text
+  @extend .smaller
+
 .header
   @extend .blue-grey-text
-  font-weight: 300
+  @extend .thinner
 
 .caption
   @extend .grey-text
   @extend .text-darken-1
-  font-size: 1.25rem
-  margin-bottom: 30px
-  font-weight: 300
-
-.well
-  @extend .z-depth-1
-  @extend .grey
-  @extend .lighten-4
-  padding: 30px
-  margin-bottom: 30px
-
-.top-margin
-  margin-top: 30px
-
-.top-margin-xl
-  margin-top: 90px
-
-.full-width
-  width: 100%
-
-.bd-logo-fix
-  opacity: 0.5
-
-form i.prefix
-  @extend .grey-text
-  @extend .text-darken-1
-
-
-body.blank
-  @extend .grey
-  @extend .lighten-5
-
-  nav
-    @extend .hide
-
-nav
-  @extend .blue-grey
-  @extend .darken-2
+  @extend .larger
+  @extend .margin-bottom-md
+  @extend .thinner
