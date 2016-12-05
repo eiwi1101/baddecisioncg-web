@@ -1,14 +1,26 @@
-body.blank
-  @extend .grey
-  @extend .lighten-5
+html
+  height: 100%
 
-  nav
-    @extend .hide
+body
+  height: 100%
+
+  &.valign
+    @extend .valign-wrapper
+
+    main
+      @extend .valign
+      width: 100%
+
+  &.blank
+    padding-top: 0
+
+    nav, .navbar-fixed
+      @extend .hide
+
+  &:not(.wide)
+    .nav-wrapper
+      @extend .container
 
 nav
   @extend .blue-grey
   @extend .darken-2
-
-body:not(.wide)
-  .nav-wrapper
-    @extend .container
