@@ -13,8 +13,6 @@
 //= require jquery
 //= require turbolinks
 //= require ahoy
-//= require react
-//= require react_ujs
 //= require components
 //= require cable
 //= require materialize-sprockets
