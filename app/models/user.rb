@@ -30,8 +30,37 @@ class User < ApplicationRecord
   validates_presence_of :username
   validates_presence_of :email
   validates_presence_of :display_name
-  validates_uniqueness_of :username
-  validates_uniqueness_of :email
+  validates_uniqueness_of :username, case_sensitive: false
+  validates_uniqueness_of :email, case_sensitive: false
 
   has_secure_password
+
+  def avatar_url
+    GravatarImageTag.gravatar_url self.email
+  end
+
+  def online!
+    Rails.logger.info "Online: #{self.username}"
+
+    self.broadcast online: self.as_json
+    self.friends.find_each do |friend|
+      friend.broadcast online: self.as_json
+    end
+  end
+
+  def offline!
+    Rails.logger.info "Offline: #{self.username}"
+
+    self.friends.find_each do |friend|
+      friend.broadcast offline: self.as_json
+    end
+  end
+
+  def as_json
+    ActiveModelSerializers::SerializableResource.new(self).as_json
+  end
+
+  def broadcast(data)
+    UserChannel.broadcast_to self, data
+  end
 end
