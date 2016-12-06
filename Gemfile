@@ -43,6 +43,7 @@ gem 'paranoia'
 gem 'scoped_search'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'faker'
 
 # == BOWER ASSETS
 
@@ -59,7 +60,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-expectations'
   gem 'rspec-collection_matchers'
-  gem 'faker'
   gem 'shoulda-matchers', '~> 2.8'
   gem 'simplecov'
   gem 'rack_session_access'

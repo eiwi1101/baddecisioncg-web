@@ -6,7 +6,7 @@ class GameLobbiesController < ApplicationController
   end
 
   def new
-    @game_lobby = GameLobby.new(name: Faker::Hacker.ingverb)
+    @game_lobby = GameLobby.new(name: Faker::Hacker.ingverb.humanize + ' ' + Faker::Food.ingredient)
 
     if @game_lobby.save
       redirect_to @game_lobby
