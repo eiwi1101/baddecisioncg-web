@@ -2,7 +2,7 @@
 
 .container.container-narrow
   -#.center.bd-logo-fix= image_tag 'bd_plain_logo.jpg', class: 'responsive-img margin-bottom-lg', alt: 'Bad Decisions'
-  .card.white.frost
+  .card.white.frost.tabs-fixed-width
     %ul.tabs.tabs-border.transparent
       %li.tab.s6= link_to t('session.login'), login_path, target: '_self'
       %li.tab.s6= link_to t('session.register'), register_path, class: 'active'

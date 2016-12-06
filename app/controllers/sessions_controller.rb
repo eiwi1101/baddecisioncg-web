@@ -14,9 +14,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(username: params[:user][:username])
+    @user = User.find_by('LOWER(username) = ?', params[:user][:username].downcase)
 
-    if @user.try :authenticate, params[:user][:password]
+    if @user&.authenticate params[:user][:password]
       log_in @user
       redirect_to recall_path
     else

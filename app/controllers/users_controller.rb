@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
 
     if @user.save
+      log_in @user
       redirect_to game_lobbies_path, flash: { notice: t('session.register_success') }
     else
       render 'new'
