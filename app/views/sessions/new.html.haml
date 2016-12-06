@@ -4,40 +4,11 @@
   -#.center.bd-logo-fix= image_tag 'bd_plain_logo.jpg', class: 'responsive-img margin-bottom-lg', alt: 'Bad Decisions'
   .card.white.frost
     %ul.tabs.tabs-border.transparent
-      %li.tab.s6= link_to t('session.login'), '#login'
-      %li.tab.s6= link_to t('session.register'), '#register'
-    .card-content#login
+      %li.tab.s6= link_to t('session.login'), login_path, class: 'active'
+      %li.tab.s6= link_to t('session.register'), register_path, target: '_self'
+
+    .card-content
       = simple_form_for @user, url: login_path, method: :post do |f|
-        .input-field
-          %i.material-icons.prefix perm_identity
-          = f.label :username, required: false
-          = f.input_field :username, class: 'form-control'
-
-        .input-field
-          %i.material-icons.prefix lock
-          = f.label :password
-          = f.input_field :password, class: 'form-control'
-
-        = f.submit t('session.login'), class: 'btn full-width blue-grey margin-top-md'
-
-    .card-content#register
-      = simple_form_for @user, url: register_path, method: :post do |f|
-        .input-field
-          = f.label :username, required: false
-          = f.input_field :username
-
-        .input-field
-          = f.label :email, required: false
-          = f.input_field :email
-
-        .input-field
-          = f.label :password, required: false
-          = f.input_field :email
-
-        .input-field
-          = f.label :password_confirmation, required: false
-          = f.input_field :password_confirmation
-
-        = f.submit t('session.register'), class: 'btn full-width blue-grey margin-top-md'
-
-  -#= link_to 'Continue as Guest', '#', class: 'btn btn-large waves-effect full-width margin-top-lg orange darken-1'
+        = f.input :username, class: 'form-control', icon: 'perm_identity'
+        = f.input :password, class: 'form-control', icon: 'lock'
+        = f.button :submit, t('session.login'), class: 'margin-top-md full-width'

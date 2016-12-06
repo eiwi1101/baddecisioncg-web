@@ -33,6 +33,10 @@ class User < ApplicationRecord
   validates_uniqueness_of :username, case_sensitive: false
   validates_uniqueness_of :email, case_sensitive: false
 
+  validates_format_of :username, with: /\A[^_-].*[^_-]\z/, message: 'can not start or end with _ or -'
+  validates_format_of :username, with: /\A[a-z0-9][a-z0-9_-]+[a-z0-9]\z/i, message: 'can only be letters, numbers, _ and -'
+  validates_format_of :email, with: /@/, message: 'must have an @ sign'
+
   has_secure_password
 
   def avatar_url

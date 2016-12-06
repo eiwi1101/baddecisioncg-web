@@ -1,6 +1,28 @@
-form i.prefix
-  @extend .grey-text
-  @extend .text-darken-1
+form
+  i.prefix
+  color: color('grey', 'darken-1')
 
-.full-width
-  width: 100%
+  .full-width
+    width: 100%
+
+  .invalid input
+    @extend input.invalid
+
+  .help-block,
+  .error-block
+    display: block
+    font-size: smaller
+    margin-top: -20px
+    margin-bottom: 14px
+    padding-top: 3px
+    color: color('grey', 'base')
+
+    &.error-block
+      color: color('red', 'base')
+
+  label
+    abbr[title]
+      float: right
+      border-bottom: none
+      margin-left: 0.2rem
+      color: color('red', 'lighten-1')
