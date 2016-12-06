@@ -8,6 +8,7 @@
 #  moderator     :boolean
 #  admin         :boolean
 #  deleted_at    :datetime
+#  guid          :string
 #
 
 FactoryGirl.define do

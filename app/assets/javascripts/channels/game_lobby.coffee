@@ -1,19 +1,26 @@
 class window.GameLobby
+
   @subscribe: (token) =>
     console.log "Subscribing to lobby #{token}"
 
     App.cable.subscriptions.create { channel: "GameLobbyChannel", lobby: token },
-      received: (data) ->
-        console.log data
-        @appendLine(data)
-    
-      appendLine: (data) ->
-        html = @createLine(data)
-        $("[data-game-lobby='#{token}']").append(html)
-    
-      createLine: (data) ->
-        """
-        <article class="chat-line">
-          <pre>#{JSON.stringify(data)}</pre>
-        </article>
-        """
+      received: @dispatch
+
+  @dispatch: (data) =>
+    console.log data
+    command = Object.keys(data)[0]
+
+    if typeof this[command] == 'function'
+      this[command](data[command])
+    else
+      console.log "Unknown command #{command}"
+
+  @user_joined: (data) =>
+    $('[data-game-lobby]').append """
+      <div class="teal-text">#{data.user.display_name} has joined the lobby.</div>
+    """
+
+  @user_left: (data) =>
+    $('[data-game-lobby]').append """
+      <div class="red-text">#{data.user.display_name} has left.</div>
+    """

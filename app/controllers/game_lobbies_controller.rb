@@ -34,6 +34,14 @@ class GameLobbiesController < ApplicationController
   private
 
   def get_game_lobby
-    @game_lobby = GameLobby.find_by!(token: params[:id])
+    @game_lobby = GameLobby.with_deleted.find_by!(token: params[:id])
+
+    if !@game_lobby
+      redirect_to game_lobbies_path, flash: { error: 'Game lobby not found.' }
+      false
+    elsif @game_lobby.deleted?
+      redirect_to game_lobbies_path, flash: { error: 'This lobby has closed.' }
+      false
+    end
   end
 end

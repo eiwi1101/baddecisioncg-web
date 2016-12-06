@@ -39,7 +39,7 @@ class GameLobby < ApplicationRecord
       game_lobby_users << game_lobby_user
     end
 
-    broadcast game_lobby_user
+    broadcast user_joined: game_lobby_user.as_json
     game_lobby_user
   end
 
@@ -51,19 +51,19 @@ class GameLobby < ApplicationRecord
 
     if current_game&.has_lobby_user?(game_lobby_user)
       current_game.leave(game_lobby_user)
-      broadcast game_lobby_user
+      broadcast user_left: game_lobby_user.as_json
     end
 
     if game_lobby_users.admins.length == 0
       if (admin = game_lobby_users.first)
         admin.update_attributes admin: true
-        broadcast admin
+        broadcast user_is_admin: admin.as_json
       end
     end
 
     if game_lobby_users.length == 0
       self.delete
-      broadcast self
+      broadcast lobby_closed: self.as_json
     end
   end
 
@@ -79,9 +79,11 @@ class GameLobby < ApplicationRecord
     game_lobby_users.exists?(user: user)
   end
 
-  private
+  def as_json
+    ActiveModelSerializers::SerializableResource.new(self).as_json
+  end
 
-  def broadcast(object)
-    GameLobbyChannel.broadcast_to self, object if self.persisted?
+  def broadcast(data)
+    GameLobbyChannel.broadcast_to self, data if self.persisted?
   end
 end

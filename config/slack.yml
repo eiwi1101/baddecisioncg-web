@@ -1,0 +1,14 @@
+development: &default
+  webhook_url: https://hooks.slack.com/services/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
+  channel: '#app-splosions'
+  username: '[Dev] BD Explosion Bot'
+  post_exceptions: true
+
+test:
+  <<: *default
+  username: '[Test] BD Explosion Bot'
+
+production:
+  <<: *default
+  username: 'BD Explosion Bot'
+  post_exceptions: true

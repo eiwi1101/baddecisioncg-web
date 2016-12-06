@@ -44,6 +44,7 @@ gem 'scoped_search'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'faker'
+gem 'slack-notifier'
 
 # == BOWER ASSETS
 
