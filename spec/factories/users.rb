@@ -28,5 +28,10 @@ FactoryGirl.define do
 
       expansions { build_list :expansion, expansion_count, :with_cards }
     end
+
+    trait :admin do
+      admin true
+      username 'admin'
+    end
   end
 end

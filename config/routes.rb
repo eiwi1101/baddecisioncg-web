@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   # Other Resources
   resources :game_lobbies, path: :play, only: [:index, :new, :show]
   resources :game_lobby_users, only: [:destroy]
+
+  namespace :admin do
+    root to: 'dashboard#show', as: :dashboard
+  end
 end

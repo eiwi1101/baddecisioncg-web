@@ -1,0 +1,18 @@
+class AdminController < ApplicationController
+  before_action :require_admin
+
+  private
+
+  def require_admin
+    unless current_user&.admin?
+      error = t('session.access_denied')
+
+      respond_to do |format|
+        format.html { redirect_to login_path(next: url_for), flash: {error: error} }
+        format.json { render json: {error: error}, status: 401 }
+      end
+
+      false
+    end
+  end
+end
