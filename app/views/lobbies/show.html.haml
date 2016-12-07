@@ -1,8 +1,6 @@
 - body_class 'blue-grey lighten-5 has-aside'
-
-.container
-  %h3.header= @lobby.name
-  %p.caption Insert game here.
+- title @lobby.name
+- description @lobby.inspect
 
 %aside
   .row.no-margin

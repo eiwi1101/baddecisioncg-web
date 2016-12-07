@@ -1,11 +1,18 @@
 %header
   %nav
     .nav-wrapper
-      = link_to '#!', class: 'brand-logo center' do
-        = image_tag 'logos/logo-full_600-white.png'
+      - unless meta_tags[:title]
+        = link_to '#!', class: 'brand-logo center' do
+          = image_tag 'logos/logo-full_600-white.png'
 
       %ul
         %li= link_to material_icon('menu'), '#', data: { activates: 'slide-out' }, class: 'button-collapse show-on-large'
+
+        - if meta_tags[:title]
+          %li.page-title
+            .title= meta_tags[:title]
+            .subtitle
+              Started #{time_ago_in_words @lobby.created_at} ago.
 
       %ul.right
         - if logged_in?
