@@ -50,8 +50,7 @@ gem 'slack-notifier'
 # == BOWER ASSETS
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-highcharts'
-  gem 'rails-assets-bootstrap-select'
+  # gem 'rails-assets-highcharts'
 end
 
 # == NON PRODUCTION GEMS
