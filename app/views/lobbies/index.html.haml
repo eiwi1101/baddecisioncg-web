@@ -18,7 +18,7 @@
                 %i.tiny.material-icons.red-text.text-lighten-3.tooltipped{data: {tooltip: 'Password Required'}} lock
 
             .blue-grey-text
-              = pluralize lobby.users.count, 'User'
+              = pluralize lobby.lobby_users.count, 'User'
               online, started
               = time_ago_in_words(lobby.created_at)
               ago.

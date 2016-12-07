@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207034939) do
+ActiveRecord::Schema.define(version: 20161207055649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20161207034939) do
     t.boolean  "admin"
     t.datetime "deleted_at"
     t.string   "guid"
+    t.string   "name"
     t.index ["guid"], name: "index_lobby_users_on_guid", using: :btree
     t.index ["lobby_id"], name: "index_lobby_users_on_lobby_id", using: :btree
     t.index ["user_id"], name: "index_lobby_users_on_user_id", using: :btree

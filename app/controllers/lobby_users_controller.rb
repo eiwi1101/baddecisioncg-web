@@ -2,7 +2,7 @@ class LobbyUsersController < ApplicationController
   before_action :get_lobby_user, only: [:destroy]
 
   def destroy
-    lobby_user&.leave!
+    @lobby_user&.leave!
     redirect_to lobbies_path, flash: { notice: 'Thanks for playing!' }
   end
 

@@ -4,7 +4,7 @@
 #
 #  id              :integer          not null, primary key
 #  score_limit     :integer
-#  game_lobby_id   :integer
+#  lobby_id        :integer
 #  winning_user_id :integer
 #  status          :string
 #  guid            :string

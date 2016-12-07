@@ -18,17 +18,19 @@
         = link_to t('session.login'), login_path, class: 'btn'
 
   %li.active= link_to 'Game Lobbies', lobbies_path
-  %li= link_to 'Friends', '#!'
 
-  - if Lobby.for_user(current_user).any?
-    %li
-      .divider
+  - if logged_in?
+    %li= link_to 'Friends', '#!'
 
-    %li
-      %a.subheader
-        Your Games
-
-    - Lobby.for_user(current_user).each do |lobby|
+    - if Lobby.for_user(current_user).any?
       %li
-        = link_to lobby_path(lobby) do
-          = lobby.name
+        .divider
+
+      %li
+        %a.subheader
+          Your Games
+
+      - Lobby.for_user(current_user).each do |lobby|
+        %li
+          = link_to lobby_path(lobby) do
+            = lobby.name

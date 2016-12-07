@@ -2,7 +2,7 @@
 
 .fixed-action-btn
   - unless @lobby_user.nil?
-    = link_to new_lobby_path, class: 'btn-floating btn-large waves-effect waves-light red tooltipped', data: { tooltip: 'Leave Lobby', position: 'left' } do
+    = link_to lobby_user_path(@lobby_user), method: :delete,  class: 'btn-floating btn-large waves-effect waves-light red tooltipped', data: { tooltip: 'Leave Lobby', position: 'left' } do
       %i.material-icons close
 
 .row.flex
@@ -13,13 +13,16 @@
         .chat{data: { lobby: @lobby.token }}
 
   .col.fix3
-    - @lobby.lobby_users.each do |gl_user|
-      .card.horizontal
-        .card-image
-          = gravatar_image_tag gl_user.user.email, class: 'img-responsive'
-        .card-stacked
-          .card-content.padding-sm{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }
-            .larger.truncate= gl_user.user.display_name
+    %ul.collection
+      - @lobby.lobby_users.each do |gl_user|
+        %li.collection-item.avatar
+          = image_tag gl_user.avatar_url, class: 'img-responsive circle'
+
+          .title{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }= gl_user.name
+
+          - if gl_user.guest?
+            .muted (guest)
+          - else
             .muted @#{gl_user.user.username}
 
 :javascript
