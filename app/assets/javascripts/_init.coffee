@@ -5,6 +5,7 @@ $ ->
 
   # Form Hacks
 
+  console.log Materialize
   Materialize.updateTextFields()
   $('input').change ->
     eb = $(this).parents('form > div')
