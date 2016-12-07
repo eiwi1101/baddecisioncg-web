@@ -1,9 +1,9 @@
 class window.Lobby
 
-  @subscribe: (token) =>
+  @subscribe: (token, user_id) =>
     console.log "Subscribing to lobby #{token}"
 
-    App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token },
+    App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token, user_id: user_id },
       received: @dispatch
 
   @dispatch: (data) =>
@@ -16,11 +16,10 @@ class window.Lobby
       console.log "Unknown command #{command}"
 
   @user_joined: (data) =>
-    $('[data-game-lobby]').append """
-      <div class="teal-text">#{data.user.display_name} has joined the lobby.</div>
-    """
+    @chat(data, 'Joined the lobby.')
 
   @user_left: (data) =>
-    $('[data-game-lobby]').append """
-      <div class="red-text">#{data.user.display_name} has left.</div>
-    """
+    @chat(data, 'Left the lobby.')
+
+  @chat: (lobby_user, message) =>
+    $.tmpl($('#lobby-chat-template'), lobby_user: lobby_user, message: message).appendTo('#chat > ul')

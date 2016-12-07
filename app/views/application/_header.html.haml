@@ -1,0 +1,12 @@
+%header
+  %nav
+    .nav-wrapper
+      = link_to '#!', class: 'brand-logo center' do
+        = image_tag 'logos/logo-full_600-white.png'
+
+      %ul
+        %li= link_to material_icon('menu'), '#', data: { activates: 'slide-out' }, class: 'button-collapse show-on-large'
+
+      %ul.right
+        %li= link_to t('session.login'), login_path, class: 'btn waves-effect waves-light'
+        %li= link_to material_icon('more_vert'), '#!'

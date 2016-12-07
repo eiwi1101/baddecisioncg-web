@@ -13,7 +13,7 @@
 #
 
 class LobbyUserSerializer < ActiveModel::Serializer
-  attributes :guid
+  attributes :guid, :avatar_url, :name, :admin, :moderator
   has_one :user, serializer: UserSerializer
   has_one :lobby, serializer: LobbySerializer
 end

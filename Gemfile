@@ -32,6 +32,7 @@ gem 'meta-tags'
 gem 'gravatar_image_tag'
 gem 'chartkick'
 gem 'breadcrumbs_on_rails'
+gem 'jquery-tmpl-rails'
 
 # == UTILITY
 

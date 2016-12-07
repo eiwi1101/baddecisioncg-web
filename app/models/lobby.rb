@@ -48,10 +48,15 @@ class Lobby < ApplicationRecord
     lobby_user
   end
 
-  def leave(user)
+  def leave(user_or_id)
     raise Exceptions::LobbyClosedViolation.new if deleted?
 
-    lobby_user = lobby_users.find_by!(user: user)
+    if user_or_id.is_a? String
+      lobby_user = lobby_users.find_by!(guid: user_or_id)
+    else
+      lobby_user = lobby_users.find_by!(user: user_or_id)
+    end
+
     lobby_users.delete(lobby_user)
 
     if current_game&.has_lobby_user?(lobby_user)
@@ -80,8 +85,12 @@ class Lobby < ApplicationRecord
     password.present?
   end
 
-  def has_user?(user)
-    lobby_users.exists?(user: user)
+  def has_user?(user_or_id)
+    if user_or_id.is_a? String
+      lobby_users.exists?(guid: user_or_id)
+    else
+      lobby_users.exists?(user: user_or_id)
+    end
   end
 
   def as_json
