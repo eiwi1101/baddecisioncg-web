@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: game_lobbies
+# Table name: lobbies
 #
 #  id         :integer          not null, primary key
 #  name       :string
@@ -14,26 +14,26 @@
 
 require 'rails_helper'
 
-describe GameLobby, type: :model do
+describe Lobby, type: :model do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_uniqueness_of :token }
   it { is_expected.to have_many :games }
   it { is_expected.to have_many :messages }
   it { is_expected.to have_many :users }
-  it { is_expected.to have_many :game_lobby_users }
+  it { is_expected.to have_many :lobby_users }
   it { is_expected.to act_as_paranoid }
 
-  let(:lobby) { build :game_lobby }
+  let(:lobby) { build :lobby }
   subject { lobby }
 
   describe '#join' do
     context 'when alive' do
       before { lobby.join(build :user) }
-      its(:game_lobby_users) { is_expected.to have(1).items }
+      its(:lobby_users) { is_expected.to have(1).items }
     end
 
     context 'when password protected' do
-      let(:lobby) { build :game_lobby, password: 'fishsticks' }
+      let(:lobby) { build :lobby, password: 'fishsticks' }
 
       context 'with invalid password' do
         it { expect { lobby.join(build(:user), 'asdfasdf') }.to raise_exception Exceptions::LobbyPermissionViolation }
@@ -41,45 +41,45 @@ describe GameLobby, type: :model do
 
       context 'with valid password' do
         before { lobby.join(build(:user), 'fishsticks') }
-        its(:game_lobby_users) { is_expected.to have(1).items }
+        its(:lobby_users) { is_expected.to have(1).items }
       end
     end
 
     context 'when dead' do
-      let(:lobby) { build :game_lobby, :deleted }
+      let(:lobby) { build :lobby, :deleted }
       it { expect { lobby.join(build :user) }.to raise_exception Exceptions::LobbyClosedViolation }
     end
   end
 
   describe '#leave' do
-    let(:lobby) { create :game_lobby, :with_users, user_count: 3 }
+    let(:lobby) { create :lobby, :with_users, user_count: 3 }
 
     context 'when dead' do
-      let(:lobby) { create :game_lobby, :deleted, :with_users, user_count: 3 }
-      it { expect { lobby.leave(lobby.game_lobby_users.last.user) }.to raise_exception Exceptions::LobbyClosedViolation }
+      let(:lobby) { create :lobby, :deleted, :with_users, user_count: 3 }
+      it { expect { lobby.leave(lobby.lobby_users.last.user) }.to raise_exception Exceptions::LobbyClosedViolation }
     end
 
     context 'when spectating' do
-      before { lobby.leave(lobby.game_lobby_users.last.user) }
-      its(:game_lobby_users) { is_expected.to have(2).items }
+      before { lobby.leave(lobby.lobby_users.last.user) }
+      its(:lobby_users) { is_expected.to have(2).items }
     end
 
     context 'when in a game' do
-      let(:game) { create :game, game_lobby: lobby }
+      let(:game) { create :game, lobby: lobby }
 
       before do
-        game.join(lobby.game_lobby_users.last)
-        lobby.leave(lobby.game_lobby_users.last.user)
+        game.join(lobby.lobby_users.last)
+        lobby.leave(lobby.lobby_users.last.user)
         game.reload
       end
 
       it { expect(game).to be_abandoned }
-      its(:game_lobby_users) { is_expected.to have(2).items }
+      its(:lobby_users) { is_expected.to have(2).items }
     end
 
     context 'when last person' do
-      let(:lobby) { create :game_lobby, :with_users, user_count: 1 }
-      before { lobby.leave(lobby.game_lobby_users.last.user) }
+      let(:lobby) { create :lobby, :with_users, user_count: 1 }
+      before { lobby.leave(lobby.lobby_users.last.user) }
 
       it { is_expected.to be_deleted }
     end
@@ -97,7 +97,7 @@ describe GameLobby, type: :model do
 
     it 'validates unique' do
       lobby.save!
-      new_lobby = build :game_lobby, token: lobby.token
+      new_lobby = build :lobby, token: lobby.token
 
       expect(new_lobby).to_not be_valid
       expect(new_lobby).to have(1).errors_on :token
@@ -105,7 +105,7 @@ describe GameLobby, type: :model do
   end
 
   it 'has a valid factory' do
-    expect(build :game_lobby).to be_valid
-    expect(build(:game_lobby, :with_users).users.length).to eq 2
+    expect(build :lobby).to be_valid
+    expect(build(:lobby, :with_users).users.length).to eq 2
   end
 end

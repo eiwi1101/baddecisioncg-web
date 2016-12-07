@@ -13,7 +13,7 @@
 
 FactoryGirl.define do
   factory :message do
-    game_lobby
+    lobby
     user
     message { Faker::Lorem.paragraph }
   end

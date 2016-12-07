@@ -1,0 +1,30 @@
+.container
+  .fixed-action-btn
+    = link_to new_lobby_path, class: 'btn-floating btn-large waves-effect waves-light red tooltipped', data: { tooltip: 'New Game', position: 'left' } do
+      %i.material-icons add
+
+  %h2.header Game Lobbies
+  %p.caption
+    Join your friends in a game lobby to chat, spectate the current game, and get dealt into the next round!
+
+  .row
+    - @lobbies.each do |lobby|
+      .col.s12.m6
+        .card
+          .card-content
+            .card-title
+              = lobby.name
+              - if lobby.has_password?
+                %i.tiny.material-icons.red-text.text-lighten-3.tooltipped{data: {tooltip: 'Password Required'}} lock
+
+            .blue-grey-text
+              = pluralize lobby.users.count, 'User'
+              online, started
+              = time_ago_in_words(lobby.created_at)
+              ago.
+
+          .card-action
+            = link_to 'Spectate', lobby_path(lobby)
+
+            - if lobby.current_game&.status.nil?
+              = link_to 'Join Game', lobby_path(lobby, join: true)

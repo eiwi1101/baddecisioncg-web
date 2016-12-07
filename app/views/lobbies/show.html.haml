@@ -1,0 +1,26 @@
+- body_class 'blue-grey lighten-5'
+
+.fixed-action-btn
+  - unless @lobby_user.nil?
+    = link_to new_lobby_path, class: 'btn-floating btn-large waves-effect waves-light red tooltipped', data: { tooltip: 'Leave Lobby', position: 'left' } do
+      %i.material-icons close
+
+.row.flex
+  .col.grow
+    .card
+      .card-content
+        .card-title= @lobby.name
+        .chat{data: { lobby: @lobby.token }}
+
+  .col.fix3
+    - @lobby.lobby_users.each do |gl_user|
+      .card.horizontal
+        .card-image
+          = gravatar_image_tag gl_user.user.email, class: 'img-responsive'
+        .card-stacked
+          .card-content.padding-sm{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }
+            .larger.truncate= gl_user.user.display_name
+            .muted @#{gl_user.user.username}
+
+:javascript
+  Lobby.subscribe("#{@lobby.token}")

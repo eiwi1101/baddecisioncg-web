@@ -5,7 +5,7 @@ class AdminController < ApplicationController
 
   def require_admin
     unless current_user&.admin?
-      error = t('session.access_denied')
+      error = t('session.invalid_permissions')
 
       respond_to do |format|
         format.html { redirect_to login_path(next: url_for), flash: {error: error} }

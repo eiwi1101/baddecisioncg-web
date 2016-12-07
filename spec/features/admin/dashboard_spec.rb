@@ -19,6 +19,17 @@ feature 'Admin Dashboard' do
   context 'when signed in' do
     before { sign_in admin }
 
+    context 'as non-admin' do
+      let(:user) { create :user }
+      before { sign_in user }
+
+      scenario 'user visits dashboard', js: true do
+        visit(admin_dashboard_path)
+        expect(page).to have_content 'Game Lobbies'
+        expect(page).to have_content 'permissions'
+      end
+    end
+
     scenario 'user visits dashboard' do
       visit(admin_dashboard_path)
       expect(page).to have_content 'Dashboard'

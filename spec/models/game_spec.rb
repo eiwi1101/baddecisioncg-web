@@ -15,13 +15,13 @@
 require 'rails_helper'
 
 describe Game, type: :model do
-  it { is_expected.to belong_to :game_lobby }
+  it { is_expected.to belong_to :lobby }
   it { is_expected.to belong_to :winning_user }
   it { is_expected.to have_many :players }
   it { is_expected.to have_many :rounds }
   it { is_expected.to have_many :expansions }
   it { is_expected.to have_many :cards }
-  it { is_expected.to validate_presence_of :game_lobby }
+  it { is_expected.to validate_presence_of :lobby }
   it { is_expected.to_not validate_presence_of :score_limit }
   it { is_expected.to_not validate_presence_of :winning_user }
   it { is_expected.to validate_uniqueness_of :guid }
@@ -40,7 +40,7 @@ describe Game, type: :model do
     user_1.expansions << build(:expansion, :with_cards)
     user_2.expansions << build(:expansion, :with_cards)
 
-    lobby = create :game_lobby
+    lobby = create :lobby
     lobby.users << user_1
     lobby.users << user_2
 
@@ -60,9 +60,9 @@ describe Game, type: :model do
   end
 
   describe '#join' do
-    let(:game_lobby) { build :game_lobby, :with_users }
-    let(:user) { game_lobby.game_lobby_users.first }
-    let(:game) { build :game, game_lobby: game_lobby }
+    let(:lobby) { build :lobby, :with_users }
+    let(:user) { lobby.lobby_users.first }
+    let(:game) { build :game, lobby: lobby }
 
     it 'joins player to game' do
       expect(game.join(user)).to eq true
@@ -70,12 +70,12 @@ describe Game, type: :model do
     end
 
     it 'rejects user from another lobby' do
-      user = build :game_lobby_user
+      user = build :lobby_user
       expect { game.join(user) }.to raise_exception Exceptions::UserLobbyViolation
     end
 
     it 'rejects joins on in_progress game' do
-      game = build :game, :in_progress, game_lobby: game_lobby
+      game = build :game, :in_progress, lobby: lobby
       expect { game.join(user) }.to raise_exception Exceptions::GameStatusViolation
     end
 
@@ -87,9 +87,9 @@ describe Game, type: :model do
   end
 
   describe '#start!' do
-    let(:game_lobby) { build :game_lobby, :with_users }
-    let(:game) { build :game, game_lobby: game_lobby }
-    before { game.join(game_lobby.game_lobby_users.first) }
+    let(:lobby) { build :lobby, :with_users }
+    let(:game) { build :game, lobby: lobby }
+    before { game.join(lobby.lobby_users.first) }
 
     it 'will not start without players' do
       expect(game.start).to eq false
@@ -98,42 +98,42 @@ describe Game, type: :model do
     end
 
     it 'starts with at least two players' do
-      game.join(game_lobby.game_lobby_users.last)
+      game.join(lobby.lobby_users.last)
       expect(game.start).to eq true
       expect(game.status).to eq 'in_progress'
     end
   end
 
   describe '#leave' do
-    let(:game_lobby) { build :game_lobby, :with_users, user_count: 3 }
-    let(:game) { build :game, game_lobby: game_lobby }
-    before { game_lobby.game_lobby_users.each { |u| game.join(u) } }
+    let(:lobby) { build :lobby, :with_users, user_count: 3 }
+    let(:game) { build :game, lobby: lobby }
+    before { lobby.lobby_users.each { |u| game.join(u) } }
     before { game.start! }
 
     it 'leaves player' do
       expect(game.players.length).to eq 3
-      game.leave(game_lobby.game_lobby_users.last)
+      game.leave(lobby.lobby_users.last)
       expect(game.players.length).to eq 2
       expect(game.reload.players.length).to eq 2
     end
 
     it 'complains about unknown users' do
-      user = build :game_lobby_user
+      user = build :lobby_user
       expect { game.leave(user) }.to raise_exception Exceptions::UserLobbyViolation
     end
 
     it 'complains about users not in the game' do
-      expect(game.leave(game_lobby.game_lobby_users.last)).to eq true
-      expect { game.leave(game_lobby.game_lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
+      expect(game.leave(lobby.lobby_users.last)).to eq true
+      expect { game.leave(lobby.lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
     end
 
     it 'ends game if we drop below two people' do
       game.next_round
-      expect(game.leave(game_lobby.game_lobby_users.first)).to eq true
-      expect(game.leave(game_lobby.game_lobby_users.last)).to eq true
+      expect(game.leave(lobby.lobby_users.first)).to eq true
+      expect(game.leave(lobby.lobby_users.last)).to eq true
       expect(game.status).to eq 'finished'
       expect(game.players.length).to eq 1
-      expect(game.winning_user).to eq game_lobby.game_lobby_users.second.user
+      expect(game.winning_user).to eq lobby.lobby_users.second.user
     end
   end
 

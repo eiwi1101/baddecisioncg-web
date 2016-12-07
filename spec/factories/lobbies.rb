@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: game_lobbies
+# Table name: lobbies
 #
 #  id         :integer          not null, primary key
 #  name       :string
@@ -13,7 +13,7 @@
 #
 
 FactoryGirl.define do
-  factory :game_lobby do
+  factory :lobby do
     name { Faker::Hacker.say_something_smart }
 
     trait :private do
@@ -30,9 +30,9 @@ FactoryGirl.define do
         user_attributes [:with_expansions]
       end
 
-      after :build do |game_lobby, evaluator|
-        game_lobby.users << build_list(:user, evaluator.user_count, *evaluator.user_attributes)
-        game_lobby.game_lobby_users.first.admin = true
+      after :build do |lobby, evaluator|
+        lobby.users << build_list(:user, evaluator.user_count, *evaluator.user_attributes)
+        lobby.lobby_users.first.admin = true
       end
     end
   end

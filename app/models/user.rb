@@ -25,6 +25,9 @@ class User < ApplicationRecord
                           foreign_key: :user_id,
                           association_foreign_key: :friend_user_id
 
+  has_many :lobby_users
+  has_many :lobbies, through: :lobby_users
+
   has_guid :uuid, type: :uuid
 
   validates_presence_of :username

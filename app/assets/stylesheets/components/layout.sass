@@ -2,10 +2,10 @@ html
   height: 100%
 
 body
-  height: 100%
 
   &.valign
     @extend .valign-wrapper
+    height: 100%
 
     main
       @extend .valign
@@ -24,3 +24,18 @@ body
 nav
   @extend .blue-grey
   @extend .darken-2
+
+body:not(.no-side-nav)
+  header, main, footer
+    padding-left: 300px
+
+    @media only screen and (max-width : 992px)
+      padding-left: 0
+
+.userView .background
+  text-align: right
+
+  img
+    max-width: 150px
+    opacity: 0.6
+    margin: 20px

@@ -11,22 +11,22 @@
 #  guid          :string
 #
 
-class GameLobbyUser < ApplicationRecord
+class LobbyUser < ApplicationRecord
   include HasGuid
 
-  belongs_to :game_lobby
+  belongs_to :lobby
   belongs_to :user
 
   acts_as_paranoid
   has_guid
 
-  validates_presence_of :game_lobby
+  validates_presence_of :lobby
   validates_presence_of :user
 
   scope :admins, -> { where(admin: true) }
 
   def leave!
-    self.game_lobby&.leave self.user
+    self.lobby&.leave self.user
   end
 
   def as_json

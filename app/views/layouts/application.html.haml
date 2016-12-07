@@ -8,6 +8,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
   %body{class: yield(:body_class)}
+    = render 'side_nav' unless content_for?(:no_side_nav)
     = render 'header'
     = render 'content'
 

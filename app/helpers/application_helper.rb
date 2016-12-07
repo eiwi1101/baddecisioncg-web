@@ -24,4 +24,8 @@ module ApplicationHelper
   def body_class(klass)
     content_for(:body_class, klass)
   end
+
+  def no_side_nav
+    content_for(:no_side_nav, true)
+  end
 end

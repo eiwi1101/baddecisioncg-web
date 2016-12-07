@@ -1,6 +1,6 @@
 class CreateGameLobbies < ActiveRecord::Migration[5.0]
   def change
-    create_table :game_lobbies do |t|
+    create_table :lobbies do |t|
       t.string :name
       t.boolean :private
       t.string :token
@@ -9,6 +9,6 @@ class CreateGameLobbies < ActiveRecord::Migration[5.0]
       t.datetime :deleted_at
     end
 
-    add_index :game_lobbies, :token
+    add_index :lobbies, :token
   end
 end

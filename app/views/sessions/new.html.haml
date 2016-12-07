@@ -1,7 +1,8 @@
-- body_class 'blank valign blue'
+- body_class 'no-side-nav valign blue'
+- no_side_nav
 
 .container.container-narrow
-  -#.center.bd-logo-fix= image_tag 'bd_plain_logo.jpg', class: 'responsive-img margin-bottom-lg', alt: 'Bad Decisions'
+  .center.bd-logo-fix= image_tag 'logos/logo-full_600-white.png', class: 'responsive-img margin-bottom-lg', alt: 'Bad Decisions'
   .card.white.frost
     %ul.tabs.tabs-border.transparent.tabs-fixed-width
       %li.tab.s6= link_to t('session.login'), login_path, class: 'active'

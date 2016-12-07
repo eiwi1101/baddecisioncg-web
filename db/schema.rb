@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206070134) do
+ActiveRecord::Schema.define(version: 20161207034939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,21 @@ ActiveRecord::Schema.define(version: 20161206070134) do
     t.index ["user_id", "friend_user_id"], name: "index_friendships_on_user_id_and_friend_user_id", using: :btree
   end
 
-  create_table "game_lobbies", force: :cascade do |t|
+  create_table "games", force: :cascade do |t|
+    t.integer  "score_limit"
+    t.integer  "lobby_id"
+    t.integer  "winning_user_id"
+    t.string   "status"
+    t.string   "guid"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["guid"], name: "index_games_on_guid", using: :btree
+    t.index ["lobby_id"], name: "index_games_on_lobby_id", using: :btree
+    t.index ["status"], name: "index_games_on_status", using: :btree
+    t.index ["winning_user_id"], name: "index_games_on_winning_user_id", using: :btree
+  end
+
+  create_table "lobbies", force: :cascade do |t|
     t.string   "name"
     t.boolean  "private"
     t.string   "token"
@@ -58,44 +72,30 @@ ActiveRecord::Schema.define(version: 20161206070134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.index ["token"], name: "index_game_lobbies_on_token", using: :btree
+    t.index ["token"], name: "index_lobbies_on_token", using: :btree
   end
 
-  create_table "game_lobby_users", force: :cascade do |t|
-    t.integer  "game_lobby_id"
+  create_table "lobby_users", force: :cascade do |t|
+    t.integer  "lobby_id"
     t.integer  "user_id"
     t.boolean  "moderator"
     t.boolean  "admin"
     t.datetime "deleted_at"
     t.string   "guid"
-    t.index ["game_lobby_id"], name: "index_game_lobby_users_on_game_lobby_id", using: :btree
-    t.index ["guid"], name: "index_game_lobby_users_on_guid", using: :btree
-    t.index ["user_id"], name: "index_game_lobby_users_on_user_id", using: :btree
-  end
-
-  create_table "games", force: :cascade do |t|
-    t.integer  "score_limit"
-    t.integer  "game_lobby_id"
-    t.integer  "winning_user_id"
-    t.string   "status"
-    t.string   "guid"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["game_lobby_id"], name: "index_games_on_game_lobby_id", using: :btree
-    t.index ["guid"], name: "index_games_on_guid", using: :btree
-    t.index ["status"], name: "index_games_on_status", using: :btree
-    t.index ["winning_user_id"], name: "index_games_on_winning_user_id", using: :btree
+    t.index ["guid"], name: "index_lobby_users_on_guid", using: :btree
+    t.index ["lobby_id"], name: "index_lobby_users_on_lobby_id", using: :btree
+    t.index ["user_id"], name: "index_lobby_users_on_user_id", using: :btree
   end
 
   create_table "messages", force: :cascade do |t|
-    t.integer  "game_lobby_id"
+    t.integer  "lobby_id"
     t.integer  "user_id"
     t.text     "message"
     t.string   "guid"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["game_lobby_id"], name: "index_messages_on_game_lobby_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_messages_on_guid", using: :btree
+    t.index ["lobby_id"], name: "index_messages_on_lobby_id", using: :btree
   end
 
   create_table "player_cards", force: :cascade do |t|

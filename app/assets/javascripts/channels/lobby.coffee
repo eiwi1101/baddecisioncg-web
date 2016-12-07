@@ -1,9 +1,9 @@
-class window.GameLobby
+class window.Lobby
 
   @subscribe: (token) =>
     console.log "Subscribing to lobby #{token}"
 
-    App.cable.subscriptions.create { channel: "GameLobbyChannel", lobby: token },
+    App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token },
       received: @dispatch
 
   @dispatch: (data) =>

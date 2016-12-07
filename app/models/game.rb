@@ -15,7 +15,7 @@
 class Game < ApplicationRecord
   include HasGuid
 
-  belongs_to :game_lobby
+  belongs_to :lobby
   belongs_to :winning_user, class_name: User
   has_many :players, autosave: true
   has_many :rounds
@@ -24,7 +24,7 @@ class Game < ApplicationRecord
 
   has_guid
 
-  validates_presence_of :game_lobby
+  validates_presence_of :lobby
 
   state_machine :status, initial: nil do
     before_transition :in_progress => :finished, do: [:assign_winner]
@@ -52,20 +52,20 @@ class Game < ApplicationRecord
     end
   end
 
-  def join(game_lobby_user)
-    raise Exceptions::UserLobbyViolation.new unless game_lobby_user.game_lobby == self.game_lobby
+  def join(lobby_user)
+    raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
     raise Exceptions::GameStatusViolation.new unless self.status.nil?
-    raise Exceptions::PlayerExistsViolation.new if self.players.exists?(user: game_lobby_user.user)
+    raise Exceptions::PlayerExistsViolation.new if self.players.exists?(user: lobby_user.user)
 
-    self.players << Player.new(user: game_lobby_user.user)
+    self.players << Player.new(user: lobby_user.user)
     self.save
   end
 
-  def leave(game_lobby_user)
-    raise Exceptions::UserLobbyViolation.new unless game_lobby_user.game_lobby == self.game_lobby
-    raise Exceptions::PlayerExistsViolation.new unless has_lobby_user?(game_lobby_user)
+  def leave(lobby_user)
+    raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
+    raise Exceptions::PlayerExistsViolation.new unless has_lobby_user?(lobby_user)
 
-    player = self.players.find_by!(user: game_lobby_user.user)
+    player = self.players.find_by!(user: lobby_user.user)
     self.players.delete(player)
 
     if self.players.length < 2
@@ -96,8 +96,8 @@ class Game < ApplicationRecord
     end
   end
 
-  def has_lobby_user?(game_lobby_user)
-    self.players.exists?(user: game_lobby_user.user)
+  def has_lobby_user?(lobby_user)
+    self.players.exists?(user: lobby_user.user)
   end
 
   private
