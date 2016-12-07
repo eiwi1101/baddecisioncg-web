@@ -52,10 +52,12 @@ class Lobby < ApplicationRecord
     raise Exceptions::LobbyClosedViolation.new if deleted?
 
     if user_or_id.is_a? String
-      lobby_user = lobby_users.find_by!(guid: user_or_id)
+      lobby_user = lobby_users.find_by(guid: user_or_id)
     else
-      lobby_user = lobby_users.find_by!(user: user_or_id)
+      lobby_user = lobby_users.find_by(user: user_or_id)
     end
+
+    return false unless lobby_user
 
     lobby_users.delete(lobby_user)
 

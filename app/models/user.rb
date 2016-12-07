@@ -49,7 +49,6 @@ class User < ApplicationRecord
   def online!
     Rails.logger.info "Online: #{self.username}"
 
-    self.broadcast online: self.as_json
     self.friends.find_each do |friend|
       friend.broadcast online: self.as_json
     end

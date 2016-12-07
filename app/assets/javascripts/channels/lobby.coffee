@@ -1,8 +1,6 @@
 class window.Lobby
-
   @subscribe: (token, user_id) =>
-    console.log "Subscribing to lobby #{token}"
-
+    console.log 'Listening for events.'
     App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token, user_id: user_id },
       received: @dispatch
 
@@ -21,5 +19,10 @@ class window.Lobby
   @user_left: (data) =>
     @chat(data, 'Left the lobby.')
 
+  @message: (data) =>
+    @chat(data.lobby_user, data.message)
+
   @chat: (lobby_user, message) =>
-    $.tmpl($('#lobby-chat-template'), lobby_user: lobby_user, message: message).appendTo('#chat > ul')
+    $chat = $('#chat')
+    $.tmpl($('#lobby-chat-template'), lobby_user: lobby_user, message: message).appendTo $chat
+    $chat.scrollTop $chat[0].scrollHeight

@@ -3,7 +3,7 @@ class LobbyChannel < ApplicationCable::Channel
     Rails.logger.info "Locating game lobby #{params[:lobby]}"
     lobby = Lobby.find_by(token: params[:lobby])
 
-    if lobby&.has_user?(params[:lobby_user_id])
+    if lobby&.has_user?(params[:user_id])
       stream_for lobby
     else
       # TODO Handle Error
@@ -14,7 +14,7 @@ class LobbyChannel < ApplicationCable::Channel
     Rails.logger.info "Leaving game lobby #{params[:lobby]}"
     lobby = Lobby.find_by(token: params[:lobby])
 
-    lobby&.leave(params[:lobby_user_id])
+    lobby&.leave(params[:user_id])
   rescue Exceptions::UserLobbyViolation
     nil
   end
