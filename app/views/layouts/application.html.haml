@@ -7,7 +7,7 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-  %body{class: yield(:body_class)}
+  %body{class: [yield(:body_class), params[:controller].gsub(/[^a-z]+/, '-')].join(' ')}
     = render 'side_nav' unless content_for?(:no_side_nav)
     = render 'header'
     = render 'content'

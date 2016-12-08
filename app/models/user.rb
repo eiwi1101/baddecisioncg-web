@@ -42,6 +42,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  scope :admins, -> { where(admin: true) }
+
   def avatar_url
     GravatarImageTag.gravatar_url self.email
   end

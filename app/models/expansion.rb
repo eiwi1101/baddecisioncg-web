@@ -19,4 +19,6 @@ class Expansion < ApplicationRecord
   validates_presence_of :name
 
   self.per_page = 10
+
+  scoped_search on: :name
 end

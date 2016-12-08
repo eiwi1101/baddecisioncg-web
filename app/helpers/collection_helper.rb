@@ -72,6 +72,70 @@ module CollectionHelper
     end
   end
 
+  # @example
+  #   record_header('Collection Name', 'Optional description of this collection.')
+  def record_header(title, caption=nil, options={})
+    capture do
+      content_tag(:div, class: 'record-header') do
+        concat content_tag(:div, class: 'container') {
+          concat content_tag(:div, class: 'row') {
+            if options[:search] === false
+              concat content_tag(:div, class: 'col s12') {
+                concat content_tag(:h2, class: 'header truncate hide-on-small-and-down') {
+                  concat title title
+                }
+              }
+            else
+              concat content_tag(:div, class: 'col s12 m6') {
+                concat content_tag(:h2, class: 'header truncate hide-on-small-and-down') {
+                  concat title title
+                }
+              }
+
+              concat content_tag(:div, class: 'col s12 m6') {
+                concat content_tag(:div, class: 'search-floating') {
+                  concat search_form
+                }
+              }
+            end
+          }
+
+          concat content_tag :div, caption, class: 'caption'
+        }
+      end
+    end
+  end
+
+  # @example
+  #   results_message(@collection)
+  def results_message(collection)
+    empty_message = "No #{collection.class.name.humanize.pluralize} found."
+    found_message = "Found #{collection.count} results (page #{collection.current_page} of #{collection.total_pages})"
+
+    capture do
+      content_tag :div, class: 'container' do
+        if @expansions.empty?
+          concat content_tag :div, empty_message, class: 'caption center margin-top-lg'
+
+          if params[:q]
+            concat content_tag(:div, class: 'center margin-top-lg') {
+              concat link_to 'Reset Query', url_for({}), class: 'btn btn-flat grey lighten-2'
+            }
+          end
+        else
+          concat content_tag(:div, class: 'muted margin-bottom-sm right-align') {
+            concat found_message
+
+            if sanitary_params.except(:page).any?
+              concat '&nbsp;&bull;&nbsp;'.html_safe
+              concat link_to 'Clear Search', url_for({})
+            end
+          }
+        end
+      end
+    end
+  end
+
   # This does a shitload of magic. It handles sort, order, filter, page and search.
   #
   def filter_scope(scope)
@@ -136,6 +200,6 @@ module CollectionHelper
   end
 
   def sanitary_params
-    request.params.except(:anchor, :only_path, :trailing_slash, :host, :protocol, :user, :password)
+    request.params.except(:anchor, :only_path, :trailing_slash, :host, :protocol, :user, :password, :controller, :action)
   end
 end

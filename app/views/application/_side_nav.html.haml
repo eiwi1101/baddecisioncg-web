@@ -2,7 +2,7 @@
   %li
     .userView
       - if logged_in?
-        .background.red.darken-2
+        .background
           = image_tag 'logos/logo-full_600-white.png'
 
         = link_to '#!avatar' do
@@ -17,20 +17,19 @@
       - else
         = link_to t('session.login'), login_path, class: 'btn'
 
-  %li.active= link_to 'Game Lobbies', lobbies_path
+  %li= link_to material_icon('chat', 'Game Lobbies'), lobbies_path
 
   - if logged_in?
-    %li= link_to 'Friends', '#!'
+    %li= link_to material_icon('friend', 'Friends'), '#!'
 
     - if Lobby.for_user(current_user).any?
-      %li
-        .divider
-
-      %li
-        %a.subheader
-          Your Games
+      %li.subheader Your Games
 
       - Lobby.for_user(current_user).each do |lobby|
-        %li
-          = link_to lobby_path(lobby) do
-            = lobby.name
+        %li= link_to material_icon('chat', lobby.name), lobby_path(lobby)
+
+  - if current_user&.admin?
+    %li.divider
+    %li= link_to 'Admin', '#', class: 'subheader'
+    %li= link_to material_icon('dashboard', 'Dashboard'), admin_dashboard_path
+    %li= link_to material_icon('addon', 'Expansions'), admin_expansions_path

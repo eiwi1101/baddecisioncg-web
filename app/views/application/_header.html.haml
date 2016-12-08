@@ -10,9 +10,7 @@
 
         - if meta_tags[:title]
           %li.page-title
-            .title= meta_tags[:title]
-            .subtitle
-              Started #{time_ago_in_words @lobby.created_at} ago.
+            .title.truncate= meta_tags[:title]
 
       %ul.right
         - if logged_in?

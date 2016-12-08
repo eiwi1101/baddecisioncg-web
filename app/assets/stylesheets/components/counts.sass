@@ -1,0 +1,25 @@
+ul.counts
+  display: flex
+  width: 100%
+
+  li
+    display: block
+    flex-grow: 1
+    flex-basis: 0
+    font-size: 0.9rem
+    color: color('blue-grey', 'lighten-2')
+
+    & > a
+      display: block
+      color: color('blue-grey', 'lighten-2')
+
+    .count
+      font-size: 1.8rem
+      color: color('blue-grey', 'base')
+      font-weight: 300
+
+  &:last-child
+    margin-bottom: 0
+
+  &:first-child
+    margin-top: 0

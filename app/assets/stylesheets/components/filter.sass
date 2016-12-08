@@ -1,0 +1,33 @@
+.record-header
+  @extend .white
+  @extend .z-depth-1
+  padding: 1px 0 1.5rem 0
+  margin-top: -1px
+  margin-bottom: 1.5rem
+
+  .header
+    margin: 0
+    font-size: 3rem
+    margin-top: 1.5rem
+
+  .caption
+    margin: 0
+
+  .search-floating
+    background-color: white
+    margin-top: 1.5rem
+
+    .input-field
+      margin: 0
+
+      input[type=search]
+        height: 3.25rem
+        border-bottom: none
+        margin: 0
+
+        &:focus
+          @extend .z-depth-1
+
+        & ~ .material-icons
+          top: 50%
+          transform: translateY(-50%)

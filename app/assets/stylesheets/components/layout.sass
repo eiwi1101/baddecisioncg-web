@@ -1,18 +1,29 @@
-nav
-  @extend .blue-grey
-  @extend .darken-2
+body
+  background-color: color('grey', 'lighten-4')
 
-body.has-aside
-  main, footer
-    padding-right: 300px
+  nav
+    background-color: color('red', 'darken-1')
 
-    @media only screen and (max-width : 992px)
-      padding-right: 0
+  .userView .background
+    background-color: color('red', 'darken-2')
+    text-align: right
 
-.userView .background
-  text-align: right
+    img
+      max-width: 150px
+      opacity: 0.6
+      margin: 20px
 
-  img
-    max-width: 150px
-    opacity: 0.6
-    margin: 20px
+
+  &[class*=' admin-']
+    nav
+      background-color: color('blue-grey', 'darken-1')
+
+    .userView .background
+      background-color: color('blue-grey', 'darken-2')
+
+  &.has-aside
+    main, footer
+      padding-right: 300px
+
+      @media only screen and (max-width : 992px)
+        padding-right: 0

@@ -1,8 +1,9 @@
-.fixed-action-btn
+-#.fixed-action-btn
   = link_to material_icon('edit'), edit_admin_expansion_path(@expansion), class: 'btn-floating btn-large waves-effect waves-light red'
   %ul
     %li= link_to material_icon('delete'), admin_expansion_path(@expansion), method: :delete, class: 'btn-floating waves-effect waves-light black', data: { confirm: 'Really?' }
 
-.container
-  %h2.header= @expansion.name
-  %p.caption Created #{time_ago_in_words @expansion.created_at} ago.
+= action_button 'edit', edit_admin_expansion_path(@expansion), tooltip: 'Edit Expansion' do
+  = action_button_child 'delete', admin_expansion_path(@expansion), tooltip: 'Delete', method: :delete, class: 'black'
+
+= record_header @expansion.name, "Created #{time_ago_in_words @expansion.created_at} ago."
