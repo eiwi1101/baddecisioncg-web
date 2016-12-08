@@ -2,7 +2,7 @@ body
   background-color: color('grey', 'lighten-4')
 
   nav
-    background-color: color('red', 'darken-1')
+    background-color: color('red', 'darken-2')
 
   .userView .background
     background-color: color('red', 'darken-2')
@@ -13,10 +13,25 @@ body
       opacity: 0.6
       margin: 20px
 
-
-  &[class*=' admin-']
+  &:not(.admin)
     nav
-      background-color: color('blue-grey', 'darken-1')
+      .btn-collapse
+        @extend .show-on-large
+
+  &.admin
+    @media (max-width: 1200px)
+      .container
+        width: 90%
+
+    header, main, footer
+      @media (min-width: 992px)
+        margin-left: 300px
+
+    nav
+      background-color: color('blue-grey', 'darken-2')
+
+      @media (min-width: 992px)
+        width: calc(100% - 300px)
 
     .userView .background
       background-color: color('blue-grey', 'darken-2')

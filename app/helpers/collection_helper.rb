@@ -100,7 +100,9 @@ module CollectionHelper
             end
           }
 
-          concat content_tag :div, caption, class: 'caption'
+          unless caption.nil?
+            concat content_tag :div, caption, class: 'caption'
+          end
         }
       end
     end
@@ -114,7 +116,7 @@ module CollectionHelper
 
     capture do
       content_tag :div, class: 'container' do
-        if @expansions.empty?
+        if collection.empty?
           concat content_tag :div, empty_message, class: 'caption center margin-top-lg'
 
           if params[:q]

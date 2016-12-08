@@ -1,4 +1,4 @@
-%ul#slide-out.side-nav
+%ul#slide-out.side-nav{class: ('fixed' if params[:controller] =~ /^admin/)}
   %li
     .userView
       - if logged_in?
@@ -33,3 +33,4 @@
     %li= link_to 'Admin', '#', class: 'subheader'
     %li= link_to material_icon('dashboard', 'Dashboard'), admin_dashboard_path
     %li= link_to material_icon('addon', 'Expansions'), admin_expansions_path
+    %li= link_to material_icon('user', 'Users'), admin_users_path

@@ -1,0 +1,13 @@
+= record_header 'Users'
+= results_message @users
+
+.container
+  .row
+    - @users.each do |user|
+      .col.s12.m6.l4
+        .card
+          .card-content
+            .avatar= image_tag user.avatar_url, class: 'circle'
+            .card-title.truncate= user.display_name
+          .card-action
+            = link_to 'Edit', admin_user_path(user)
