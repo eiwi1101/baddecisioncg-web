@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/harrybournis/will_paginate-materialize.git
+  revision: 86e86a9ea3b21636e685b0fafb5b4b1681ff9dbd
+  specs:
+    will_paginate-materialize (0.1.2)
+      will_paginate (~> 3.1.3)
+
+GIT
   remote: git://github.com/vipulnsward/react-rails.git
   revision: 9133f8053360b87692a14183d921815e62fcdf83
   branch: sprockets-3-compat
@@ -136,6 +143,9 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-tmpl-rails (1.1.0)
       rails (>= 3.1.0)
+    jquery-turbolinks (2.1.0)
+      railties (>= 3.1.0)
+      turbolinks
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (2.0.2)
@@ -313,8 +323,6 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     will_paginate (3.1.5)
-    will_paginate-bootstrap (1.0.1)
-      will_paginate (>= 3.0.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -340,6 +348,7 @@ DEPENDENCIES
   haml
   jquery-rails
   jquery-tmpl-rails
+  jquery-turbolinks
   jquery-ui-rails
   letter_opener
   letter_opener_web
@@ -377,7 +386,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console
   will_paginate
-  will_paginate-bootstrap
+  will_paginate-materialize!
 
 BUNDLED WITH
    1.13.6

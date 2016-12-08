@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::Base
   include SessionsHelper
+  include CollectionHelper
+  include SlackHelper
+
+  respond_to :json, :html, :js
 
   protect_from_forgery with: :exception
 
@@ -9,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def internal_server_error(e)
     if Rails.configuration.x.slack['post_exceptions']
-      $slack.ping SlackHelper.slackify_exception(e, current_user, request)
+      $slack.ping slackify_exception e, current_user, request
     end
 
     raise e

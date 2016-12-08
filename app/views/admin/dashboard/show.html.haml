@@ -1,3 +1,31 @@
 .container
   %h2.header Dashboard
   %p.caption It's alive. Cool. What now?
+
+  .row
+    .col.s12.m6.l4
+      .card
+        .card-content
+          .card-title Expansions
+          = Expansion.count
+        .card-action
+          = link_to 'Manage', admin_expansions_path
+          = link_to 'New', new_admin_expansion_path
+
+    .col.s12.m6.l4
+      .card
+        .card-content
+          .card-title Users
+          = User.count
+        .card-action
+          = link_to 'Manage', admin_users_path
+          = link_to 'Invite', new_admin_user_path
+
+    .col.s12.m6.l4
+      .card
+        .card-content
+          .card-title Lobbies
+          = Lobby.count
+        .card-action
+          = link_to 'Manage', '#'
+          = link_to 'Play', lobbies_path

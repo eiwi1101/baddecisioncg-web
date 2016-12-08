@@ -1,0 +1,32 @@
+.fixed-action-btn
+  = link_to material_icon('add'), new_admin_expansion_path, class: 'btn-floating btn-large waves-effect waves-light red'
+
+.container
+  %h2.header Expansions
+
+  .filter-controls
+    .row
+      .col.s6.m3= sort_menu 'name' => 'Name'
+      .col.s6.m9= search_form
+
+  %table.highlight.table-responsive
+    %thead
+      %tr
+        %th Name
+        %th{width: 50} Fool
+        %th{width: 50} Crisis
+        %th{width: 50} Decis.
+        %th{width: 50} Story
+        %th{width: 50} Total
+
+    %tbody
+      - @expansions.each do |expansion|
+        %tr
+          %td= link_to expansion.name, admin_expansion_path(expansion)
+          %td.right-align= expansion.cards.fools.count
+          %td.right-align= expansion.cards.crisis.count
+          %td.right-align= expansion.cards.bad_decisions.count
+          %td.right-align= expansion.cards.stories.count
+          %td.right-align= expansion.cards.count
+
+  = will_paginate @expansions

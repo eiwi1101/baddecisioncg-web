@@ -17,4 +17,6 @@ class Expansion < ApplicationRecord
   has_guid :uuid, type: :uuid
 
   validates_presence_of :name
+
+  self.per_page = 10
 end
