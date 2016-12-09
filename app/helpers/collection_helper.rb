@@ -75,17 +75,13 @@ module CollectionHelper
   # @example
   #   record_header('Collection Name', 'Optional description of this collection.')
   def record_header(title, caption=nil, options={})
+    caption, options = nil, caption if caption.is_a? Hash
+
     capture do
       content_tag(:div, class: 'record-header') do
         concat content_tag(:div, class: 'container') {
           concat content_tag(:div, class: 'row') {
-            if options[:search] === false
-              concat content_tag(:div, class: 'col s12') {
-                concat content_tag(:h2, class: 'header truncate hide-on-small-and-down') {
-                  concat title title
-                }
-              }
-            else
+            if options[:search]
               concat content_tag(:div, class: 'col s12 m6') {
                 concat content_tag(:h2, class: 'header truncate hide-on-small-and-down') {
                   concat title title
@@ -95,6 +91,12 @@ module CollectionHelper
               concat content_tag(:div, class: 'col s12 m6') {
                 concat content_tag(:div, class: 'search-floating') {
                   concat search_form
+                }
+              }
+            else
+              concat content_tag(:div, class: 'col s12') {
+                concat content_tag(:h2, class: 'header truncate hide-on-small-and-down') {
+                  concat title title
                 }
               }
             end

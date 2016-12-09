@@ -1,0 +1,4 @@
+= action_button 'edit', edit_admin_user_path(@user), tooltip: 'Edit User' do
+  = action_button_child 'delete', admin_user_path(@user), tooltip: 'Delete User', method: :delete
+
+= record_header @user.display_name, @user.uuid, search: false

@@ -32,7 +32,7 @@ class Admin::UsersController < AdminController
   private
 
   def get_user
-    @user = User.find_by!(guid: params[:id])
+    @user = User.find_by!(uuid: params[:id])
   end
 
   def user_params

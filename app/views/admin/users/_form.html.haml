@@ -1,0 +1,15 @@
+.card
+  = simple_form_for [:admin, @user] do |f|
+    .card-content
+      .row
+        .col.s12.m6
+          = f.input :display_name
+          = f.input :username
+          = f.input :email
+        .col.s12.m6
+          = f.input :password
+          = f.input :password_confirmation
+          .caption.margin-bottom-md Permissions
+          = f.input :admin
+    .card-action
+      = f.button :submit

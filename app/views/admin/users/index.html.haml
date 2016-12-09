@@ -1,4 +1,5 @@
-= record_header 'Users'
+= action_button 'add', new_admin_user_path, tooltip: 'New User'
+= record_header 'Users', search: true
 = results_message @users
 
 .container
