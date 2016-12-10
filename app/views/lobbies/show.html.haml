@@ -20,11 +20,16 @@
           = image_tag gl_user.avatar_url, class: 'img-responsive circle'
           %span{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }= gl_user.name
 
-  .chat-form
-    = simple_form_for [@lobby, Message.new], remote: true do |f|
-      .input-field.inline
-        = f.input_field :message, as: :string, placeholder: 'Send a message...'
-      %button.btn{type: 'submit'}= material_icon('send')
+  - if logged_in?
+    .chat-form
+      = simple_form_for [@lobby, Message.new], remote: true do |f|
+        .input-field.inline
+          = f.input_field :message, as: :string, placeholder: 'Send a message...'
+        %button.btn{type: 'submit'}= material_icon('send')
+
+  - else
+    .chat-form
+      %p.grey-text.center You must sign in or register to chat.
 
 %script#lobby-chat-template{type: 'text/html'}
   .chat-notice{class: ''}

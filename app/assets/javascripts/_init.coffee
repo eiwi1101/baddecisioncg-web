@@ -1,9 +1,9 @@
 # Come online and listen to global push notifications.
 #
-$(document).ready ->
-  console.log 'running init script'
+$ ->
+  console.log 'Running init script'
 
-  User.subscribe()
+#  User.subscribe()
 
   # Form Hacks
   Materialize.updateTextFields && Materialize.updateTextFields()
@@ -25,14 +25,3 @@ $(document).ready ->
       itemSelectory: '.col'
       columnWidth: '.col:first-child'
       percentPosition: true
-
-$(document).on 'turbolinks:visit', ->
-  console.log 'visit'
-
-$(document).on 'turbolinks:render', ->
-  console.log 'render'
-
-$(document).on 'turbolinks:load', ->
-  console.log 'load'
-
-$.turbo.use 'turbolinks:load'

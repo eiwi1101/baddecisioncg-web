@@ -45,6 +45,7 @@ class Lobby < ApplicationRecord
     end
 
     broadcast user_joined: lobby_user.as_json
+    Rails.logger.info "User joined: #{lobby_user.guid}"
     lobby_user
   end
 
