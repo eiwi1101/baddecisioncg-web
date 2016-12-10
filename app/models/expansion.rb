@@ -12,7 +12,7 @@
 class Expansion < ApplicationRecord
   include HasGuid
 
-  has_many :cards
+  has_many :cards, class_name: Card
 
   has_guid :uuid, type: :uuid
 

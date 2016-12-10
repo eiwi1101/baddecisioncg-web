@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'dashboard#show', as: :dashboard
 
-    resources :expansions
+    resources :expansions do
+      resources :cards, only: [:new, :create, :edit, :update, :destroy], shallow: true
+    end
+
     resources :users
   end
 end

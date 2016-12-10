@@ -19,6 +19,13 @@ $(document).ready ->
   $('.button-collapse').sideNav
     draggable: true
 
+  # Masonry Things
+  if $masonry = $('.masonry')
+    $masonry.masonry
+      itemSelectory: '.col'
+      columnWidth: '.col:first-child'
+      percentPosition: true
+
 $(document).on 'turbolinks:visit', ->
   console.log 'visit'
 

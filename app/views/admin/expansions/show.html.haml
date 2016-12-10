@@ -1,9 +1,21 @@
--#.fixed-action-btn
-  = link_to material_icon('edit'), edit_admin_expansion_path(@expansion), class: 'btn-floating btn-large waves-effect waves-light red'
-  %ul
-    %li= link_to material_icon('delete'), admin_expansion_path(@expansion), method: :delete, class: 'btn-floating waves-effect waves-light black', data: { confirm: 'Really?' }
-
 = action_button 'edit', edit_admin_expansion_path(@expansion), tooltip: 'Edit Expansion' do
-  = action_button_child 'delete', admin_expansion_path(@expansion), tooltip: 'Delete', method: :delete, class: 'black'
+  = action_button_child 'delete', admin_expansion_path(@expansion), tooltip: 'Delete Expansion', method: :delete, class: 'black'
+  = action_button_child 'add', new_admin_expansion_card_path(@expansion), tooltip: 'Add Cards', class: 'teal'
 
-= record_header @expansion.name, "Created #{time_ago_in_words @expansion.created_at} ago."
+= record_header @expansion.name, search: 'Search cards...' do
+  = scope_tabs :type, model: @expansion.cards,
+                      default: 'All Cards',
+                      'Card::Fool' => 'Fools',
+                      'Card::Crisis' => 'Crisis',
+                      'Card::BadDecision' => 'Bad Decisions',
+                      'Card::Story' => 'Stories'
+
+= results_message @cards
+
+.container
+  .row.masonry
+    - @cards.each do |card|
+      .col.s6.m4.l3
+        = link_to card.to_html, edit_admin_card_path(card)
+
+  .center= will_paginate @cards

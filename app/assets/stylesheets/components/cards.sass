@@ -10,3 +10,35 @@
 
   .row
     margin-bottom: 0
+
+.bad_decision
+  background-color: color('red', 'darken-2')
+
+.crisis
+  background-color: color('blue-grey', 'darken-2')
+
+.fool
+  background-color: color('orange', 'darken-3')
+
+.story
+  background-color: color('teal', 'darken-3')
+
+.game-card
+  @extend .card
+  padding: 0.5rem
+  line-height: 2rem
+  color: color('grey', 'darken-3')
+
+  .placeholder
+    @extend .z-depth-1
+    padding: 0.2rem 0.5rem
+    font-size: 0.7rem
+    line-height: 1rem
+    position: relative
+    top: -0.2rem
+    color: white
+    display: inline-block
+
+  .card-content
+    background-color: white
+    padding: 0.5rem

@@ -1,3 +1,6 @@
-= simple_form_for [:admin, @expansion] do |f|
-  = f.input :name
-  = f.button :submit
+.card
+  = simple_form_for [:admin, @expansion] do |f|
+    .card-content
+      = f.input :name
+    .card-action
+      = f.button :submit

@@ -11,7 +11,10 @@ class Admin::ExpansionsController < AdminController
     respond_with :admin, @expansion
   end
 
-  def show; end
+  def show
+    @cards = filter_scope @expansion.cards, skip_params: ['id']
+  end
+
   def edit; end
 
   def create

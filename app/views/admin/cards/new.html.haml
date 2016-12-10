@@ -1,0 +1,13 @@
+= action_button 'cancel', admin_expansion_path(@expansion), class: 'grey', tooltip: 'Cancel'
+= record_header 'New Card', "Create a new card in #{@expansion.name}"
+
+.container
+  .card
+    = simple_form_for @card, as: :card, url: admin_expansion_cards_path(@expansion) do |f|
+      .card-content
+        = f.input :type, collection: Card.types
+        = f.input :text, as: :text, hint: 'Enter card text, one card per line.'
+
+        .grey-text * Story cards must have <code>%{fool}</code>, <code>%{crisis}</code>, and <code>%{bad_decision}</code> placeholders.
+      .card-action
+        = f.button :submit, 'Save Cards'

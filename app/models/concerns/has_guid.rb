@@ -28,6 +28,10 @@ module HasGuid
       self.guid_column_name = guid_column_name
       self.guid_options = options
     end
+
+    def find(*ids)
+      self.find_by!(self.guid_column_name => ids)
+    end
   end
 
   private

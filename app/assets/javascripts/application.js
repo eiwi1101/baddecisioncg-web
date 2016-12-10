@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-tmpl
+//= require masonry.pkgd
 //= require turbolinks
 //= require ahoy
 //= require components

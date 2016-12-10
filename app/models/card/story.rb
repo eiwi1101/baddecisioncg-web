@@ -20,17 +20,17 @@ class Card::Story < Card
 
   def card_order
     order = []
-    text.scan(/%{(\w+)}/i) do |match|
+    text&.scan(/%{(\w+)}/i) do |match|
       order << match[0]
     end
     order
   end
 
-  def display_text(round)
+  def display_text(round=nil, wrapper='%s')
     blanks = {
-        fool: round.fool_pc.try(:card).try(:text) || 'FOOL',
-        crisis: round.crisis_pc.try(:card).try(:text) || 'CRISIS',
-        bad_decision: round.bad_decision_pc.try(:card).try(:text) || 'BAD DECISION'
+        fool:         wrapper % { card: 'fool', text: round&.fool_pc.try(:card).try(:text) || 'FOOL' },
+        crisis:       wrapper % { card: 'crisis', text: round&.crisis_pc.try(:card).try(:text) || 'CRISIS' },
+        bad_decision: wrapper % { card: 'bad_decision', text: round&.bad_decision_pc.try(:card).try(:text) || 'BAD DECISION' }
     }
 
     text % blanks

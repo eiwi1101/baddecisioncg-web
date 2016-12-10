@@ -1,0 +1,14 @@
+= action_button 'cancel', admin_expansion_path(@expansion), class: 'grey', tooltip: 'Cancel' do
+  = action_button_child 'delete', admin_card_path(@card), class: 'black', method: :delete, tooltip: 'Delete'
+
+= record_header 'Edit Card', "Editing a card in #{@expansion.name}"
+
+.container
+  .card
+    = simple_form_for @card, as: :card, url: admin_card_path(@card) do |f|
+      .card-content
+        = f.association :expansion
+        = f.input :type, collection: Card.types
+        = f.input :text, as: :string
+      .card-action
+        = f.button :submit
