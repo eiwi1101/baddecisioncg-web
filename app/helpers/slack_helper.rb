@@ -1,5 +1,5 @@
 module SlackHelper
-  def self.attachment(pretext, title, message, color='good')
+  def attachment(pretext, title, message, color='good')
     {
         fallback: pretext,
         pretext:  pretext,
@@ -12,7 +12,7 @@ module SlackHelper
     }
   end
 
-  def self.build_message(fallback, message=fallback, color='#070', fields={})
+  def build_message(fallback, message=fallback, color='#070', fields={})
     {
         attachments: [
             {
@@ -25,7 +25,7 @@ module SlackHelper
     }
   end
 
-  def self.slackify_exception(e, user=nil, request=nil)
+  def slackify_exception(e, user=nil, request=nil)
     {
         icon_emoji: ':hankey:',
         attachments: [

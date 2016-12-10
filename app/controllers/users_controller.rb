@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
 
     if @user.save
+      $slack.ping build_message "New user: #{@user.username}"
       log_in @user
       redirect_to lobbies_path, flash: { notice: t('session.register_success') }
     else

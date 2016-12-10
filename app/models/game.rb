@@ -27,7 +27,9 @@ class Game < ApplicationRecord
   validates_presence_of :lobby
 
   state_machine :status, initial: nil do
+    after_transition nil => :in_progress, do: [:broadcast_game_start, :start_first_round]
     before_transition :in_progress => :finished, do: [:assign_winner]
+    after_transition :in_progress => :finished, do: [:broadcast_game_finished]
 
     state :in_progress do
       validate :validate_player_count
@@ -57,8 +59,10 @@ class Game < ApplicationRecord
     raise Exceptions::GameStatusViolation.new unless self.status.nil?
     raise Exceptions::PlayerExistsViolation.new if self.players.exists?(user: lobby_user.user)
 
-    self.players << Player.new(user: lobby_user.user)
+    player = Player.new(user: lobby_user.user, game: self)
+    self.players << player
     self.save
+    self.lobby.broadcast player_join: player.as_json
   end
 
   def leave(lobby_user)
@@ -73,6 +77,8 @@ class Game < ApplicationRecord
     else
       true
     end
+
+    self.lobby.broadcast player_leave: player.as_json
   end
 
   def current_round
@@ -81,7 +87,7 @@ class Game < ApplicationRecord
 
   def next_round
     raise Exceptions::GameStatusViolation.new unless self.in_progress?
-    raise Exceptions::RoundOrderViolation.new unless self.current_round.nil? || self.current_round.finished?
+    raise Exceptions::RoundOrderViolation.new unless self.rounds.empty? || self.rounds.last.finished?
 
     if self.rounds.count < self.score_limit
       bard   = self.players.where('players.id > ?', self.current_round&.bard_player&.id || 0).first
@@ -89,11 +95,13 @@ class Game < ApplicationRecord
 
       new_round = self.rounds.build(bard_player: bard)
       new_round.draw!
-      new_round
     else
       self.finish!
-      nil
+      new_round = nil
     end
+
+    self.lobby.broadcast next_round: new_round.as_json if new_round
+    new_round
   end
 
   def has_lobby_user?(lobby_user)
@@ -103,7 +111,9 @@ class Game < ApplicationRecord
   private
 
   def assign_winner
-    self.winning_user = self.players.order(:score).first.try :user
+    winning_player = self.players.order(:score).first
+    self.winning_user = winning_player.try :user
+    self.lobby.broadcasr player_won: winning_player
   end
 
   def validate_player_count
@@ -112,5 +122,17 @@ class Game < ApplicationRecord
       false
     end
     true
+  end
+
+  def broadcast_game_start
+    self.lobby.broadcast game_start: self.as_json
+  end
+
+  def broadcast_game_finished
+    self.lobby.broadcast game_finished: self.as_json
+  end
+
+  def start_first_round
+    self.next_round
   end
 end

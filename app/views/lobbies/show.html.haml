@@ -3,39 +3,31 @@
 - description @lobby.inspect
 
 .container.margin-top-md{data: { game: nil }}
+  #join-btn.center.margin-top-xl
+    %p.caption A game is starting!
+    = link_to 'Join Game', lobby_players_path(@lobby, player: { lobby_user_id: @lobby_user.guid }), method: :post, remote: :true, class: 'btn'
+    = link_to 'Start Game', start_lobby_game_path(@lobby, @lobby.current_game), method: :post, remote: :true, class: 'btn blue-grey'
+
   .row
-    .col.s12{data: { hand: 'story' }}= Card::Story.random.to_html
-
-    .col.s6{data: { hand: 'bard_1' }}= Card::Fool.random.to_html
-    .col.s6{data: { hand: 'bard_2' }}= Card::Crisis.random.to_html
-
-  %p.caption Pick your winner...
+    .col.s12.masonry{data: { hand: 'story' }}
+    .col.s6.masonry{data: { hand: 'bard_1' }}
+    .col.s6.masonry{data: { hand: 'bard_2' }}
 
   .row.masonry{data: { hand: 'play_area' }}
-    - Card::BadDecision.random(9).each do |card|
-      .col.s6.m4= card.to_html
 
 .bottom-panel
   %ul.tabs.tabs-border
     %li.tab= link_to 'Fool Hand', '#fool-hand'
     %li.tab= link_to 'Crisis Hand', '#crisis-hand'
     %li.tab= link_to 'Decision Hand', '#decision-hand'
-    %li.tab= link_to 'Hide', '#hide', class: 'right'
+    %li.tab= link_to 'Hide', '#hide'
 
   #fool-hand.content
     .row.masonry{data: { hand: 'fool' }}
-      - Card::Fool.random(5).each do |card|
-        .col.s6.m3.l2= card.to_html
-
   #crisis-hand.content
     .row.masonry{data: { hand: 'crisis' }}
-      - Card::Crisis.random(5).each do |card|
-        .col.s6.m3.l2= card.to_html
-
   #decision-hand.content
     .row.masonry{data: { hand: 'bad_decision' }}
-      - Card::BadDecision.random(5).each do |card|
-        .col.s6.m3.l2= card.to_html
 
 
 = render 'aside'

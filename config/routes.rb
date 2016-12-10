@@ -13,6 +13,12 @@ Rails.application.routes.draw do
   # Other Resources
   resources :lobbies, path: :play, only: [:index, :new, :show] do
     resources :messages, only: [:create]
+    resources :players, only: [:create]
+    resources :games, only: [:create] do
+      member do
+        post :start
+      end
+    end
   end
 
   resources :lobby_users, only: [:destroy]

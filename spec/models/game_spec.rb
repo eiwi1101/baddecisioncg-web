@@ -102,6 +102,12 @@ describe Game, type: :model do
       expect(game.start).to eq true
       expect(game.status).to eq 'in_progress'
     end
+
+    it 'starts and initializes a round' do
+      game.join(lobby.lobby_users.last)
+      expect(game.start).to eq true
+      expect(game.rounds).to have_at_least(1).item
+    end
   end
 
   describe '#leave' do

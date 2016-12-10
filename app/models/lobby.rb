@@ -35,7 +35,7 @@ class Lobby < ApplicationRecord
     end
 
     if user.nil?
-      lobby_user = LobbyUser.new(admin: lobby_users.empty?)
+      lobby_user = LobbyUser.new(admin: lobby_users.empty?, lobby: self)
       lobby_users << lobby_user
     elsif has_user? user
         lobby_user = lobby_users.find_by(user: user)
@@ -45,7 +45,7 @@ class Lobby < ApplicationRecord
     end
 
     broadcast user_joined: lobby_user.as_json
-    Rails.logger.info "User joined: #{lobby_user.guid}"
+    save
     lobby_user
   end
 
@@ -81,7 +81,7 @@ class Lobby < ApplicationRecord
   end
 
   def current_game
-    games.last
+    games.last || Game.create(lobby: self, score_limit: 13)
   end
 
   def has_password?

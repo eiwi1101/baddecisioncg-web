@@ -22,6 +22,21 @@ class window.Lobby
   @message: (data) =>
     @chat(data.lobby_user, data.message)
 
+  @set_card: (data) =>
+    $("[data-hand='#{data.hand}']").html(data.card.html)
+
+  @remove_card: (data) =>
+    $("[data-card='#{data.card.uuid}']").remove().parent().masonry()
+
+  @clear_hand: (data) =>
+    $("[data-hand='#{data.hand}']").html("")
+
+  @append_card: (data) =>
+    $("[data-hand='#{data.hand}']").append(data.card.html).masonry()
+
+  @game_start: (data) =>
+    $('#join-btn').fadeOut()
+
   @chat: (lobby_user, message) =>
     $chat = $('#chat')
     $.tmpl($('#lobby-chat-template'), lobby_user: lobby_user, message: message).appendTo $chat

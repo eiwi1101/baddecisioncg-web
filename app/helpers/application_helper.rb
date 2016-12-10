@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def toast(level_or_hash=:notice, message='')
+  def toast(level_or_hash=:notice, message='', options={})
     if level_or_hash.is_a? Hash
       message = level_or_hash.values.first
       level_or_hash = level_or_hash.keys.first
@@ -14,11 +14,17 @@ module ApplicationHelper
 
     klass = flash_map[level_or_hash.to_sym] || level_or_hash.to_s
 
-    <<-HTML.html_safe
+    if options[:no_wrapper]
+      <<-JAVASCRIPT.html_safe
+        Materialize.toast("#{escape_javascript message}", 5000, "#{klass}")
+      JAVASCRIPT
+    else
+      <<-HTML.html_safe
         <script type="text/javascript">
             Materialize.toast("#{escape_javascript message}", 5000, "#{klass}")
         </script>
-    HTML
+      HTML
+    end
   end
 
   def body_class(klass)
