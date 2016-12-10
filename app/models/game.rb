@@ -19,12 +19,14 @@ class Game < ApplicationRecord
   belongs_to :winning_user, class_name: User
   has_many :players, autosave: true
   has_many :rounds
-  has_many :expansions, through: :players
+  has_and_belongs_to_many :expansions, join_table: :game_expansions
   has_many :cards, through: :expansions
 
   has_guid
 
   validates_presence_of :lobby
+
+  after_create :assign_default_expansions
 
   state_machine :status, initial: nil do
     after_transition nil => :in_progress, do: [:broadcast_game_start, :start_first_round]
@@ -73,7 +75,7 @@ class Game < ApplicationRecord
     self.players.delete(player)
 
     if self.players.length < 2
-      self.rounds.any? ? self.finish! : self.abandon!
+      self.rounds.any? ? self.finish : self.abandon
     else
       true
     end
@@ -113,7 +115,7 @@ class Game < ApplicationRecord
   def assign_winner
     winning_player = self.players.order(:score).first
     self.winning_user = winning_player.try :user
-    self.lobby.broadcasr player_won: winning_player
+    self.lobby.broadcast player_won: winning_player
   end
 
   def validate_player_count
@@ -134,5 +136,9 @@ class Game < ApplicationRecord
 
   def start_first_round
     self.next_round
+  end
+
+  def assign_default_expansions
+    self.expansions << Expansion.default
   end
 end

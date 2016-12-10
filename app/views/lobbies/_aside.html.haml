@@ -10,11 +10,20 @@
       Welcome to #{@lobby.name}
 
   #users.content
-    - @lobby.lobby_users.each do |gl_user|
-      .user{data: { user_id: gl_user.guid }}
-        .chip
+    %ul.collection.no-border
+      - @lobby.lobby_users.each do |gl_user|
+        %li.collection-item.avatar{data: { user_id: gl_user.guid }}
           = image_tag gl_user.avatar_url, class: 'img-responsive circle'
-          %span{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }= gl_user.name
+          %span.title{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }= gl_user.name
+          - if gl_user.user
+            .username.smaller.grey-text @#{gl_user.user.username}
+          - else
+            .username.smaller.grey-text.text-lighten-1 (guest)
+
+
+  #settings.content
+    .card-content
+      .center= link_to 'Leave Lobby', lobby_user_path(@lobby_user), method: :delete, class: 'btn red darken-2 center'
 
   - if logged_in?
     .chat-form

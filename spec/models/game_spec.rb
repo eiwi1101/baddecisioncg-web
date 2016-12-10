@@ -29,6 +29,12 @@ describe Game, type: :model do
   subject { game }
   let(:game) { build :game }
 
+  it 'initializes with default expansion' do
+    create :expansion
+    game.save
+    expect(game.expansions).to have_at_least(1).items
+  end
+
   context 'when finished' do
     let(:game) { build :game, :finished }
     it { is_expected.to validate_presence_of :winning_user }

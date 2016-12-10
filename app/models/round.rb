@@ -28,6 +28,7 @@ class Round < ApplicationRecord
   belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
   has_many :player_cards, autosave: true
+  has_one  :lobby, through: :game
 
   has_guid
 
@@ -154,7 +155,8 @@ class Round < ApplicationRecord
   end
 
   def draw_story
-    self.story_card = Card::Story.in_hand_for_game(self.game).order('RANDOM()').first
+    self.story_card = Card::Story.in_hand_for_game(self.game).random
+    self.lobby.broadcast set_card: { hand: 'story', card: { html: self.story_card.to_html } }
   end
 
   def mark_winner

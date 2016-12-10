@@ -14,6 +14,8 @@ class Expansion < ApplicationRecord
 
   has_many :cards, class_name: Card
 
+  scope :default, -> { all }
+
   has_guid :uuid, type: :uuid
 
   validates_presence_of :name
