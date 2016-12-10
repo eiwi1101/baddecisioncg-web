@@ -36,6 +36,10 @@ class Card < ApplicationRecord
     ]
   end
 
+  def self.random(count=nil)
+    all.order('RANDOM()').first(count)
+  end
+
   def type_string
     nil
   end

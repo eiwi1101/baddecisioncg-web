@@ -45,8 +45,8 @@ class LobbyUser < ApplicationRecord
     self.lobby&.leave self.user
   end
 
-  def as_json
-    ActiveModelSerializers::SerializableResource.new(self).as_json
+  def as_json(options={})
+    ActiveModelSerializers::SerializableResource.new(self).as_json(options)
   end
 
   private

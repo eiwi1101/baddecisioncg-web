@@ -2,46 +2,43 @@
 - title @lobby.name
 - description @lobby.inspect
 
-%aside
-  .row.no-margin
-    %ul.tabs.tabs-border
-      %li.tab.col.s4= link_to material_icon('chat'), '#chat'
-      %li.tab.col.s4= link_to material_icon('supervisor_account'), '#users'
-      %li.tab.col.s4= link_to material_icon('settings'), '#settings'
+.container.margin-top-md{data: { game: nil }}
+  .row
+    .col.s12{data: { hand: 'story' }}= Card::Story.random.to_html
 
-  #chat.content
-    .system-notice
-      Welcome to #{@lobby.name}
+    .col.s6{data: { hand: 'bard_1' }}= Card::Fool.random.to_html
+    .col.s6{data: { hand: 'bard_2' }}= Card::Crisis.random.to_html
 
-  #users.content
-    - @lobby.lobby_users.each do |gl_user|
-      .user{data: { user_id: gl_user.guid }}
-        .chip
-          = image_tag gl_user.avatar_url, class: 'img-responsive circle'
-          %span{class: (gl_user.admin? ? 'teal-text' : (gl_user.moderator? ? 'blue-text' : '')) }= gl_user.name
+  %p.caption Pick your winner...
 
-  - if logged_in?
-    .chat-form
-      = simple_form_for [@lobby, Message.new], remote: true do |f|
-        .input-field.inline
-          = f.input_field :message, as: :string, placeholder: 'Send a message...'
-        %button.btn{type: 'submit'}= material_icon('send')
+  .row.masonry{data: { hand: 'play_area' }}
+    - Card::BadDecision.random(9).each do |card|
+      .col.s6.m4= card.to_html
 
-  - else
-    .chat-form
-      %p.grey-text.center You must sign in or register to chat.
+.bottom-panel
+  %ul.tabs.tabs-border
+    %li.tab= link_to 'Fool Hand', '#fool-hand'
+    %li.tab= link_to 'Crisis Hand', '#crisis-hand'
+    %li.tab= link_to 'Decision Hand', '#decision-hand'
+    %li.tab= link_to 'Hide', '#hide', class: 'right'
 
-%script#lobby-chat-template{type: 'text/html'}
-  .chat-notice{class: ''}
-    %img{src: '${lobby_user.avatar_url}', alt: "${lobby_user.name}"}
-    {{if lobby_user.admin}}
-    .rank-icon{class: 'admin'}= material_icon('star')
-    {{/if}}
-    {{if lobby_user.moderator}}
-    .rank-icon{class: 'moderator'}= material_icon('circle')
-    {{/if}}
-    .name ${lobby_user.name}
-    .message ${message}
+  #fool-hand.content
+    .row.masonry{data: { hand: 'fool' }}
+      - Card::Fool.random(5).each do |card|
+        .col.s6.m3.l2= card.to_html
+
+  #crisis-hand.content
+    .row.masonry{data: { hand: 'crisis' }}
+      - Card::Crisis.random(5).each do |card|
+        .col.s6.m3.l2= card.to_html
+
+  #decision-hand.content
+    .row.masonry{data: { hand: 'bad_decision' }}
+      - Card::BadDecision.random(5).each do |card|
+        .col.s6.m3.l2= card.to_html
+
+
+= render 'aside'
 
 :coffeescript
   $ ->
