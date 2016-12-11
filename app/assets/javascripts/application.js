@@ -14,10 +14,18 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-tmpl
-//= require masonry.pkgd
+
 //= require turbolinks
+
+//= require react
+//= require react_ujs
+//= require react_router
+//= require react_router_ujs
+
+//= require materialize-sprockets
+//= require masonry.pkgd
 //= require ahoy
+
 //= require components
 //= require cable
-//= require materialize-sprockets
 //= require_tree .

@@ -10,6 +10,8 @@
       Welcome to #{@lobby.name}
 
   #users.content
+    = react_component 'UserList', name: @lobby_user.name
+
     %ul.collection.no-border
       - @lobby.lobby_users.each do |gl_user|
         %li.collection-item.avatar{data: { user_id: gl_user.guid }}

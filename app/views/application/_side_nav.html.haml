@@ -20,10 +20,11 @@
   %li= link_to material_icon('chat', 'Game Lobbies'), lobbies_path
 
   - if logged_in?
-    %li= link_to material_icon('friend', 'Friends'), '#!'
+    %li= link_to material_icon('supervisor_account', 'Friends'), '#!'
 
     - if Lobby.for_user(current_user).any?
-      %li.subheader Your Games
+      %li
+        %a.subheader Your Games
 
       - Lobby.for_user(current_user).each do |lobby|
         %li= link_to material_icon('chat', lobby.name), lobby_path(lobby)

@@ -17,6 +17,11 @@ class LobbiesController < ApplicationController
 
   def show
     @lobby_user = @lobby.join(current_user)
+
+    respond_to do |format|
+      format.json { render json: @lobby }
+      format.html { render component: 'App', props: { lobby: @lobby.as_json, lobby_user: @lobby_user.as_json } }
+    end
   end
 
   def create

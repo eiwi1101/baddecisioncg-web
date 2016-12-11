@@ -13,5 +13,11 @@
 #
 
 class LobbySerializer < ActiveModel::Serializer
-  attributes :token, :name
+  include Rails.application.routes.url_helpers
+
+  attributes :token, :name, :message_url
+
+  def message_url
+    lobby_messages_path object
+  end
 end

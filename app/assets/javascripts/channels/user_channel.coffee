@@ -1,4 +1,4 @@
-class window.User
+class window.UserChannel
   @subscribe: (uuid) =>
     App.cable.subscriptions.create { channel: "UserChannel" },
       received: @dispatch
