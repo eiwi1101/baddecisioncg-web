@@ -109,6 +109,10 @@ class Game < ApplicationRecord
   def has_lobby_user?(lobby_user)
     self.players.exists?(user: lobby_user.user)
   end
+  
+  def as_json
+    ActiveModelSerializers::SerializableResource.new(self).as_json
+  end
 
   private
 

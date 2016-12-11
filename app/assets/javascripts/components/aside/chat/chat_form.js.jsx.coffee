@@ -1,10 +1,10 @@
 @ChatForm = React.createClass
   handleSubmit: (e) ->
     e.preventDefault();
-    $.post this.props.lobby.message_url, message: { message: this.refs.message.value }
+    $.post this.props.action, message: { message: this.refs.message.value }
 
   render: ->
-    if this.props.lobby_user.user?
+    if this.props.signed_in
       form_display =
         `<form onSubmit={this.handleSubmit} id='new_message'>
             <div className='input-field inline'>

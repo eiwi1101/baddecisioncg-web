@@ -1,8 +1,12 @@
 class GamesController < ApplicationController
+  before_action :get_lobby
   before_action :get_game, only: [:start]
 
   def create
-    flash.now[:error] = 'Not implemented.'
+    @game = @lobby.new_game
+    flash.now[:notice] = 'Waiting for players to join!'
+  rescue Exceptions::RuleViolation => e
+    flash.now[:error] = e.message
   end
 
   def start
@@ -16,6 +20,10 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def get_lobby
+    @lobby = Lobby.find(params[:lobby_id])
+  end
 
   def get_game
     @game = Game.find(params[:id])

@@ -9,7 +9,7 @@ module SlackHelper
                 fallback: fallback,
                 pretext:  message,
                 color:    color,
-                fields: fields.collect { |k,value| { title: k.humanize, value: slack_escape(value), short: (value.length < 25) } }
+                fields: fields.collect { |k,value| { title: k.to_s.humanize, value: slack_escape(value), short: (value.length < 25) } }
             }
         ]
     }

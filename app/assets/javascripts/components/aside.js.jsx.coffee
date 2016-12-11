@@ -7,5 +7,5 @@
         <UserList lobby={this.props.lobby} lobby_user={this.props.lobby_user} />
         <Settings lobby={this.props.lobby} />
 
-        <ChatForm lobby={this.props.lobby} lobby_user={this.props.lobby_user} />
+        <ChatForm action={this.props.lobby.new_message_url} signed_in={this.props.lobby_user.user != undefined} />
     </aside>`

@@ -80,8 +80,18 @@ class Lobby < ApplicationRecord
     end
   end
 
+  def new_game
+    if true || current_game.nil? || current_game.finished?
+      game = Game.create(lobby: self, score_limit: 13)
+      self.broadcast new_game: game.as_json
+      game
+    else
+      raise Exceptions::GameStatusViolation.new 'Please finish the current game before starting a new one!'
+    end
+  end
+
   def current_game
-    games.last || Game.create(lobby: self, score_limit: 13)
+    games.last
   end
 
   def has_password?
