@@ -1,32 +1,25 @@
 module SlackHelper
-  def attachment(pretext, title, message, color='good')
-    {
-        fallback: pretext,
-        pretext:  pretext,
-        color:    color,
-        fields: [{
-            title: title,
-            value: message,
-            short: false
-        }]
-    }
-  end
+  def slack_message(message, fields={})
+    color = fields.delete(:color) || '#CCC'
+    fallback = fields.delete(:fallback) || message
 
-  def build_message(fallback, message=fallback, color='#070', fields={})
-    {
+    msg = {
         attachments: [
             {
                 fallback: fallback,
                 pretext:  message,
                 color:    color,
-                fields: fields.collect { |k,value| { title: k, value: escape(value), short: (value.length < 25) } }
+                fields: fields.collect { |k,value| { title: k.humanize, value: slack_escape(value), short: (value.length < 25) } }
             }
         ]
     }
+
+    $slack.ping msg
+    msg
   end
 
   def slackify_exception(e, user=nil, request=nil)
-    {
+    msg = {
         icon_emoji: ':hankey:',
         attachments: [
             {
@@ -36,36 +29,39 @@ module SlackHelper
                 fields: [
                     {
                         title: 'User',
-                        value: escape(user.try(:name) || 'none'),
+                        value: slack_escape(user.try(:name) || 'none'),
                         short: true
                     },
                     {
                         title: 'Request IP',
-                        value: escape(request.try(:ip) || 'none'),
+                        value: slack_escape(request.try(:ip) || 'none'),
                         short: true
                     },
                     {
                         title: 'Request URL',
-                        value: escape(request.try(:original_url) || 'none'),
+                        value: slack_escape(request.try(:original_url) || 'none'),
                         short: true
                     },
                     {
-                        title: escape(e.class.name),
-                        value: escape(e.message),
+                        title: slack_escape(e.class.name),
+                        value: slack_escape(e.message),
                         short: false
                     },
                     {
                         title: 'Backtrace (top 5 items)',
-                        value: escape(e.backtrace.first(5).join("\n")),
+                        value: slack_escape(e.backtrace.first(5).join("\n")),
                         short: false
                     }
                 ]
             }
         ]
     }
+
+    $slack.ping msg
+    msg
   end
 
-  def self.escape(string)
+  def slack_escape(string)
     $slack.escape(string)
   end
 end

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def internal_server_error(e)
     if Rails.configuration.x.slack['post_exceptions']
-      $slack.ping slackify_exception e, current_user, request
+      slackify_exception e, current_user, request
     end
 
     raise e

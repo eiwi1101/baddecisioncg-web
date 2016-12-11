@@ -9,6 +9,7 @@ class LobbiesController < ApplicationController
     @lobby = Lobby.new(name: Faker::Hacker.ingverb.humanize + ' ' + Faker::Team.creature.humanize)
 
     if @lobby.save
+      slack_message "New lobby started!", name: @lobby.name
       redirect_to @lobby
     else
       redirect_to lobbies_path, flash: { notice: 'That hurt.' }
