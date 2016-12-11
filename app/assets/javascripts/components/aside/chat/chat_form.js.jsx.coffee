@@ -18,7 +18,7 @@
     else
       form_display =
         `<div className='grey-text center'>
-            You must sign in or register to chat.
+            <p>You must sign in or register to chat.</p>
         </div>`
 
     `<div className='chat-form'>

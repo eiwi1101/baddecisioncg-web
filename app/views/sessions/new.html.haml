@@ -11,4 +11,7 @@
       = simple_form_for @user, url: login_path, method: :post do |f|
         = f.input :username, class: 'form-control', icon: 'perm_identity'
         = f.input :password, class: 'form-control', icon: 'lock'
-        = f.button :submit, t('session.login'), class: 'margin-top-md full-width'
+        = f.button :submit, t('session.login'), class: 'margin-top-md full-width blue'
+
+  .margin-top-lg.center
+    = link_to 'Continue as Guest', lobbies_path, class: 'btn full-width btn-large blue darken-2'

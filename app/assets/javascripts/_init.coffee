@@ -1,6 +1,6 @@
 # Come online and listen to global push notifications.
 #
-$ ->
+$(document).on 'turbolinks:load', ->
   console.log 'Running init script'
 
 #  User.subscribe()
@@ -8,7 +8,7 @@ $ ->
   # Form Hacks
   Materialize.updateTextFields && Materialize.updateTextFields()
 
-  $('input').change ->
+  $('input, textarea').change ->
     eb = $(this).parents('form > div')
     eb.removeClass('invalid')
     eb.find('.error-block').slideUp(500)
@@ -25,3 +25,5 @@ $ ->
       itemSelectory: '.col'
       columnWidth: '.col:first-child'
       percentPosition: true
+
+$.turbo.use 'turbolinks:load'

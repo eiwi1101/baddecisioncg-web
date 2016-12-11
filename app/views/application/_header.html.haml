@@ -16,5 +16,5 @@
         - if logged_in?
           %li= link_to material_icon('exit_to_app'), logout_path
         - else
-          %li= link_to t('session.login'), login_path, class: 'btn waves-effect waves-light'
+          %li= link_to t('session.login'), login_path, class: 'btn waves-effect waves-light red darken-2'
         %li= link_to material_icon('more_vert'), '#!'
