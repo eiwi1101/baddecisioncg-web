@@ -20,7 +20,6 @@
 //= require react
 //= require react_ujs
 //= require react_router
-//= require react_router_ujs
 
 //= require materialize-sprockets
 //= require masonry.pkgd
