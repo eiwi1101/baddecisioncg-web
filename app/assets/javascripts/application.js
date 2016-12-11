@@ -19,7 +19,6 @@
 
 //= require react
 //= require react_ujs
-//= require react_router
 
 //= require materialize-sprockets
 //= require masonry.pkgd
