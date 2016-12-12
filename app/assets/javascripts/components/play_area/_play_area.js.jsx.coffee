@@ -1,8 +1,17 @@
 @PlayArea = React.createClass
   getInitialState: ->
-    game: null
-    round: null
-    players: []
+    if @props.game
+      {
+        game: @props.game
+        round: @props.game.current_round
+        players: @props.game.players
+      }
+    else
+      {
+        game: null
+        round: null
+        players: []
+      }
 
   componentDidMount: ->
     LobbyChannel.on 'new_game', (game) =>
@@ -28,8 +37,6 @@
     
   render: ->
     joined = @state.players.some (player) =>
-      console.log player
-      console.log player.lobby_user_id, @props.lobby_user.guid
       player.lobby_user_id == @props.lobby_user.guid
 
     if @state.game

@@ -8,6 +8,6 @@
 
   render: ->
     `<div id='game-area'>
-        <PlayArea lobby={this.props.lobby} lobby_user={this.props.lobby_user} />
+        <PlayArea lobby={this.props.lobby} lobby_user={this.props.lobby_user} game={this.props.game} />
         <Aside lobby={this.props.lobby} lobby_user={this.props.lobby_user} />
     </div>`

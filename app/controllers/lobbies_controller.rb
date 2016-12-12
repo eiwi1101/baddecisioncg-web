@@ -21,7 +21,11 @@ class LobbiesController < ApplicationController
 
     respond_to do |format|
       format.json { render json: @lobby }
-      format.html { render component: 'App', props: { lobby: @lobby.as_json, lobby_user: @lobby_user.as_json } }
+      format.html { render component: 'App', props: {
+          lobby: @lobby.as_json,
+          lobby_user: @lobby_user.as_json,
+          game: @lobby.current_game.as_json
+      } }
     end
   end
 

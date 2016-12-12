@@ -26,4 +26,8 @@ class Player < ApplicationRecord
 
   validates_presence_of :lobby_user
   validates_presence_of :game
+
+  def as_json(options={})
+    ActiveModelSerializers::SerializableResource.new(self).as_json(options)
+  end
 end

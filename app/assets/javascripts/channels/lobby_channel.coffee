@@ -5,6 +5,14 @@ class window.LobbyChannel
     console.log 'Listening for events.'
     App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token, user_id: user_id },
       received: @dispatch
+      connected: @connected
+      disconnected: @disconnected
+
+  @disconnected: ->
+    console.log 'disconnected'
+
+  @connected: ->
+    console.log 'connected!!'
 
   @dispatch: (data) =>
     console.log data
