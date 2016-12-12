@@ -14,8 +14,9 @@
 class Player < ApplicationRecord
   include HasGuid
 
-  belongs_to :user
+  belongs_to :lobby_user
   belongs_to :game
+  has_one :user, through: :lobby_user
   has_many :player_cards
   has_many :cards, through: :player_cards
   has_many :expansions, through: :user
@@ -23,6 +24,6 @@ class Player < ApplicationRecord
   has_guid
   acts_as_paranoid
 
-  validates_presence_of :user
+  validates_presence_of :lobby_user
   validates_presence_of :game
 end

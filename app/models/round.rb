@@ -156,7 +156,7 @@ class Round < ApplicationRecord
 
   def draw_story
     self.story_card = Card::Story.in_hand_for_game(self.game).random
-    self.lobby.broadcast set_card: { hand: 'story', card: { html: self.story_card.to_html } }
+    self.lobby.broadcast set_card: { hand: 'story', card: { html: self.story_card.to_html } } unless self.story_card.nil?
   end
 
   def mark_winner

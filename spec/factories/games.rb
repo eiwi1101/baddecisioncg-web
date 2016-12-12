@@ -21,7 +21,7 @@ FactoryGirl.define do
       lobby { build :lobby, :with_users, user_attributes: [] }
 
       after :build do |game|
-        game.players << game.lobby.users.collect { |u| build :player, user: u, game: game }
+        game.players << game.lobby.lobby_users.collect { |u| build :player, lobby_user: u, game: game }
       end
     end
 
@@ -30,7 +30,7 @@ FactoryGirl.define do
 
       after :build do |game|
         game.players.delete_all
-        game.players << game.lobby.users.collect { |u| build :player, :with_hand, user: u, game: game }
+        game.players << game.lobby.lobby_users.collect { |u| build :player, :with_hand, lobby_user: u, game: game }
       end
     end
 
@@ -52,7 +52,7 @@ FactoryGirl.define do
       status 'finished'
 
       after :build do |game|
-        game.winning_user = game.players.first.user
+        game.winning_user = game.players.first.lobby_user
       end
     end
   end

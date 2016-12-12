@@ -17,6 +17,7 @@ class LobbyUser < ApplicationRecord
 
   belongs_to :lobby
   belongs_to :user
+  has_many :players
 
   acts_as_paranoid
   has_guid

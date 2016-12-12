@@ -40,12 +40,12 @@ class Lobby < ApplicationRecord
     elsif has_user? user
         lobby_user = lobby_users.find_by(user: user)
     else
-      lobby_user = LobbyUser.new(user: user, admin: lobby_users.empty?)
+      lobby_user = LobbyUser.new(user: user, admin: lobby_users.empty?, lobby: self)
       lobby_users << lobby_user
     end
 
-    broadcast user_joined: lobby_user.as_json
     save
+    broadcast user_joined: lobby_user.as_json
     lobby_user
   end
 

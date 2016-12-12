@@ -14,7 +14,7 @@
 FactoryGirl.define do
   factory :player do
     game
-    user
+    lobby_user
 
     trait :with_hand do
       transient do
@@ -30,7 +30,7 @@ FactoryGirl.define do
 
     trait :with_discarded do
       after :build do |player|
-        player.player_cards << build_list(:player_card, 10, :discarded)
+        player.player_cards << build_list(:player_card, 10, :discarded, card: build(:fool))
       end
     end
   end

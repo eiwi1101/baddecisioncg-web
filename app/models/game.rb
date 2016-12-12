@@ -16,7 +16,7 @@ class Game < ApplicationRecord
   include HasGuid
 
   belongs_to :lobby
-  belongs_to :winning_user, class_name: User
+  belongs_to :winning_user, class_name: LobbyUser
   has_many :players, autosave: true
   has_many :rounds
   has_and_belongs_to_many :expansions, join_table: :game_expansions
@@ -59,28 +59,28 @@ class Game < ApplicationRecord
   def join(lobby_user)
     raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
     raise Exceptions::GameStatusViolation.new unless self.status.nil?
-    raise Exceptions::PlayerExistsViolation.new if self.players.exists?(user: lobby_user.user)
+    raise Exceptions::PlayerExistsViolation.new if self.players.exists?(lobby_user: lobby_user)
 
-    player = Player.new(user: lobby_user.user, game: self)
+    player = Player.new(lobby_user: lobby_user, game: self)
     self.players << player
-    self.save
     self.lobby.broadcast player_join: player.as_json
+    self.save
   end
 
   def leave(lobby_user)
     raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
     raise Exceptions::PlayerExistsViolation.new unless has_lobby_user?(lobby_user)
 
-    player = self.players.find_by!(user: lobby_user.user)
+    player = self.players.find_by!(lobby_user: lobby_user)
     self.players.delete(player)
+
+    self.lobby.broadcast player_leave: player.as_json
 
     if self.players.length < 2
       self.rounds.any? ? self.finish : self.abandon
     else
       true
     end
-
-    self.lobby.broadcast player_leave: player.as_json
   end
 
   def current_round
@@ -88,8 +88,8 @@ class Game < ApplicationRecord
   end
 
   def next_round
-    raise Exceptions::GameStatusViolation.new unless self.in_progress?
-    raise Exceptions::RoundOrderViolation.new unless self.rounds.empty? || self.rounds.last.finished?
+    raise Exceptions::GameStatusViolation.new("Invalid with current game status: #{self.status}") unless self.in_progress?
+    raise Exceptions::RoundOrderViolation.new("Invalid with current round status: #{self.current_round&.status}") unless self.rounds.empty? || self.rounds.last.finished?
 
     if self.rounds.count < self.score_limit
       bard   = self.players.where('players.id > ?', self.current_round&.bard_player&.id || 0).first
@@ -107,9 +107,9 @@ class Game < ApplicationRecord
   end
 
   def has_lobby_user?(lobby_user)
-    self.players.exists?(user: lobby_user.user)
+    self.players.exists?(lobby_user: lobby_user)
   end
-  
+
   def as_json
     ActiveModelSerializers::SerializableResource.new(self).as_json
   end
@@ -118,7 +118,7 @@ class Game < ApplicationRecord
 
   def assign_winner
     winning_player = self.players.order(:score).first
-    self.winning_user = winning_player.try :user
+    self.winning_user = winning_player.try :lobby_user
     self.lobby.broadcast player_won: winning_player
   end
 

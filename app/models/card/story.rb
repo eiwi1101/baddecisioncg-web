@@ -26,9 +26,9 @@ class Card::Story < Card
     order
   end
 
-  def display_text(round=nil, wrapper='%s')
+  def display_text(round=nil, wrapper='%{text}')
     blanks = {
-        fool:         wrapper % { card: 'fool', text: round&.fool_pc.try(:card).try(:text) || 'FOOL' },
+        fool:         wrapper % { card: 'fool',   text: round&.fool_pc.try(:card).try(:text) || 'FOOL' },
         crisis:       wrapper % { card: 'crisis', text: round&.crisis_pc.try(:card).try(:text) || 'CRISIS' },
         bad_decision: wrapper % { card: 'bad_decision', text: round&.bad_decision_pc.try(:card).try(:text) || 'BAD DECISION' }
     }

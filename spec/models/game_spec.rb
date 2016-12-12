@@ -19,7 +19,7 @@ describe Game, type: :model do
   it { is_expected.to belong_to :winning_user }
   it { is_expected.to have_many :players }
   it { is_expected.to have_many :rounds }
-  it { is_expected.to have_many :expansions }
+  it { is_expected.to have_and_belong_to_many :expansions }
   it { is_expected.to have_many :cards }
   it { is_expected.to validate_presence_of :lobby }
   it { is_expected.to_not validate_presence_of :score_limit }
@@ -40,7 +40,7 @@ describe Game, type: :model do
     it { is_expected.to validate_presence_of :winning_user }
   end
 
-  it 'does all the things with all the cards' do
+  xit 'does all the things with all the cards' do
     user_1 = create :user
     user_2 = create :user
     user_1.expansions << build(:expansion, :with_cards)
@@ -140,12 +140,11 @@ describe Game, type: :model do
     end
 
     it 'ends game if we drop below two people' do
-      game.next_round
       expect(game.leave(lobby.lobby_users.first)).to eq true
       expect(game.leave(lobby.lobby_users.last)).to eq true
       expect(game.status).to eq 'finished'
       expect(game.players.length).to eq 1
-      expect(game.winning_user).to eq lobby.lobby_users.second.user
+      expect(game.winning_user).to eq lobby.lobby_users.second
     end
   end
 
@@ -155,7 +154,7 @@ describe Game, type: :model do
 
     it 'assigns a winner' do
       expect(game.finish).to eq true
-      expect(game.winning_user).to eq game.players.second.user
+      expect(game.winning_user).to eq game.players.second.lobby_user
     end
 
     it 'requires an in progress game' do
