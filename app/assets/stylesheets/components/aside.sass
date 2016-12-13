@@ -30,6 +30,12 @@ aside
     @extend .notice-container
     position: relative
 
+    &.collapse
+      padding-top: 0
+
+      .name, img, .rank-icon
+        display: none
+
     &.self
       @extend .blue-grey
       @extend .lighten-5
@@ -63,7 +69,6 @@ aside
       margin-right: 30px
 
     .message
-      font-size: smaller
       margin-left: 50px
 
   .chat-form

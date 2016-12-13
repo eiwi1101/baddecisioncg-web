@@ -17,6 +17,8 @@ class LobbySerializer < ActiveModel::Serializer
 
   attributes :token, :name, :new_message_url, :new_game_url, :current_game_url
 
+  has_many :lobby_users
+
   def new_message_url
     lobby_messages_path object
   end

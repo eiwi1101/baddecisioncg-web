@@ -7,7 +7,7 @@
     else
       rank_icon = ''
 
-    `<div className={ 'chat-notice' + ( this.props.self ? ' self' : '' ) }>
+    `<div className={ 'chat-notice' + ( this.props.self ? ' self' : '' ) + ( this.props.collapse ? ' collapse' : '' ) }>
         { rank_icon }
         <img src={ this.props.lobby_user.avatar_url } alt={ this.props.lobby_user.name } />
         <div className='name'>{ this.props.lobby_user.name }</div>
