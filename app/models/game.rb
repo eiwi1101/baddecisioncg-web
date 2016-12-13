@@ -110,10 +110,6 @@ class Game < ApplicationRecord
     self.players.exists?(lobby_user: lobby_user)
   end
 
-  def as_json
-    ActiveModelSerializers::SerializableResource.new(self).as_json
-  end
-
   private
 
   def assign_winner

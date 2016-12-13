@@ -31,8 +31,4 @@ class Message < ApplicationRecord
   after_commit do
     self.lobby.broadcast message: self.as_json
   end
-
-  def as_json
-    ActiveModelSerializers::SerializableResource.new(self).as_json
-  end
 end

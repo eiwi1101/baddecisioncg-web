@@ -106,10 +106,6 @@ class Lobby < ApplicationRecord
     end
   end
 
-  def as_json
-    ActiveModelSerializers::SerializableResource.new(self).as_json
-  end
-
   def broadcast(data)
     LobbyChannel.broadcast_to self, data if self.persisted?
   end

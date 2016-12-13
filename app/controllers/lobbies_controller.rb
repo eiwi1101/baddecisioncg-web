@@ -17,15 +17,13 @@ class LobbiesController < ApplicationController
   end
 
   def show
-    @lobby_user = @lobby.join(current_user)
-
     respond_to do |format|
-      format.json { render json: @lobby }
+      @lobby_user = @lobby.join(current_user)
+
+      format.json { render json: @lobby, serializer: LobbyStateSerializer }
       format.html { render component: 'App', props: {
-          lobby: @lobby.as_json,
-          lobby_user: @lobby_user.as_json,
-          game: @lobby.current_game.as_json
-      } }
+          lobby_user_id: @lobby_user.guid
+      }.merge(LobbyStateSerializer.new(@lobby).as_json) }
     end
   end
 
@@ -44,7 +42,10 @@ class LobbiesController < ApplicationController
   private
 
   def get_lobby
-    @lobby = Lobby.with_deleted.find_by!(token: params[:id])
+    @lobby = Lobby.with_deleted.includes(:messages => [ :user ],
+                                         :lobby_users => [ :user ],
+                                         :games => [ :players, :rounds ])
+        .find_by!(token: params[:id])
 
     if !@lobby
       redirect_to lobbies_path, flash: { error: 'Game lobby not found.' }
