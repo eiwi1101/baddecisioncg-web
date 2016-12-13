@@ -2,20 +2,21 @@ class window.LobbyChannel
   @callbacks = {}
 
   @subscribe: (token, user_id, callbacks={}) =>
-    console.log 'Listening for events.'
     App.cable.subscriptions.create { channel: "LobbyChannel", lobby: token, user_id: user_id },
       received: @dispatch
       connected: @connected
       disconnected: @disconnected
 
-    for action, callback in callbacks
+    console.log callbacks
+    for action, callback of callbacks
+      console.log 'Hooking into ' + action
       @on action, callback
 
-  @disconnected: ->
-    console.log 'disconnected'
+  @disconnected: =>
+    @dispatch(disconnect: {})
 
-  @connected: ->
-    console.log 'connected!!'
+  @connected: =>
+    @dispatch(connect: {})
 
   @dispatch: (data) =>
     console.log data

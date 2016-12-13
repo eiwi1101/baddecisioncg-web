@@ -16,4 +16,8 @@ class PlayerSerializer < ActiveModel::Serializer
   def lobby_user_id
     object.lobby_user.guid
   end
+
+  def is_deleted
+    self.deleted?
+  end
 end

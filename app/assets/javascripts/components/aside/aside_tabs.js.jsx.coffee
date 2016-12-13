@@ -1,4 +1,7 @@
 @AsideTabs = React.createClass
+  componentDidMount: =>
+    $('ul.tabs').tabs()
+
   render: ->
     `<div className='row no-margin'>
       <ul className='tabs tabs-border'>

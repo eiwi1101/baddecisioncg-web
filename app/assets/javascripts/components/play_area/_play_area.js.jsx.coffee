@@ -11,27 +11,36 @@
 
   joinGame: (e) ->
     if @props.game
-      $.post @props.game.join_url, user_id: @props.lobby_user.guid
+      $.post @props.game.join_url, user_id: @props.lobby_user_id
     e.preventDefault()
     
   render: ->
-    joined = @props.players.some (player) =>
-      player.lobby_user_id == @props.lobby_user_id
+    joined = =>
+      for k, player of @props.players
+        return true if player.lobby_user_id == @props.lobby_user_id
+      false
 
-    if @props.game && @props.game.status == null
-      waiting_screen = `<WaitingScreen joined={joined} onStart={this.startGame} onJoin={this.joinGame} />`
+    waiting_screen = switch @props.game.status
+      when 'starting'
+        `<WaitingScreen joined={joined()} onStart={this.startGame} onJoin={this.joinGame} />`
 
-    if !@props.game || ( @props.game && ( @props.game.status == 'finished' || @props.game.status == 'abandoned') )
-      waiting_screen =
+      when 'finished' || 'abandoned'
         `<div className='margin-top-lg center'>
             <div className='caption'>No Game</div>
             <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
         </div>`
 
-    debug = JSON.stringify @props, null, 2
+      when null
+        `<div className='no-game center margin-to-lg valign'>
+            <h3 className='header grey-text lighten-3'>No games played yet.</h3>
+            <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
+        </div>`
+
+      else
+        `<h2>{ this.props.game.status }</h2>`
 
     `<div id='play-area'>
-        { waiting_screen }
+        <div className='valign-wrapper center'>{ waiting_screen }</div>
         <round-hand round={this.props.round} />
         <PlayerList players={this.props.players} />
         <user-hand lobby_user_id={this.props.lobby_user_id} />

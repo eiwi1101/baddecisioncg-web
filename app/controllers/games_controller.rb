@@ -1,6 +1,5 @@
 class GamesController < ApplicationController
   before_action :get_lobby
-  before_action :get_game, only: [:start]
 
   def create
     @game = @lobby.new_game
@@ -10,6 +9,8 @@ class GamesController < ApplicationController
   end
 
   def start
+    @game = Game.includes(:players).find_by!(guid: params[:id])
+
     if @game.start
       flash.now[:notice] = 'The game will start shortly.'
     else
@@ -23,9 +24,5 @@ class GamesController < ApplicationController
 
   def get_lobby
     @lobby = Lobby.find(params[:lobby_id])
-  end
-
-  def get_game
-    @game = Game.find(params[:id])
   end
 end

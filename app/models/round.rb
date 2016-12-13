@@ -36,6 +36,8 @@ class Round < ApplicationRecord
   validates_presence_of :bard_player
 
   state_machine :status, initial: nil do
+    after_transition any => any, do: [:broadcast!]
+
     before_transition nil => :setup, do: [:draw_story]
     before_transition any => :finished, do: [:mark_winner]
 
@@ -85,6 +87,7 @@ class Round < ApplicationRecord
 
     player_card.assign_attributes(round: self)
     self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
+    self.broadcast!
     true
   end
 
@@ -99,6 +102,7 @@ class Round < ApplicationRecord
     end
 
     self.player_cards << player_card
+    self.broadcast!
     true
   end
 
@@ -108,6 +112,7 @@ class Round < ApplicationRecord
     raise Exceptions::RoundOrderViolation.new unless self.bard_pick?
 
     self.assign_attributes(player_card.card.type_string + '_pc' => player_card)
+    self.broadcast!
     true
   end
 
@@ -143,6 +148,10 @@ class Round < ApplicationRecord
     self.story_card.card_order
   end
 
+  def broadcast!
+    self.lobby.broadcast round: self.as_json
+  end
+
   private
 
   def blank_scope
@@ -156,7 +165,7 @@ class Round < ApplicationRecord
 
   def draw_story
     self.story_card = Card::Story.in_hand_for_game(self.game).random
-    self.lobby.broadcast set_card: { hand: 'story', card: { html: self.story_card.to_html } } unless self.story_card.nil?
+    self.broadcast!
   end
 
   def mark_winner

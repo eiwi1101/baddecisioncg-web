@@ -16,6 +16,7 @@ class Player < ApplicationRecord
 
   belongs_to :lobby_user
   belongs_to :game
+  has_one :lobby, through: :game
   has_one :user, through: :lobby_user
   has_many :player_cards
   has_many :cards, through: :player_cards
@@ -29,5 +30,9 @@ class Player < ApplicationRecord
 
   def as_json(options={})
     ActiveModelSerializers::SerializableResource.new(self).as_json(options)
+  end
+
+  def broadcast!
+    self.lobby.broadcast player: self.as_json
   end
 end

@@ -28,10 +28,10 @@ class Game < ApplicationRecord
 
   after_create :assign_default_expansions
 
-  state_machine :status, initial: nil do
-    after_transition nil => :in_progress, do: [:broadcast_game_start, :start_first_round]
+  state_machine :status, initial: :starting do
+    after_transition any => any, do: [:broadcast!]
+    after_transition :starting => :in_progress, do: [:start_first_round]
     before_transition :in_progress => :finished, do: [:assign_winner]
-    after_transition :in_progress => :finished, do: [:broadcast_game_finished]
 
     state :in_progress do
       validate :validate_player_count
@@ -63,7 +63,8 @@ class Game < ApplicationRecord
 
     player = Player.new(lobby_user: lobby_user, game: self)
     self.players << player
-    self.lobby.broadcast player_join: player.as_json
+    player.broadcast!
+
     self.save
   end
 
@@ -73,8 +74,7 @@ class Game < ApplicationRecord
 
     player = self.players.find_by!(lobby_user: lobby_user)
     self.players.delete(player)
-
-    self.lobby.broadcast player_leave: player.as_json
+    player.broadcast!
 
     if self.players.length < 2
       self.rounds.any? ? self.finish : self.abandon
@@ -102,7 +102,7 @@ class Game < ApplicationRecord
       new_round = nil
     end
 
-    self.lobby.broadcast next_round: new_round.as_json if new_round
+    new_round&.broadcast!
     new_round
   end
 
@@ -110,12 +110,16 @@ class Game < ApplicationRecord
     self.players.exists?(lobby_user: lobby_user)
   end
 
+  def broadcast!
+    self.lobby.broadcast game: self.as_json
+  end
+
   private
 
   def assign_winner
     winning_player = self.players.order(:score).first
     self.winning_user = winning_player.try :lobby_user
-    self.lobby.broadcast player_won: winning_player
+    self.lobby.broadcast player: winning_player
   end
 
   def validate_player_count
@@ -124,14 +128,6 @@ class Game < ApplicationRecord
       false
     end
     true
-  end
-
-  def broadcast_game_start
-    self.lobby.broadcast game_start: self.as_json
-  end
-
-  def broadcast_game_finished
-    self.lobby.broadcast game_finished: self.as_json
   end
 
   def start_first_round

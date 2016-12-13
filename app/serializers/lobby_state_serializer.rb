@@ -8,7 +8,11 @@ class LobbyStateSerializer < ActiveModel::Serializer
   end
 
   def game
-    GameSerializer.new object.current_game
+    if object.current_game
+      GameSerializer.new object.current_game
+    else
+      { players: {}, status: nil }
+    end
   end
 
   def users
