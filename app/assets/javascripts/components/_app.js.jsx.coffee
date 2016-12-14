@@ -49,16 +49,16 @@
         @setState lobby: lobby
       
   render: ->
-    lobby_user = this.state.users[this.state.lobby_user_id]
+    lobby_user = @state.users[@state.lobby_user_id]
     signed_in = lobby_user? && lobby_user.user?
 
-    if @props.round
-      bard_guid = @props.round.bard_guid
+    if @state.round
+      bard_guid = @state.round.bard_player_guid
 
     if @state.connected
       `<div id='game-area'>
           <PlayArea players={this.state.players} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id}>
-              <PlayerList players={this.state.players} bard_guid={ bard_guid } />
+              <PlayerList players={this.state.players} bard_guid={bard_guid} />
               <div className='grow valign-wrapper center'>
                   <RoundHand round={this.state.round} />
               </div>

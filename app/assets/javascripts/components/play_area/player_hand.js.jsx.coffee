@@ -1,12 +1,13 @@
-@PlayerHand = (props) ->
-  `<div className='bottom-panel'>
-      <Tabs>
-          <Tab target='#fool-hand'>Fool Hand</Tab>
-          <Tab target='#crisis-hand'>Crisis Hand</Tab>
-          <Tab target='#decision-hand'>Decision Hand</Tab>
-      </Tabs>
-      { props.lobby_user_guid }
-  </div>`
+@PlayerHand = React.createClass
+  render: ->
+    `<div className='bottom-panel'>
+        <Tabs>
+            <Tab target='#fool-hand'>Fool</Tab>
+            <Tab target='#crisis-hand'>Crisis</Tab>
+            <Tab target='#decision-hand'>Decision</Tab>
+        </Tabs>
+        { this.props.lobby_user_guid }
+    </div>`
 
 
 #
