@@ -52,15 +52,26 @@
     lobby_user = this.state.users[this.state.lobby_user_id]
     signed_in = lobby_user? && lobby_user.user?
 
+    if @props.round
+      bard_guid = @props.round.bard_guid
+
     if @state.connected
       `<div id='game-area'>
-          <PlayArea players={this.state.players} round={this.state.round} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id} />
+          <PlayArea players={this.state.players} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id}>
+              <PlayerList players={this.state.players} bard_guid={ bard_guid } />
+              <div className='grow valign-wrapper center'>
+                  <RoundHand round={this.state.round} />
+              </div>
+              <PlayerHand lobby_user_guid={this.state.lobby_user_guid} />
+              <StatusBar game={this.props.game} />
+          </PlayArea>
+
           <Aside>
               <Chat lobby={this.state.lobby} users={this.state.users} messages={this.state.messages} lobby_user_id={this.state.lobby_user_id} />
               <UserList lobby_user_id={this.state.lobby_user_id} users={this.state.users} />
               <Settings />
 
-              <ChatForm action={this.state.lobby.messages_url} signed_in={this.state.signed_in} disabled={this.state.messages == null } />
+              <ChatForm action={this.state.lobby.messages_url} signed_in={signed_in} disabled={this.state.messages == null } />
           </Aside>
       </div>`
     else

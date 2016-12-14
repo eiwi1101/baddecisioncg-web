@@ -19,40 +19,31 @@
       for k, player of @props.players
         return true if player.lobby_user_id == @props.lobby_user_id
       false
-
+      
     waiting_screen = switch @props.game.status
       when 'starting'
         ready = Object.keys(@props.players).length >= 2
         `<WaitingScreen joined={joined()} ready={ready} onStart={this.startGame} onJoin={this.joinGame} />`
 
       when 'finished'
-        `<div className='margin-top-lg center valign'>
+        `<div className='wait-screen'>
             <div className='caption'>No Game</div>
             <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
         </div>`
 
       when 'abandoned'
-        `<div className='margin-top-lg center valign'>
+        `<div className='wait-screen'>
             <div className='caption'>Abandoned</div>
             <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
         </div>`
 
       when null
-        `<div className='no-game center margin-to-lg valign'>
+        `<div className='wait-screen'>
             <h3 className='header grey-text lighten-3'>No games played yet.</h3>
             <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
         </div>`
 
-      else
-        `<h2>{ this.props.game.status }</h2>`
-
-    if @props.round
-      bard_guid = @props.round.bard_guid
-
     `<div id='play-area'>
-        <div className='valign-wrapper center'>{ waiting_screen }</div>
-        <RoundHand round={this.props.round} />
-        <PlayerList players={this.props.players} bard_guid={ bard_guid } />
-        <user-hand lobby_user_id={this.props.lobby_user_id} />
-        <StatusBar game={this.props.game} />
+        { waiting_screen }
+        { this.props.children }
     </div>`

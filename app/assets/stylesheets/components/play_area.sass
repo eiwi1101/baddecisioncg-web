@@ -7,35 +7,42 @@ main > [data-react-class]
   display: flex
   flex-grow: 1
 
+  @media screen and (min-width: 992px)
+    margin-right: 300px
+
 #play-area
   flex-grow: 1
   position: relative
+  display: flex
+  flex-direction: column
 
-  .waiting-screen
+  .grow
+    flex-grow: 1
+
+  .wait-screen
     @extend .card-panel
-    margin: 60px auto
-    width: 80%
+    position: absolute
+    top: 50%
+    left: 50%
+    text-align: center
+    width: 450px
+    max-width: 100%
+    transform: translateX(-50%) translateY(-50%)
 
   .player-list
-    position: absolute
-    right: 10px
-    top: 10px
+    padding: 1rem 1rem 0.5rem 1rem
+    text-align: right
 
   .status-bar
     @extend .truncate
-    position: absolute
-    bottom: 0
-    left: 0
-    right: 0
-    background-color: color('grey', 'lighten-3')
+    background-color: white
     color: color('grey', 'base')
-    border-top: 1px solid color('grey', 'lighten-2')
     font-size: 0.9rem
-    padding: 0.1rem 0.2rem
+    padding: 0.5rem 1rem
     text-align: right
 
   .round-hand
-    position: absolute
-    top: 60px
-    left: 0
-    right: 0
+    //position: absolute
+    //top: 60px
+    //left: 0
+    //right: 0

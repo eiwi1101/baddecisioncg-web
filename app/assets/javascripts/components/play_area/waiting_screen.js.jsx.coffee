@@ -10,7 +10,7 @@
     message = 'A game is starting soon. Want in?'
     button = `<a href='#' onClick={props.onJoin} className='btn'>Join Game</a>`
 
-  `<div className='waiting-screen center'>
+  `<div className='wait-screen'>
       <div className='caption margin-bottom-lg'>{ message }</div>
       { button }
   </div>`

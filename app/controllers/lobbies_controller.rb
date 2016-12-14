@@ -43,8 +43,7 @@ class LobbiesController < ApplicationController
   private
 
   def get_lobby
-    @lobby = Lobby.with_deleted.includes(:messages => [ :user ],
-                                         :lobby_users => [ :user ],
+    @lobby = Lobby.with_deleted.includes(:lobby_users => [ :user ],
                                          :games => [ :players, :rounds ])
         .find_by!(token: params[:id])
 
