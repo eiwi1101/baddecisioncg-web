@@ -11,6 +11,18 @@ module SessionsHelper
     @current_user
   end
 
+  def sign_in_lobby_user(lobby_user)
+    cookies.signed[:lobby_user_id] = lobby_user.id
+    @current_lobby_user = lobby_user
+    Rails.logger.info "#{lobby_user.name} has signed in."
+  end
+
+  def current_lobby_user
+    @current_loby_user ||= LobbyUser.find_by(id: cookies.signed[:lobby_user_id])
+    cookies.signed[:lobby_user_id] = @current_lobby_user&.id
+    @current_user
+  end
+
   def logged_in?
     !current_user.nil?
   end

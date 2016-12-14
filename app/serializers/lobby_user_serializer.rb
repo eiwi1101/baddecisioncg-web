@@ -13,11 +13,15 @@
 #
 
 class LobbyUserSerializer < ActiveModel::Serializer
-  attributes :guid, :avatar_url, :name, :admin, :moderator, :username
+  attributes :guid, :avatar_url, :name, :admin, :moderator, :username, :is_deleted
 
   has_one :user, serializer: UserSerializer
 
   def username
     object.user&.username
+  end
+
+  def is_deleted
+    object.deleted?
   end
 end

@@ -1,8 +1,6 @@
 class LobbyStateSerializer < ActiveModel::Serializer
   attributes :lobby, :game, :users
 
-  has_many :messages, serializer: MessageSerializer
-
   def lobby
     LobbySerializer.new object
   end
@@ -16,6 +14,6 @@ class LobbyStateSerializer < ActiveModel::Serializer
   end
 
   def users
-    Hash[object.lobby_users.collect { |u| [ u.guid, LobbyUserSerializer.new(u) ] }]
+    Hash[object.lobby_users.with_deleted.collect { |u| [ u.guid, LobbyUserSerializer.new(u) ] }]
   end
 end

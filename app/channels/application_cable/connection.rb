@@ -1,19 +1,19 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    identified_by :current_user
+    identified_by :current_lobby_user
 
     def connect
-      self.current_user = find_verified_user
-      Rails.logger.info "Connected as #{self.current_user&.display_name}"
+      self.current_lobby_user = find_lobby_user
+      Rails.logger.info "Connected as #{self.current_lobby_user&.name}"
     end
 
     private
 
-    def find_verified_user
-      if (current_user = User.find_by(id: cookies.signed[:user_id]))
-        current_user
+    def find_lobby_user
+      if (current_lobby_user = LobbyUser.find_by(id: cookies.signed[:lobby_user_id]))
+        current_lobby_user
       else
-        nil
+        reject_unauthorized_connection
       end
     end
   end

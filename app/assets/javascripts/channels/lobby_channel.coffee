@@ -6,21 +6,28 @@ class window.LobbyChannel
       received: @dispatch
       connected: @connected
       disconnected: @disconnected
+      rejected: @rejected
+      away: @away
+      appear: @appear
 
-    console.log callbacks
     for action, callback of callbacks
-      console.log 'Hooking into ' + action
       @on action, callback
 
   @disconnected: =>
-    @dispatch(disconnect: {})
+    console.log "[turret: are you still there?]"
+    @dispatch disconnect: null
 
   @connected: =>
-    @dispatch(connect: {})
+    console.log "[oh. hello there. i missed you.]"
+    @dispatch connect: null
+
+  @rejected: =>
+    console.log "... that's harsh, yo."
+    @dispatch reject: null
 
   @dispatch: (data) =>
-    console.log data
     command = Object.keys(data)[0]
+    console.log 'Got ', data
 
     if @callbacks[command] != undefined
       $.each @callbacks[command], (index, callback) ->

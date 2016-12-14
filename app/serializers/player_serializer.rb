@@ -12,7 +12,7 @@
 #
 
 class PlayerSerializer < ActiveModel::Serializer
-  attributes :guid, :lobby_user_id, :score, :name, :avatar_url
+  attributes :guid, :lobby_user_id, :score, :name, :avatar_url, :is_deleted
 
   def name
     object.lobby_user.name
@@ -31,6 +31,6 @@ class PlayerSerializer < ActiveModel::Serializer
   end
 
   def is_deleted
-    self.deleted?
+    object.deleted?
   end
 end

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   # Other Resources
   resources :lobbies, path: :play, only: [:index, :new, :show] do
-    resources :messages, only: [:create]
+    resources :messages, only: [:create, :index]
     resources :games, only: [:create, :show] do
       resources :players, only: [:create]
       member do

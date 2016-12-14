@@ -15,7 +15,7 @@
 class GameSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :score_limit, :status, :join_url, :start_url, :players
+  attributes :guid, :score_limit, :status, :join_url, :start_url, :players
 
   has_one  :current_round
 

@@ -1,6 +1,11 @@
 class MessagesController < ApplicationController
   before_action :get_lobby
 
+  def index
+    @messages = @lobby.messages.last(10)
+    respond_with @messages, each_serializer: MessageSerializer
+  end
+
   def create
     @message = Message.create(message_params)
   end

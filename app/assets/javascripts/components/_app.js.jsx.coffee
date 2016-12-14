@@ -6,12 +6,15 @@
     players: @props.game.players
     round: @props.game.current_round
     users: @props.users
-    messages: @props.messages
+    messages: @props.messages # Optional
     connected: false
 
   componentDidMount: ->
     console.log @state
-    
+
+    $.get @state.lobby.messages_url, (messages) =>
+      @setState messages: messages
+
     LobbyChannel.subscribe this.state.lobby.token, this.state.lobby_user_id,
       disconnect: =>
         @setState connected: false
@@ -24,7 +27,6 @@
           delete players[player.guid]
         else
           players[player.guid] = player
-        console.log players
         @setState players: players
 
       user: (user) =>
@@ -33,22 +35,18 @@
           delete users[user.guid]
         else
           users[user.guid] = user
-        console.log users
         @setState users: users
         
       game: (game) =>
-        console.log game
+        if game.guid != @state.game.guid
+          @setState players: game.players, round: game.current_round
         @setState game: game
       
       round: (round) =>
-        console.log round
         @setState round: round
         
       lobby: (lobby) =>
-        console.log lobby
         @setState lobby: lobby
-      
-    console.log 'Ready!'
       
   render: ->
     lobby_user = this.state.users[this.state.lobby_user_id]
@@ -57,7 +55,13 @@
     if @state.connected
       `<div id='game-area'>
           <PlayArea players={this.state.players} round={this.state.round} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id} />
-          <Aside lobby={this.state.lobby} messages={this.state.messages} users={this.state.users} lobby_user_id={this.state.lobby_user_id} signed_in={signed_in} />
+          <Aside>
+              <Chat lobby={this.state.lobby} users={this.state.users} messages={this.state.messages} lobby_user_id={this.state.lobby_user_id} />
+              <UserList lobby_user_id={this.state.lobby_user_id} users={this.state.users} />
+              <Settings />
+
+              <ChatForm action={this.state.lobby.messages_url} signed_in={this.state.signed_in} disabled={this.state.messages == null } />
+          </Aside>
       </div>`
     else
       `<div id='game-area'>

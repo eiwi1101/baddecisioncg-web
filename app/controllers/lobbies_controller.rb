@@ -19,6 +19,7 @@ class LobbiesController < ApplicationController
   def show
     respond_to do |format|
       @lobby_user = @lobby.join(current_user)
+      sign_in_lobby_user @lobby_user
 
       format.json { render json: @lobby, serializer: LobbyStateSerializer }
       format.html { render component: 'App', props: {

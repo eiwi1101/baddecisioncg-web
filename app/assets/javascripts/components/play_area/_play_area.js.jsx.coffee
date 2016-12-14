@@ -46,10 +46,13 @@
       else
         `<h2>{ this.props.game.status }</h2>`
 
+    if @props.round
+      bard_guid = @props.round.bard_guid
+
     `<div id='play-area'>
         <div className='valign-wrapper center'>{ waiting_screen }</div>
         <RoundHand round={this.props.round} />
-        <PlayerList players={this.props.players} />
+        <PlayerList players={this.props.players} bard_guid={ bard_guid } />
         <user-hand lobby_user_id={this.props.lobby_user_id} />
         <StatusBar game={this.props.game} />
     </div>`
