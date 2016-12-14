@@ -117,7 +117,11 @@ class Round < ApplicationRecord
   end
 
   def story_text
-    self.story_card.try(:display_text, self)
+    self.story_card&.display_text self
+  end
+
+  def story_html
+    self.story_card&.to_html self
   end
 
   def submitted_player_cards
@@ -137,7 +141,7 @@ class Round < ApplicationRecord
   end
 
   def card_blanks
-    raise Exceptions::RoundOrderViolation.new if self.story_card.nil?
+    return [] if self.story_card.nil?
 
     self.story_order.collect do |type|
       self.send(type + '_pc')
@@ -149,7 +153,7 @@ class Round < ApplicationRecord
   end
 
   def broadcast!
-    self.lobby.broadcast round: self.as_json
+    self.lobby.broadcast round: RoundSerializer.new(self).as_json
   end
 
   private

@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   def create
     @game = @lobby.new_game
-    flash.now[:notice] = 'Waiting for players to join!'
+    flash.now[:notice] = t('game_status.waiting')
   rescue Exceptions::RuleViolation => e
     flash.now[:error] = e.message
   end
@@ -12,7 +12,7 @@ class GamesController < ApplicationController
     @game = Game.includes(:players).find_by!(guid: params[:id])
 
     if @game.start
-      flash.now[:notice] = 'The game will start shortly.'
+      flash.now[:notice] = t('game_status.starting')
     else
       flash.now[:error] = @game.errors.full_messages.to_sentence
     end

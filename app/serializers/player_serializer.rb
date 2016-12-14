@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: players
+#
+#  id            :integer          not null, primary key
+#  game_id       :integer
+#  lobby_user_id :integer
+#  score         :integer
+#  order         :integer
+#  guid          :string
+#  deleted_at    :datetime
+#
+
 class PlayerSerializer < ActiveModel::Serializer
   attributes :guid, :lobby_user_id, :score, :name, :avatar_url
 

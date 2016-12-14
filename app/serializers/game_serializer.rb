@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: games
+#
+#  id              :integer          not null, primary key
+#  score_limit     :integer
+#  lobby_id        :integer
+#  winning_user_id :integer
+#  status          :string
+#  guid            :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 class GameSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 

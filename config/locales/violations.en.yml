@@ -1,0 +1,7 @@
+en:
+  violations:
+    user_lobby: This game is not in the same lobby as you.
+    game_status: You can't do that right now.
+    round_order: You can't do that right now.
+    player_exists: You are already in this game.
+    not_player_exists: You are not in this game.

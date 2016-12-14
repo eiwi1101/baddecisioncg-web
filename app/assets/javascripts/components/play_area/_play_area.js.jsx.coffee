@@ -22,11 +22,18 @@
 
     waiting_screen = switch @props.game.status
       when 'starting'
-        `<WaitingScreen joined={joined()} onStart={this.startGame} onJoin={this.joinGame} />`
+        ready = Object.keys(@props.players).length >= 2
+        `<WaitingScreen joined={joined()} ready={ready} onStart={this.startGame} onJoin={this.joinGame} />`
 
-      when 'finished' || 'abandoned'
-        `<div className='margin-top-lg center'>
+      when 'finished'
+        `<div className='margin-top-lg center valign'>
             <div className='caption'>No Game</div>
+            <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
+        </div>`
+
+      when 'abandoned'
+        `<div className='margin-top-lg center valign'>
+            <div className='caption'>Abandoned</div>
             <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
         </div>`
 
@@ -41,7 +48,8 @@
 
     `<div id='play-area'>
         <div className='valign-wrapper center'>{ waiting_screen }</div>
-        <round-hand round={this.props.round} />
+        <RoundHand round={this.props.round} />
         <PlayerList players={this.props.players} />
         <user-hand lobby_user_id={this.props.lobby_user_id} />
+        <StatusBar game={this.props.game} />
     </div>`

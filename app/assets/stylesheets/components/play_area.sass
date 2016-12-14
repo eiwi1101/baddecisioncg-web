@@ -20,3 +20,22 @@ main > [data-react-class]
     position: absolute
     right: 10px
     top: 10px
+
+  .status-bar
+    @extend .truncate
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    background-color: color('grey', 'lighten-3')
+    color: color('grey', 'base')
+    border-top: 1px solid color('grey', 'lighten-2')
+    font-size: 0.9rem
+    padding: 0.1rem 0.2rem
+    text-align: right
+
+  .round-hand
+    position: absolute
+    top: 60px
+    left: 0
+    right: 0

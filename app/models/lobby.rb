@@ -45,7 +45,7 @@ class Lobby < ApplicationRecord
     end
 
     save
-    broadcast user: lobby_user.as_json
+    lobby_user.broadcast!
     lobby_user
   end
 
@@ -64,26 +64,27 @@ class Lobby < ApplicationRecord
 
     if current_game&.has_lobby_user?(lobby_user)
       current_game.leave(lobby_user)
-      broadcast user: lobby_user.as_json
     end
 
     if lobby_users.admins.length == 0
       if (admin = lobby_users.first)
         admin.update_attributes admin: true
-        broadcast user: admin.as_json
+        admin.broadcast!
       end
     end
 
     if lobby_users.length == 0
       self.delete
-      broadcast lobby: self.as_json
+      self.broadcast!
     end
+
+    lobby_user.broadcast!
   end
 
   def new_game
     if true || current_game.nil? || current_game.finished?
       game = Game.create(lobby: self, score_limit: 13)
-      self.broadcast game: game.as_json
+      game.broadcast!
       game
     else
       raise Exceptions::GameStatusViolation.new 'Please finish the current game before starting a new one!'
@@ -104,6 +105,10 @@ class Lobby < ApplicationRecord
     else
       lobby_users.exists?(user: user_or_id)
     end
+  end
+
+  def broadcast!
+    self.broadcast LobbySerializer.new(self).as_json
   end
 
   def broadcast(data)

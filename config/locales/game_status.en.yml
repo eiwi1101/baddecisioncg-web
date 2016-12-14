@@ -1,0 +1,5 @@
+en:
+  game_status:
+    starting: The game will start shortly.
+    waiting: Waiting for players to join.
+    joined: You have joined the game. Welcome.

@@ -5,7 +5,7 @@ class PlayersController < ApplicationController
   def create
     lobby_user = LobbyUser.find(params[:user_id])
     @game.join(lobby_user)
-    flash.now[:notice] = 'Joined! You will be dealt in when the game starts.'
+    flash.now[:notice] = t('game_status.joined')
   rescue Exceptions::RuleViolation => e
     flash.now[:error] = e.message
   end

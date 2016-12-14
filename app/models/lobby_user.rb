@@ -34,8 +34,8 @@ class LobbyUser < ApplicationRecord
 
   def avatar_url
     color = Digest::MD5.hexdigest(self.name)[-6,6]
-
-    user&.avatar_url || "https://placehold.it/80/#{color}/fff?text=Anon"
+    letter = name.match(/\S\s*(\S)/)[0]
+    user&.avatar_url || "https://placehold.it/80/#{color}/fff?text=#{letter}"
   end
 
   def guest?
@@ -46,8 +46,8 @@ class LobbyUser < ApplicationRecord
     self.lobby&.leave self.user
   end
 
-  def as_json(options={})
-    ActiveModelSerializers::SerializableResource.new(self).as_json(options)
+  def broadcast!
+    self.lobby.broadcast user: LobbyUserSerializer.new(self).as_json
   end
 
   private

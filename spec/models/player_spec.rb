@@ -2,13 +2,13 @@
 #
 # Table name: players
 #
-#  id         :integer          not null, primary key
-#  game_id    :integer
-#  user_id    :integer
-#  score      :integer
-#  order      :integer
-#  guid       :string
-#  deleted_at :datetime
+#  id            :integer          not null, primary key
+#  game_id       :integer
+#  lobby_user_id :integer
+#  score         :integer
+#  order         :integer
+#  guid          :string
+#  deleted_at    :datetime
 #
 
 require 'rails_helper'

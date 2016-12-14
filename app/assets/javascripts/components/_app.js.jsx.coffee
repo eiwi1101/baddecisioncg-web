@@ -10,6 +10,8 @@
     connected: false
 
   componentDidMount: ->
+    console.log @state
+    
     LobbyChannel.subscribe this.state.lobby.token, this.state.lobby_user_id,
       disconnect: =>
         @setState connected: false

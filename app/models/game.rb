@@ -44,7 +44,7 @@ class Game < ApplicationRecord
     state :abandoned
 
     event :start do
-      transition nil => :in_progress
+      transition :starting => :in_progress
     end
 
     event :finish do
@@ -57,9 +57,9 @@ class Game < ApplicationRecord
   end
 
   def join(lobby_user)
-    raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
-    raise Exceptions::GameStatusViolation.new unless self.status.nil?
-    raise Exceptions::PlayerExistsViolation.new if self.players.exists?(lobby_user: lobby_user)
+    raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
+    raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.starting?
+    raise Exceptions::PlayerExistsViolation.new I18n.t('violations.player_exists') if self.players.exists?(lobby_user: lobby_user)
 
     player = Player.new(lobby_user: lobby_user, game: self)
     self.players << player
@@ -69,8 +69,8 @@ class Game < ApplicationRecord
   end
 
   def leave(lobby_user)
-    raise Exceptions::UserLobbyViolation.new unless lobby_user.lobby == self.lobby
-    raise Exceptions::PlayerExistsViolation.new unless has_lobby_user?(lobby_user)
+    raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
+    raise Exceptions::PlayerExistsViolation.new I18n.t('violations.not_player_exists') unless has_lobby_user?(lobby_user)
 
     player = self.players.find_by!(lobby_user: lobby_user)
     self.players.delete(player)
@@ -88,8 +88,8 @@ class Game < ApplicationRecord
   end
 
   def next_round
-    raise Exceptions::GameStatusViolation.new("Invalid with current game status: #{self.status}") unless self.in_progress?
-    raise Exceptions::RoundOrderViolation.new("Invalid with current round status: #{self.current_round&.status}") unless self.rounds.empty? || self.rounds.last.finished?
+    raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.in_progress?
+    raise Exceptions::RoundOrderViolation.new I18n.t('violations.round_order') unless self.rounds.empty? || self.rounds.last.finished?
 
     if self.rounds.count < self.score_limit
       bard   = self.players.where('players.id > ?', self.current_round&.bard_player&.id || 0).first
@@ -111,7 +111,7 @@ class Game < ApplicationRecord
   end
 
   def broadcast!
-    self.lobby.broadcast game: self.as_json
+    self.lobby.broadcast game: GameSerializer.new(self).as_json
   end
 
   private
