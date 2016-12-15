@@ -100,7 +100,7 @@ describe Game, type: :model do
     it 'will not start without players' do
       expect(game.start).to eq false
       expect(game.errors[:players]).to have(1).items
-      expect(game.status).to be_nil
+      expect(game.status).to eq 'starting'
     end
 
     it 'starts with at least two players' do

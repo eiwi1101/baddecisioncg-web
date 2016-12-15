@@ -43,8 +43,8 @@ class Player < ApplicationRecord
 
   def broadcast!
     return if @defer_broadcast
-    lobby.broadcast player: PlayerSerializer.new(self).as_json
+    lobby.broadcast player: PlayerSerializer.new(self).as_json if lobby
     Rails.logger.info "#{lobby_user.name} is being told secrets now..."
-    lobby_user.broadcast player: PrivatePlayerSerializer.new(self).as_json
+    lobby_user.broadcast player: PrivatePlayerSerializer.new(self).as_json if lobby_user
   end
 end

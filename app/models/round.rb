@@ -28,7 +28,6 @@ class Round < ApplicationRecord
   belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
   has_many :player_cards, autosave: true
-  has_many :players, through: :game
   has_one  :lobby, through: :game
 
   has_guid
@@ -154,7 +153,7 @@ class Round < ApplicationRecord
   end
 
   def broadcast!
-    self.lobby.broadcast round: RoundSerializer.new(self).as_json
+    self.lobby.broadcast round: RoundSerializer.new(self).as_json if self.lobby
   end
 
   private
@@ -174,7 +173,7 @@ class Round < ApplicationRecord
   end
 
   def players_draw
-    self.players.collect(&:draw!)
+    self.game.players.collect(&:draw!)
   end
 
   def mark_winner
