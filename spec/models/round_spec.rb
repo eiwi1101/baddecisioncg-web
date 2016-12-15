@@ -76,6 +76,11 @@ describe Round, type: :model do
     its(:story_card) { is_expected.to_not be_nil }
     its(:story_card) { is_expected.to_not eq game.cards.stories.first }
 
+    it 'draws player cards' do
+      player = round.players.first
+      expect(player.player_cards).to have_at_least(1).item
+    end
+
     context 'with empty story deck' do
       let(:game) { create :game, :with_players }
 

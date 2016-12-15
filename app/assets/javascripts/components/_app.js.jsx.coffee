@@ -7,15 +7,15 @@
     round: @props.game.current_round
     users: @props.users
     messages: @props.messages # Optional
-    connected: false
+    connected: true
 
   componentDidMount: ->
     console.log @state
 
     $.get @state.lobby.messages_url, (messages) =>
       @setState messages: messages
-
-    LobbyChannel.subscribe this.state.lobby.token, this.state.lobby_user_id,
+      
+    LobbyChannel.subscribe { token: this.state.lobby.token, lobby_user_id: this.state.lobby_user_id },
       disconnect: =>
         @setState connected: false
       connect: =>
@@ -36,15 +36,15 @@
         else
           users[user.guid] = user
         @setState users: users
-        
+
       game: (game) =>
         if game.guid != @state.game.guid
           @setState players: game.players, round: game.current_round
         @setState game: game
-      
+
       round: (round) =>
         @setState round: round
-        
+
       lobby: (lobby) =>
         @setState lobby: lobby
       

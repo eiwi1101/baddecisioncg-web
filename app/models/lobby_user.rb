@@ -50,6 +50,10 @@ class LobbyUser < ApplicationRecord
     self.lobby.broadcast user: LobbyUserSerializer.new(self).as_json
   end
 
+  def broadcast(data)
+    LobbyUserChannel.broadcast_to self, data if self.persisted?
+  end
+
   private
 
   def generate_guest_name

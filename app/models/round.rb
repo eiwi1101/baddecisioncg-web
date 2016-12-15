@@ -28,6 +28,7 @@ class Round < ApplicationRecord
   belongs_to :bad_decision_pc, class_name: PlayerCard
   belongs_to :story_card, class_name: Card::Story
   has_many :player_cards, autosave: true
+  has_many :players, through: :game
   has_one  :lobby, through: :game
 
   has_guid
@@ -38,7 +39,7 @@ class Round < ApplicationRecord
   state_machine :status, initial: nil do
     after_transition any => any, do: [:broadcast!]
 
-    before_transition nil => :setup, do: [:draw_story]
+    before_transition nil => :setup, do: [:draw_story, :players_draw]
     before_transition any => :finished, do: [:mark_winner]
 
     state :setup do
@@ -170,6 +171,10 @@ class Round < ApplicationRecord
   def draw_story
     self.story_card = Card::Story.in_hand_for_game(self.game).random
     self.broadcast!
+  end
+
+  def players_draw
+    self.players.collect(&:draw!)
   end
 
   def mark_winner

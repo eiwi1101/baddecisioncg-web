@@ -1,4 +1,21 @@
 @PlayerHand = React.createClass
+  getInitialState: ->
+    fool: @props.foolHand || {}
+    crisis: @props.crisisHand || {}
+    bad_decision: @props.badDecisionHand || {}
+    
+  componentDidMount: ->
+    LobbyUserChannel.subscribe { lobby_user_id: @props.lobbyUserGuid },
+      player: (player) ->
+        if player.cards
+          player.cards.map (card) ->
+            console.log card
+            if (card.is_discarded) delete @state[card.type][card.guid]
+            else @state[card.type][card.guid] = card
+
+      connect: ->
+        console.log 'Tell me your sweet, sweet secrets...'
+    
   render: ->
     `<div className='bottom-panel'>
         <Tabs>
@@ -6,21 +23,8 @@
             <Tab target='#crisis-hand'>Crisis</Tab>
             <Tab target='#decision-hand'>Decision</Tab>
         </Tabs>
-        { this.props.lobby_user_guid }
+        
+        <CardList cards={this.state.fool} id='fool-hand' />
+        <CardList cards={this.state.crisis} id='crisis-hand' />
+        <CardList cards={this.state.bad_decision} id='decision-hand' />
     </div>`
-
-
-#
-#.bottom-panel
-#  %ul.tabs.tabs-border
-#    %li.tab= link_to 'Fool Hand', '#fool-hand'
-#    %li.tab= link_to 'Crisis Hand', '#crisis-hand'
-#    %li.tab= link_to 'Decision Hand', '#decision-hand'
-#    %li.tab= link_to 'Hide', '#hide'
-#
-#  #fool-hand.content
-#    .row.masonry{data: { hand: 'fool' }}
-#  #crisis-hand.content
-#    .row.masonry{data: { hand: 'crisis' }}
-#  #decision-hand.content
-#    .row.masonry{data: { hand: 'bad_decision' }}

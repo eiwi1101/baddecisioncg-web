@@ -1,0 +1,1 @@
+@LobbyUserChannel = new Channel 'LobbyUserChannel'

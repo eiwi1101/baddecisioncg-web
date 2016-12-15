@@ -18,9 +18,9 @@ module SessionsHelper
   end
 
   def current_lobby_user
-    @current_loby_user ||= LobbyUser.find_by(id: cookies.signed[:lobby_user_id])
+    @current_lobby_user ||= LobbyUser.find_by(id: cookies.signed[:lobby_user_id])
     cookies.signed[:lobby_user_id] = @current_lobby_user&.id
-    @current_user
+    @current_lobby_user
   end
 
   def logged_in?

@@ -18,6 +18,7 @@ class Game < ApplicationRecord
   belongs_to :lobby
   belongs_to :winning_user, class_name: LobbyUser
   has_many :players, autosave: true
+  has_many :player_cards, through: :players
   has_many :rounds
   has_and_belongs_to_many :expansions, join_table: :game_expansions
   has_many :cards, through: :expansions

@@ -114,4 +114,17 @@ class Lobby < ApplicationRecord
   def broadcast(data)
     LobbyChannel.broadcast_to self, data if self.persisted?
   end
+
+  def slash_command(command, data=nil)
+    case command
+      when 'skip'
+        current_game.next_round
+      when 'reset'
+        new_game
+      when 'draw'
+        current_game.players.collect(&:draw!)
+      else
+        false
+    end
+  end
 end

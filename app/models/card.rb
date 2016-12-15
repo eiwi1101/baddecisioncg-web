@@ -27,6 +27,9 @@ class Card < ApplicationRecord
   scope :bad_decisions, -> { where(type: 'Card::BadDecision') }
   scope :stories, -> { where(type: 'Card::Story') }
 
+  scope :discarded_for_game, -> (game) { game.cards.where('EXISTS (?)', game.player_cards.select(nil).where('player_cards.card_id = cards.id')) }
+  scope :in_hand_for_game,   -> (game) { game.cards.where.not('EXISTS (?)', game.player_cards.select(nil).where('player_cards.card_id = cards.id')) }
+
   def self.types
     [
         ['Fool', 'Card::Fool'],

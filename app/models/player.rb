@@ -28,11 +28,23 @@ class Player < ApplicationRecord
   validates_presence_of :lobby_user
   validates_presence_of :game
 
-  def as_json(options={})
-    ActiveModelSerializers::SerializableResource.new(self).as_json(options)
+  def draw(card)
+    player_cards << PlayerCard.new(card: card, player: self)
+  end
+
+  def draw!
+    @defer_broadcast = true
+    Card::Fool.in_hand_for_game(game).random([5 - player_cards.fools.count, 0].max).each { |c| draw c }
+    Card::Crisis.in_hand_for_game(game).random([5 - player_cards.crisis.count, 0].max).each { |c| draw c }
+    Card::BadDecision.in_hand_for_game(game).random([5 - player_cards.bad_decisions.count, 0].max).each { |c| draw c }
+    @defer_broadcast = false
+    broadcast!
   end
 
   def broadcast!
-    self.lobby.broadcast player: PlayerSerializer.new(self).as_json
+    return if @defer_broadcast
+    lobby.broadcast player: PlayerSerializer.new(self).as_json
+    Rails.logger.info "#{lobby_user.name} is being told secrets now..."
+    lobby_user.broadcast player: PrivatePlayerSerializer.new(self).as_json
   end
 end
