@@ -69,10 +69,10 @@
           <PlayArea players={this.state.players} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id}>
               <PlayerList players={this.state.players} bard_guid={bard_guid} />
               <div className='grow valign-wrapper center'>
-                  <RoundHand round={this.state.round} />
+                  <RoundHand selectWinnerUrl={this.state.game.winner_card_url} round={this.state.round} />
               </div>
-              <PlayerHand foolHand={this.state.playerHand.fool} crisisHand={this.state.playerHand.crisis} badDecisionHand={this.state.playerHand.bad_decision} />
-              <StatusBar game={this.props.game} />
+              <PlayerHand playUrl={this.state.game.play_card_url} foolHand={this.state.playerHand.fool} crisisHand={this.state.playerHand.crisis} badDecisionHand={this.state.playerHand.bad_decision} />
+              <StatusBar game={this.state.game} round={this.state.round} />
           </PlayArea>
 
           <Aside>

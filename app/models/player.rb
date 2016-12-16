@@ -28,6 +28,10 @@ class Player < ApplicationRecord
   validates_presence_of :lobby_user
   validates_presence_of :game
 
+  def bard?
+    game&.current_round&.bard_player == self
+  end
+
   def draw(card)
     player_cards << PlayerCard.new(card: card, player: self)
   end

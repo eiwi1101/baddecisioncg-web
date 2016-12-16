@@ -2,8 +2,8 @@
   cards = []
   
   for key, card of props.cards
-    cards.push `<Card key={key} size={props.size} {...card} />`
+    cards.push `<Card key={key} onPlay={props.onPlay} size={props.size} {...card} />`
     
   `<div id={props.id} className='row masonry content'>
-    { cards }
+    { props.children || cards }
   </div>`

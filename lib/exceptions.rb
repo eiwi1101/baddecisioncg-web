@@ -8,6 +8,7 @@ module Exceptions
   class DiscardedCardViolation < RuleViolation; end
   class RoundOrderViolation < RuleViolation; end
   class RoundMismatchViolation < RuleViolation; end
+  class PlayerRoleViolation < RuleViolation; end
 
   # Game Things
   class GameStatusViolation < RuleViolation; end

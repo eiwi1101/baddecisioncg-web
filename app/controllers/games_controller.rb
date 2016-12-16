@@ -1,11 +1,9 @@
 class GamesController < ApplicationController
-  before_action :get_lobby
+  before_action :get_lobby, only: [:create]
 
   def create
     @game = @lobby.new_game
     flash.now[:notice] = t('game_status.waiting')
-  rescue Exceptions::RuleViolation => e
-    flash.now[:error] = e.message
   end
 
   def start

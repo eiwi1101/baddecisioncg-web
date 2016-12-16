@@ -5,3 +5,4 @@ es:
     round_order: No puedes hacerlo ahora mismo.
     player_exists: Ya estás en este juego.
     not_player_exists: No estás en este juego.
+    player_role: "You are not the bard!"

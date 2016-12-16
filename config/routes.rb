@@ -11,10 +11,20 @@ Rails.application.routes.draw do
   post :register, to: 'users#create'
 
   # Other Resources
-  resources :lobbies, path: :play, only: [:index, :new, :show] do
-    resources :messages, only: [:create, :index]
-    resources :games, only: [:create, :show] do
-      resources :players, only: [:create]
+  resources :lobbies, path: :l, only: [:index, :new, :show] do
+    resources :messages, only: [:create, :index], shallow: true
+
+    resources :games, only: [:create, :show], shallow: true do
+      resources :players, only: [:create], shallow: true
+
+      resources :rounds, only: [], shallow: true do
+        resources :player_cards, only: [:create], shallow: true do
+          collection do
+            post :winner
+          end
+        end
+      end
+
       member do
         post :start
       end

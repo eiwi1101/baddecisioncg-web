@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   rescue_from Exception, with: :internal_server_error
+  rescue_from Exceptions::RuleViolation, with: :rule_violation
 
   private
 
@@ -17,5 +18,10 @@ class ApplicationController < ActionController::Base
     end
 
     raise e
+  end
+
+  def rule_violation(e)
+    flash.now[:error] = e.message
+    render 'create'
   end
 end

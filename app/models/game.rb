@@ -57,6 +57,10 @@ class Game < ApplicationRecord
     end
   end
 
+  def player_for(lobby_user)
+    players.find_by! lobby_user: lobby_user
+  end
+
   def join(lobby_user)
     raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
     raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.starting?
@@ -104,6 +108,7 @@ class Game < ApplicationRecord
     end
 
     new_round&.broadcast!
+    self.broadcast!
     new_round
   end
 
