@@ -2,9 +2,8 @@
   cards = []
   
   for key, card of props.cards
-    next unless card.is_in_hand
-    cards << `<Card key={key} {...card} />`
+    cards.push `<Card key={key} size={props.size} {...card} />`
     
-  `<div id={props.id} className='row masonry'>
+  `<div id={props.id} className='row masonry content'>
     { cards }
   </div>`

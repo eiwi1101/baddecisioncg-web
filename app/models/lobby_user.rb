@@ -51,6 +51,7 @@ class LobbyUser < ApplicationRecord
   end
 
   def broadcast(data)
+    Rails.logger.debug "Broadcasting to lobby user #{self.guid}: #{data.inspect}"
     LobbyUserChannel.broadcast_to self, data if self.persisted?
   end
 

@@ -8,6 +8,7 @@
     users: @props.users
     messages: @props.messages # Optional
     connected: true
+    playerHand: {}
 
   componentDidMount: ->
     console.log @state
@@ -15,7 +16,7 @@
     $.get @state.lobby.messages_url, (messages) =>
       @setState messages: messages
       
-    LobbyChannel.subscribe { token: this.state.lobby.token, lobby_user_id: this.state.lobby_user_id },
+    LobbyChannel.subscribe { token: @state.lobby.token, lobby_user_id: @state.lobby_user_id },
       disconnect: =>
         @setState connected: false
       connect: =>
@@ -39,7 +40,7 @@
 
       game: (game) =>
         if game.guid != @state.game.guid
-          @setState players: game.players, round: game.current_round
+          @setState players: game.players, round: game.current_round, playerHand: {}
         @setState game: game
 
       round: (round) =>
@@ -47,6 +48,14 @@
 
       lobby: (lobby) =>
         @setState lobby: lobby
+
+    LobbyUserChannel.subscribe { lobby_user_id: @state.lobby_user_id },
+      player: (player) =>
+        if player.cards
+          for key, card of player.cards
+            @state.playerHand[card.type] = {} unless @state.playerHand[card.type]
+            if card.is_discarded then delete @state.playerHand[card.type][card.guid]
+            else @state.playerHand[card.type][card.guid] = card
       
   render: ->
     lobby_user = @state.users[@state.lobby_user_id]
@@ -62,7 +71,7 @@
               <div className='grow valign-wrapper center'>
                   <RoundHand round={this.state.round} />
               </div>
-              <PlayerHand lobby_user_guid={this.state.lobby_user_guid} />
+              <PlayerHand foolHand={this.state.playerHand.fool} crisisHand={this.state.playerHand.crisis} badDecisionHand={this.state.playerHand.bad_decision} />
               <StatusBar game={this.props.game} />
           </PlayArea>
 
