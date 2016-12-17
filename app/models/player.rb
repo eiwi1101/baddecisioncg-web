@@ -38,9 +38,9 @@ class Player < ApplicationRecord
 
   def draw!
     @defer_broadcast = true
-    Card.fools.in_hand_for_game(game).random([5 - player_cards.fools.count, 0].max).each { |c| draw c }
-    Card.crisis.in_hand_for_game(game).random([5 - player_cards.crisis.count, 0].max).each { |c| draw c }
-    Card.bad_decisions.in_hand_for_game(game).random([5 - player_cards.bad_decisions.count, 0].max).each { |c| draw c }
+    Card.fools.in_hand_for_game(game).random([5 - player_cards.fools.in_hand.count, 0].max).each { |c| draw c }
+    Card.crisis.in_hand_for_game(game).random([5 - player_cards.crisis.in_hand.count, 0].max).each { |c| draw c }
+    Card.bad_decisions.in_hand_for_game(game).random([5 - player_cards.bad_decisions.in_hand.count, 0].max).each { |c| draw c }
     @defer_broadcast = false
     broadcast!
   end

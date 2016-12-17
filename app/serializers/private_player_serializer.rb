@@ -4,7 +4,7 @@ class PrivatePlayerSerializer < ActiveModel::Serializer
   def cards
     cards = {}
 
-    object.player_cards.each do |player_card|
+    object.player_cards.in_hand.each do |player_card|
       cards[player_card.guid] = PlayerCardSerializer.new(player_card).as_json
     end
 
