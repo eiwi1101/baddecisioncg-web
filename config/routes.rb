@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     resources :games, only: [:create, :show], shallow: true do
       resources :players, only: [:create], shallow: true
 
-      resources :rounds, only: [], shallow: true do
+      resources :rounds, only: [:create], shallow: true do
         resources :player_cards, only: [:create], shallow: true do
           collection do
             post :winner

@@ -57,6 +57,10 @@
             if card.is_discarded then delete @state.playerHand[card.type][card.guid]
             else @state.playerHand[card.type][card.guid] = card
       
+  nextRound: (e) ->
+    $.post @state.game.rounds_url
+    e.preventDefault()
+            
   render: ->
     lobby_user = @state.users[@state.lobby_user_id]
     signed_in = lobby_user? && lobby_user.user?
@@ -65,12 +69,18 @@
       bard_guid = @state.round.bard_player_guid
 
     if @state.connected
+      if @state.round?.winning_player_guid
+        winning_player = `<PlayerVictoryDialog player={this.state.players[this.state.round.winning_player_guid]} onConfirm={this.nextRound} />`
+        
       `<div id='game-area'>
           <PlayArea players={this.state.players} game={this.state.game} lobby={this.state.lobby} lobby_user_id={this.state.lobby_user_id}>
               <PlayerList players={this.state.players} bard_guid={bard_guid} />
+
               <div className='grow valign-wrapper center'>
+                  { winning_player }
                   <RoundHand selectWinnerUrl={this.state.game.winner_card_url} round={this.state.round} />
               </div>
+
               <PlayerHand playUrl={this.state.game.play_card_url} foolHand={this.state.playerHand.fool} crisisHand={this.state.playerHand.crisis} badDecisionHand={this.state.playerHand.bad_decision} />
               <StatusBar game={this.state.game} round={this.state.round} />
           </PlayArea>

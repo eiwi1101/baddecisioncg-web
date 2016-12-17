@@ -28,19 +28,19 @@
       when 'finished'
         `<div className='wait-screen'>
             <div className='caption'>No Game</div>
-            <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
+            <a href='#' className='btn' onClick={this.newGame}>New Game</a>
         </div>`
 
       when 'abandoned'
         `<div className='wait-screen'>
             <div className='caption'>Abandoned</div>
-            <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
+            <a href='#' className='btn' onClick={this.newGame}>New Game</a>
         </div>`
 
       when null
         `<div className='wait-screen'>
-            <h3 className='header grey-text lighten-3'>No games played yet.</h3>
-            <a href='#' className='btn margin-top-lg btn-large' onClick={this.newGame}>New Game</a>
+            <p className='caption'>No games played yet.</p>
+            <a href='#' className='btn' onClick={this.newGame}>New Game</a>
         </div>`
 
     `<div id='play-area'>
