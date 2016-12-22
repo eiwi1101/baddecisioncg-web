@@ -29,7 +29,7 @@ class LobbyUser < ApplicationRecord
   scope :admins, -> { where(admin: true) }
 
   def name
-    super || user.display_name
+    super || user&.display_name
   end
 
   def avatar_url
