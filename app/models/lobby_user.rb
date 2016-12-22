@@ -33,7 +33,7 @@ class LobbyUser < ApplicationRecord
   end
 
   def avatar_url
-    color = Digest::MD5.hexdigest(self.name)[-6,6]
+    color = self.name ? Digest::MD5.hexdigest(self.name)[-6,6] : '000'
     letter = name.match(/\S\s*(\S)/)[0]
     user&.avatar_url || "https://placehold.it/80/#{color}/fff?text=#{letter}"
   end
