@@ -105,7 +105,8 @@ class Round < ApplicationRecord
       slot.each { |pc| pc.update_attributes(round: nil) }
     end
 
-    self.player_cards << player_card.update_attributes(round: self)
+    player_card.update_attributes(round: self)
+    self.player_cards << player_card
     self.all_in? ? self.all_in! : self.broadcast!
     true
   end
