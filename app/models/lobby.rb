@@ -38,13 +38,14 @@ class Lobby < ApplicationRecord
       lobby_user = LobbyUser.new(admin: lobby_users.empty?, lobby: self)
       lobby_users << lobby_user
     elsif has_user? user
-        lobby_user = lobby_users.find_by(user: user)
+      lobby_user = lobby_users.find_by(user: user)
     else
       lobby_user = LobbyUser.new(user: user, admin: lobby_users.empty?, lobby: self)
       lobby_users << lobby_user
     end
 
     save
+    lobby_user.save!
     lobby_user.broadcast!
     lobby_user
   end

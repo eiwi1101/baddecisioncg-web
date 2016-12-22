@@ -131,6 +131,7 @@ class Round < ApplicationRecord
   end
 
   def submitted_player_cards
+    return nil unless self.story_card
     self.player_cards.send(blank_scope)
   end
 
@@ -155,7 +156,7 @@ class Round < ApplicationRecord
   end
 
   def story_order
-    self.story_card.card_order
+    self.story_card&.card_order
   end
 
   def broadcast!
@@ -165,6 +166,7 @@ class Round < ApplicationRecord
   private
 
   def blank_scope
+    return nil unless story_card
     case story_order.last
       when 'crisis'
         'crisis'

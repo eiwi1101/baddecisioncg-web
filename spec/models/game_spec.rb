@@ -176,11 +176,8 @@ describe Game, type: :model do
     it 'rotates players' do
       round.bard_play(round.bard_player.player_cards.fools.first)
       round.bard_play(round.bard_player.player_cards.crisis.first)
-      round.reveal!
       round.player_play(game.players.second.player_cards.bad_decisions.first)
-      round.all_in!
-      round.bard_pick(round.player_cards.bad_decisions.first)
-      round.finish!
+      round.bard_pick(round.bard_player, round.player_cards.bad_decisions.first)
 
       new_round = game.next_round
 

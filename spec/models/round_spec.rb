@@ -102,9 +102,9 @@ describe Round, type: :model do
       crisis = build :player_card, player: round.bard_player, card: build(:crisis, text: 'B')
       fool_2 = build :player_card, player: round.bard_player, card: build(:fool, text: 'Z')
 
-      expect(round.bard_play(fool_2)).to eq true
-      expect(round.bard_play(crisis)).to eq true
       expect(round.bard_play(fool_1)).to eq true
+      expect(round.bard_play(crisis)).to eq true
+      expect { round.bard_play(fool_2) }.to raise_exception Exceptions::RoundOrderViolation
 
       expect(fool_1.discarded?).to eq true
       expect(fool_2.discarded?).to eq false
@@ -157,9 +157,10 @@ describe Round, type: :model do
       expect(round.player_play(decision_1)).to eq true
       expect(round.player_cards.length).to eq 3
       expect(round.submitted_player_cards.length).to eq 1
-      expect(round.player_play(decision_2)).to eq true
-      expect(decision_1.reload.discarded?).to eq false
-      expect(decision_2.discarded?).to eq true
+
+      expect { round.player_play(decision_2) }.to raise_exception Exceptions::RoundOrderViolation
+      expect(decision_1.discarded?).to eq true
+      expect(decision_2.discarded?).to eq false
     end
 
     it 'rejects first blank' do
@@ -205,25 +206,25 @@ describe Round, type: :model do
 
     it 'accepts a winning card' do
       decision = round.submitted_player_cards.last
-      expect(round.bard_pick(decision)).to eq true
+      expect(round.bard_pick(round.bard_player, decision)).to eq true
     end
 
     it 'rejects the bard cards' do
       decision = round.fool_pc
-      expect { round.bard_pick(decision) }.to raise_exception Exceptions::CardTypeViolation
+      expect { round.bard_pick(round.bard_player, decision) }.to raise_exception Exceptions::CardTypeViolation
     end
 
     it 'raises a round violation' do
       round = build :round, :player_pick
       round.player_cards << build(:player_card, card: build(:bad_decision))
       decision = round.player_cards.last
-      expect { round.bard_pick(decision) }.to raise_exception Exceptions::RoundOrderViolation
+      expect { round.bard_pick(round.bard_player, decision) }.to raise_exception Exceptions::RoundOrderViolation
     end
 
     it 'rejects other round cards' do
       round = build :round, :player_pick
       decision = build :player_card, card: build(:bad_decision)
-      expect { round.bard_pick(decision) }.to raise_exception Exceptions::RoundMismatchViolation
+      expect { round.bard_pick(round.bard_player, decision) }.to raise_exception Exceptions::RoundMismatchViolation
     end
   end
 

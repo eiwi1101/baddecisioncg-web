@@ -23,4 +23,10 @@ describe LobbyUser, type: :model do
   it 'has a valid spec' do
     expect(build :lobby_user).to be_valid
   end
+
+  it 'serializes without saving' do
+    user = build :lobby_user
+    json = LobbyUserSerializer.new(user).as_json
+    expect(json).to be_a Hash # Just a simple sanity test.
+  end
 end
