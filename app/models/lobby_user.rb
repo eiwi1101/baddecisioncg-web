@@ -29,13 +29,19 @@ class LobbyUser < ApplicationRecord
   scope :admins, -> { where(admin: true) }
 
   def name
-    super || user&.display_name
+    super.presence || user&.display_name
   end
 
   def avatar_url
-    color = self.name ? Digest::MD5.hexdigest(self.name)[-6,6] : '000'
-    letter = name.match(/\S\s*(\S)/)[0]
-    user&.avatar_url || "https://placehold.it/80/#{color}/fff?text=#{letter}"
+    if user.present?
+      user.avatar_url
+    elsif name.present?
+      color = Digest::MD5.hexdigest(self.name)[-6,6]
+      letter = name.match(/\S\s*(\S)/)[0]
+      "https://placehold.it/80/#{color}/fff?text=#{letter}"
+    else
+      "https://placehold.it/80/000/fff?text=WTF"
+    end
   end
 
   def guest?
