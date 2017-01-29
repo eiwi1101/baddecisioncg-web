@@ -5,6 +5,7 @@ class LobbyChannel < ApplicationCable::Channel
     if @lobby&.has_user?(params[:lobby_user_id])
       stream_for @lobby
     else
+      Rails.logger.warn "Rejecting #{@lobby} connection from #{params[:lobby_user_id]}"
       reject
     end
   end

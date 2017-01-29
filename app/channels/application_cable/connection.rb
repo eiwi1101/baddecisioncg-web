@@ -13,6 +13,8 @@ module ApplicationCable
       if (current_lobby_user = LobbyUser.find_by(id: cookies.signed[:lobby_user_id]))
         current_lobby_user
       else
+        Rails.logger.warn "Issue finding current user: #{cookies.signed[:lobby_user_id].inspect}"
+        Rails.logger.warn cookies.signed.inspect
         reject_unauthorized_connection
       end
     end
