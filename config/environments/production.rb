@@ -39,7 +39,8 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   config.action_cable.allowed_request_origins = [
       'http://bdcg-staging.us-east-1.elasticbeanstalk.com',
-      'http://play.baddecisionscg.com'
+      'http://play.baddecisionscg.com',
+      'http://baddecisionscg.com'
       # TODO: MOBILE CLIENTS ARE COMING
   ]
 
