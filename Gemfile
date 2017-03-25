@@ -12,6 +12,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'therubyracer'
 gem 'responders'
 gem 'ahoy_matey'
+gem 'rollbar'
 
 # == FRONT END
 

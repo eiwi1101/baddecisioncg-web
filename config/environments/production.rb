@@ -37,12 +37,7 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
-  config.action_cable.allowed_request_origins = [
-      'http://bdcg-staging.us-east-1.elasticbeanstalk.com',
-      'http://play.baddecisionscg.com',
-      'http://baddecisionscg.com'
-      # TODO: MOBILE CLIENTS ARE COMING
-  ]
+  config.action_cable.allowed_request_origins = %w(http://play.baddecisionscg.com http://bdcg-staging.us-east-1.elasticbeanstalk.com)
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true

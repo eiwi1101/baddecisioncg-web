@@ -181,6 +181,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.1)
+    multi_json (1.12.1)
     nio4r (1.2.1)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
@@ -236,6 +237,8 @@ GEM
     request_store (1.3.1)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
+    rollbar (2.14.1)
+      multi_json
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.5.4)
@@ -368,6 +371,7 @@ DEPENDENCIES
   react-rails!
   redis (~> 3.0)
   responders
+  rollbar
   rspec-collection_matchers
   rspec-expectations
   rspec-its
@@ -391,4 +395,4 @@ DEPENDENCIES
   will_paginate-materialize!
 
 BUNDLED WITH
-   1.13.6
+   1.14.3

@@ -8,4 +8,4 @@
 
 # = USERS
 
-FactoryGirl.create! :user, username: 'admin', email: 'admin@example.com', password: 'fishsticks', admin: true
+FactoryGirl.create :user, username: 'admin', email: 'admin@example.com', password: 'fishsticks', admin: true
