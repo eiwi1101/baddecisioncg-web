@@ -1,0 +1,191 @@
+// Card Colors
+
+// Rev 2
+// $fool: #CEC284
+// $crisis: #2c2c2c
+// $decision: #a52a2a
+// $story: #647264
+
+// Rev X
+//$fool: #f8e868
+//$crisis: #3d4b54
+//$decision: #f24341
+//$story: #aacf55
+
+$fool: rgb(0, 156, 201)
+$crisis: rgb(0, 175, 135)
+$decision: rgb(243, 96, 110)
+$story: rgb(144, 164, 174)
+
+// Card Variants
+
+$fool-bg: lighten($fool, 8%)
+$crisis-bg: lighten($crisis, 7%)
+$decision-bg: lighten($decision, 6%)
+$story-bg: lighten($story, 10%)
+
+// Page Colors
+
+$background: #6bc1b4
+
+.game-card
+  display: flex
+  flex-direction: column
+  font-size: 1.5rem
+  border-radius: 1rem
+  margin: 3rem auto 0 auto
+  width: 300px
+  height: 400px
+  padding: 1rem
+  overflow: hidden
+  position: relative
+  background-color: white
+
+  label, input
+    font-size: inherit
+    background-color: transparent
+    border: none
+    padding: 0
+    margin: 0
+    color: inherit
+
+  &.card-fool
+    border: 1rem solid $fool
+    &:after
+      content: 'fool'
+
+  &.card-crisis
+    border: 1rem solid $crisis
+    &:after
+      content: 'crisis'
+      color: $crisis
+
+  &.card-decision
+    border: 1rem solid $decision
+    &:after
+      content: 'bad decision'
+      color: $decision
+
+  &.card-story
+    font-size: 1.2rem
+    padding: 0
+
+  &:after, &:before
+    font-weight: 200
+    color: $fool
+    position: absolute
+    bottom: 0rem
+    right: 0.5rem
+    font-size: 2.5rem
+
+  &:before
+    top: 0
+    left: 0.5rem
+    transform: initial
+
+  &.card-back
+    border: 1rem solid
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/423767/LogoSmallFade.png)
+    background-position: center
+    background-repeat: no-repeat
+    background-size: 180px
+
+    &:after, &:before
+      position: absolute
+      color: white
+
+    &:after
+      transform: rotate(180deg)
+
+    &.card-back-story:after,
+    &.card-back-story:before
+      content: 'story'
+
+    &.card-back-fool:after,
+    &.card-back-fool:before
+      content: 'fool'
+
+    &.card-back-crisis:after,
+    &.card-back-crisis:before
+      content: 'crisis'
+
+    &.card-back-decision:after,
+    &.card-back-decision:before
+      content: 'bad decision'
+
+  &.card-back-story
+    background-color: $story-bg
+    border-color: $story
+
+  .blank-fool, &.card-back-fool
+    background-color: $fool-bg
+    border-color: $fool
+
+  .blank-crisis, &.card-back-crisis
+    background-color: $crisis-bg
+    border-color: $crisis
+
+  .blank-decision, &.card-back-decision
+    background-color: $decision-bg
+    border-color: $decision
+
+  .not-blank
+    display: block
+    border-color: $story
+    border-style: solid
+    border-width: 0 1rem
+    padding: 0.5rem 1rem
+    width: 100%
+    box-sizing: border-box
+    height: auto
+    line-height: inherit
+
+  .blank
+    display: block
+    padding: 0.5rem 1rem
+    border-style: solid
+    border-width: 0 1rem
+    color: white
+    position: relative
+    width: 100%
+    box-sizing: border-box
+    height: auto
+    line-height: inherit
+
+    .text
+      font-weight: 300
+      color: white
+      font-size: 2rem
+
+    &:active, &:focus
+      border-bottom: none !important
+      box-shadow: none !important
+
+    &::-moz-placeholder
+      color: white
+      color: rgba(white, 0.8)
+
+    &::-webkit-input-placeholder
+      color: white
+      color: rgba(white, 0.8)
+
+    &::-webkit-input-placeholder
+      color: white
+      color: rgba(white, 0.8)
+
+  .blank.last
+    position: relative
+    flex-grow: 1
+
+    .text
+      position: absolute
+      bottom: 0.5rem
+      right: 0.5rem
+      font-weight: 200
+      font-size: 2.5rem
+
+  .last-slot
+    border-bottom-width: 1rem
+
+  .first-slot
+    border-top-width: 1rem

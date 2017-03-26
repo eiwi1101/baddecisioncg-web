@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rollbar
+//= require '_rollbar'
 //
 //= require jquery
 //= require jquery.turbolinks

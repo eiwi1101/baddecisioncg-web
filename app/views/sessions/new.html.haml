@@ -1,17 +1,22 @@
-- body_class 'blue'
+- body_class 'blue game-area'
 
 .container.container-narrow
   .center.bd-logo-fix.margin-top-lg= image_tag 'logos/logo-full_600-white.png', class: 'responsive-img margin-bottom-lg', alt: 'Bad Decisions'
-  .card.white.frost
-    %ul.tabs.tabs-border.transparent.tabs-fixed-width
-      %li.tab.s6= link_to t('session.login'), login_path, class: 'active'
-      %li.tab.s6= link_to t('session.register'), register_path, target: '_self'
 
-    .card-content
-      = simple_form_for @user, url: login_path, method: :post do |f|
-        = f.input :username, class: 'form-control', icon: 'perm_identity'
-        = f.input :password, class: 'form-control', icon: 'lock'
-        = f.button :submit, t('session.login'), class: 'margin-top-md full-width blue'
+  = simple_form_for @user, url: login_path, method: :post, html: { class: 'game-card card-story' } do |f|
+    .card-input
+      = f.label 'Hi, my name is', :username, class: 'not-blank first-slot', required: false
+      = f.input_field :username, class: 'blank blank-fool', placeholder: 'Username'
+
+    .card-input
+      = f.label 'and my password is', :password, class: 'not-blank', required: false
+      = f.input_field :password, class: 'blank blank-crisis', placeholder: 'Password'
+
+    .not-blank
+      and I would like to
+
+    %button.blank.blank-decision.last.last-slot{type: 'submit'}
+      .text= t('session.login')
 
   .margin-top-lg.center
-    = link_to 'Continue as Guest', lobbies_path, class: 'btn full-width btn-large blue darken-2'
+    = link_to 'Continue as Guest', lobbies_path, class: 'btn full-width btn-large blue darken-2 last-slot'
