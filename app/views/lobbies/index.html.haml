@@ -24,7 +24,4 @@
               ago.
 
           .card-action
-            = link_to 'Spectate', lobby_path(lobby)
-
-            - if lobby.current_game&.status.nil?
-              = link_to 'Join Game', lobby_path(lobby, join: true)
+            = link_to 'Join Game', lobby_path(lobby)

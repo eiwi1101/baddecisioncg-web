@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Other Resources
   resources :lobbies, path: :l, only: [:index, :new, :show] do
     resources :messages, only: [:create, :index], shallow: true
+    resources :lobby_users, only: [:index, :show, :destroy], shallow: true
 
     resources :games, only: [:create, :show], shallow: true do
       resources :players, only: [:create], shallow: true
@@ -30,8 +31,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  resources :lobby_users, only: [:destroy]
 
   namespace :admin do
     root to: 'dashboard#show', as: :dashboard

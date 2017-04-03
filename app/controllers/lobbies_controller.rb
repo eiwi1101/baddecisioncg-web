@@ -17,14 +17,12 @@ class LobbiesController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      @lobby_user = @lobby.join(current_user)
-      sign_in_lobby_user @lobby_user
+    @lobby_user = @lobby.join(current_user)
+    sign_in_lobby_user @lobby_user
 
+    respond_to do |format|
       format.json { render json: @lobby, serializer: LobbyStateSerializer }
-      format.html { render component: 'App', props: {
-          lobby_user_id: @lobby_user.guid
-      }.merge(LobbyStateSerializer.new(@lobby).as_json) }
+      format.html
     end
   end
 
