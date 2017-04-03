@@ -1,5 +1,6 @@
 @Game = React.createClass
   propTypes:
+    currentUser: React.PropTypes.object.isRequired
     lobby: React.PropTypes.object.isRequired
     game: React.PropTypes.object
 
@@ -21,18 +22,31 @@
       @setState game: game, currentRound: game.current_round, players: game.players
     e.preventDefault()
 
+  _handleJoinGame: (e) ->
+    Model.post "#{@state.game.path}/players.json", { user_id: @props.currentUser.id }, (player) =>
+      @setState players: @state.players.push(player)
+    e.preventDefault()
+
 
   render: ->
     if @state.game?
-      children = React.Children.map @props.children, (child) =>
-        React.cloneElement child,
-          game: this.state.game
+      currentPlayer = @state.players.find (i) =>
+        i.user_id == @props.currentUser.id
+
+      if !currentPlayer? # And game is accepting players?
+        joinGame =
+          `<a href='#' onClick={ this._handleJoinGame }>Join Game</a>`
 
       round =
         `<Round round={ this.state.currentRound } game={ this.state.game } />`
 
       playerList =
-        `<PlayerList players={ this.state.players } />`
+        `<PlayerList players={ this.state.players }
+                     currentPlayer={ currentPlayer } />`
+
+      children = React.Children.map @props.children, (child) =>
+        React.cloneElement child,
+          game: this.state.game
 
     else
       newGame =
@@ -42,8 +56,9 @@
         <div>Game: { JSON.stringify(this.state.game) }</div>
 
         { newGame }
+        { joinGame }
 
-        { round }
         { playerList }
+        { round }
         { children }
     </div>`

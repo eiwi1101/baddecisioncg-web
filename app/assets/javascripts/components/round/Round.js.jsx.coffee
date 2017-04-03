@@ -11,14 +11,34 @@
 
 
   componentWillMount: ->
-    if !@state.round? && @state.game? && @props.game.current_round_id?
-      Model.fetch "/rounds/#{current_round_id}.json", (round) =>
+    if !@state.round? && @props.game? && @props.game.current_round_id?
+      Model.fetch "/rounds/#{@props.game.current_round_id}.json", (round) =>
         @setState round: round, story: round.story, playerCards: round.player_cards
 
 
+  _handleNewRound: (e) ->
+    Model.post "#{@props.game.path}/rounds.json", (round) ->
+      @setState round: round, story: round.story, playerCards: round.player_cards
+    e.preventDefault()
+
+
   render: ->
+    if @state.round?
+      story =
+        `<div>Story: { JSON.stringify(this.state.story) }</div>`
+
+      playerCards =
+        `<div>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
+
+    else
+      newRound =
+        `<a href='#' onClick={ this._handleNewRound }>New Round</a>`
+
     `<div className='round-container'>
-        <div>Round: { JSON.stringify(this.state.currentRound) }</div>
-        <div>Story: { this.state.story }</div>
-        <div>Player Cards: { this.state.playerCards }</div>
+        <div>Round: { JSON.stringify(this.state.round) }</div>
+
+        { story }
+        { playerCards }
+
+        { newRound }
     </div>`

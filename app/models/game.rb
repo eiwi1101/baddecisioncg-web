@@ -71,6 +71,7 @@ class Game < ApplicationRecord
     player.broadcast!
 
     self.save
+    player
   end
 
   def leave(lobby_user)

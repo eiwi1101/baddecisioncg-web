@@ -5,6 +5,9 @@
   post: (path, data, success, error) ->
     @request('POST', path, data, success, error)
 
+  delete: (path, success, error) ->
+    @request('DELETE', path, {}, success, error)
+
   request: (type, path, data, success, error) ->
     $(document).trigger 'app:loading'
     console.debug "#{type} #{path}", data
@@ -17,7 +20,9 @@
 
       error: (e) =>
         msg = e.responseJSON || e.responseText
+
         console.error msg
+        Materialize.toast msg.error, 3000, 'red' if msg.error
         error(msg) if error?
 
       complete: =>

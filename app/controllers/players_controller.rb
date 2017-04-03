@@ -3,8 +3,8 @@ class PlayersController < ApplicationController
 
   def create
     lobby_user = LobbyUser.find(params[:user_id])
-    @game.join(lobby_user)
-    flash.now[:notice] = t('game_status.joined')
+    @player = @game.join(lobby_user)
+    respond_with @player, serializer: PlayerSerializer
   end
 
   private

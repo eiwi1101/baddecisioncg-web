@@ -21,7 +21,6 @@ class ApplicationController < ActionController::Base
   end
 
   def rule_violation(e)
-    flash.now[:error] = e.message
-    render 'create'
+    render json: { error: e.message }, status: :bad_request
   end
 end

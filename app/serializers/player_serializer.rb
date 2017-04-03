@@ -12,7 +12,20 @@
 #
 
 class PlayerSerializer < ActiveModel::Serializer
-  attributes :guid, :lobby_user_id, :score, :name, :avatar_url, :is_deleted
+  attributes :id,
+             :user_id,
+             :score,
+             :name,
+             :avatar_url,
+             :is_deleted
+
+  def id
+    object.guid
+  end
+
+  def user_id
+    object.lobby_user.guid
+  end
 
   def name
     object.lobby_user.name

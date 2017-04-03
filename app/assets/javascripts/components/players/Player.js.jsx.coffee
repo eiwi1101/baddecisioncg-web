@@ -5,5 +5,5 @@
 
   render: ->
     `<div className='player'>
-        Player: { this.props.player }
+        Player: { JSON.stringify(this.props.player) }
     </div>`

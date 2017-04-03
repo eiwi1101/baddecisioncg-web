@@ -2,7 +2,8 @@ class RoundsController < ApplicationController
   before_action :get_game, only: [:create]
 
   def create
-    @game.next_round
+    @round = @game.next_round
+    respond_with @round, serializer: RoundSerializer
   end
 
   private

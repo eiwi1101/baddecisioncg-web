@@ -20,6 +20,12 @@ class LobbySerializer < ActiveModel::Serializer
              :name,
              :path
 
+  has_many :users, serializer: LobbyUserSerializer
+
+  def users
+    object.lobby_users
+  end
+
   def id
     object.token
   end

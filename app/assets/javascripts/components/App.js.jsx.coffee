@@ -10,6 +10,7 @@
   getInitialState: ->
     lobby: null
     currentUser: null
+    users: null
     isLoading: 0
 
   getChildContext: ->
@@ -28,17 +29,22 @@
         @_loadStop()
 
   componentWillUnmount: ->
+    @_deleteCurrentUser(@props.currentUserId)
+
     $(document)
       .off 'app:loading'
       .off 'app:loading:stop'
 
   _getLobby: (lobbyId) ->
     Model.fetch "/l/#{lobbyId}.json", (data) =>
-      @setState lobby: data.lobby
+      @setState lobby: data.lobby, users: data.lobby.users
 
   _getCurrentUser: (currentUserId) ->
     Model.fetch "/lobby_users/#{currentUserId}.json", (data) =>
       @setState currentUser: data
+
+  _deleteCurrentUser: (currentUserId) ->
+    Model.delete "/lobby_users/#{currentUserId}.json"
 
 
   _loadStart: (updateState=true) ->
@@ -60,6 +66,7 @@
     if this.state.lobby? and this.state.currentUser?
       game =
         `<Game lobby={ this.state.lobby }
+               currentUser={ this.state.currentUser }
                game={ this.state.lobby.current_game }>
 
             <ChatLog lobby={ this.state.lobby }
@@ -74,6 +81,7 @@
 
         <div>Lobby: { JSON.stringify(this.state.lobby) }</div>
         <div>Current User: { JSON.stringify(this.state.currentUser) }</div>
+        <div>Users: { JSON.stringify(this.state.users) }</div>
 
         { game }
     </div>`

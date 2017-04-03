@@ -17,7 +17,7 @@ class LobbiesController < ApplicationController
   end
 
   def show
-    @lobby_user = @lobby.join(current_user)
+    @lobby_user = current_lobby_user || @lobby.join(current_user)
     sign_in_lobby_user @lobby_user
 
     respond_to do |format|
@@ -41,8 +41,7 @@ class LobbiesController < ApplicationController
   private
 
   def get_lobby
-    @lobby = Lobby.with_deleted.includes(:lobby_users => [ :user ],
-                                         :games => [ :players, :rounds ])
+    @lobby = Lobby.with_deleted
         .find_by!(token: params[:id])
 
     if !@lobby
