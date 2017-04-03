@@ -1,9 +1,14 @@
 class GamesController < ApplicationController
+  before_action :get_game, only: [:show]
   before_action :get_lobby, only: [:create]
 
   def create
     @game = @lobby.new_game
-    flash.now[:notice] = t('game_status.waiting')
+    respond_with @game, serializer: GameSerializer
+  end
+
+  def show
+    respond_with @game, serializer: GameSerializer
   end
 
   def start
@@ -19,6 +24,10 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def get_game
+    @game = Game.find_by!(guid: params[:id])
+  end
 
   def get_lobby
     @lobby = Lobby.find(params[:lobby_id])

@@ -1,12 +1,12 @@
 @PlayerList = React.createClass
   propTypes:
-    game: React.PropTypes.object.isRequired
-    players: React.PropTypes.object.isRequired
+    players: React.PropTypes.array.isRequired
 
 
   render: ->
-    players = @props.players?.map (player) ->
-      `<Player player={ player } />`
+    if @props.players? and @props.players.length
+      players = @props.players?.map (player) ->
+        `<Player player={ player } />`
 
     `<div className='players-container'>
         { players }

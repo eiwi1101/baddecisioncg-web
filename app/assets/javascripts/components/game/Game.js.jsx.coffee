@@ -16,19 +16,34 @@
         @setState game: game, currentRound: game.current_round, players: game.players
 
 
+  _handleNewGame: (e) ->
+    Model.post "#{@props.lobby.path}/games.json", {}, (game) =>
+      @setState game: game, currentRound: game.current_round, players: game.players
+    e.preventDefault()
+
+
   render: ->
-    children = React.Children.map @props.children, (child) =>
-      React.cloneElement child,
-        game: this.state.game
+    if @state.game?
+      children = React.Children.map @props.children, (child) =>
+        React.cloneElement child,
+          game: this.state.game
+
+      round =
+        `<Round round={ this.state.currentRound } game={ this.state.game } />`
+
+      playerList =
+        `<PlayerList players={ this.state.players } />`
+
+    else
+      newGame =
+        `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
 
     `<div className="game">
         <div>Game: { JSON.stringify(this.state.game) }</div>
 
-        <Round game={ this.state.game }
-               round={ this.state.currentRound } />
+        { newGame }
 
-        <PlayerList game={ this.state.game }
-                    players={ this.state.players } />
-
+        { round }
+        { playerList }
         { children }
     </div>`

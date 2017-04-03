@@ -1,6 +1,6 @@
 @LoadingOverlay = React.createClass
   propTypes:
-    depth: React.PropTypes.int
+    depth: React.PropTypes.number
 
 
   getDefaultProps: ->

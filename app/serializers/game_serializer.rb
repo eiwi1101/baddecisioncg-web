@@ -15,31 +15,19 @@
 class GameSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :guid, :score_limit, :status, :join_url, :start_url, :play_card_url, :winner_card_url, :rounds_url, :players
+  attributes :id,
+             :score_limit,
+             :status,
+             :path
 
-  has_one  :current_round
+  has_one  :current_round, serializer: RoundSerializer
+  has_many :players, serializer: PlayerSerializer
 
-  def players
-    Hash[object.players.collect { |u| [ u.guid, PlayerSerializer.new(u) ] }]
+  def id
+    object.guid
   end
 
-  def start_url
-    start_game_path object
-  end
-
-  def join_url
-    game_players_path object
-  end
-
-  def play_card_url
-    round_player_cards_path object.current_round if object.current_round
-  end
-
-  def winner_card_url
-    winner_round_player_cards_path object.current_round if object.current_round
-  end
-
-  def rounds_url
-    game_rounds_path object
+  def path
+    game_path object
   end
 end
