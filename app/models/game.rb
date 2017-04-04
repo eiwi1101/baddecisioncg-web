@@ -33,7 +33,6 @@ class Game < ApplicationRecord
 
   state_machine :status, initial: :starting do
     after_transition any => any, do: [:broadcast!]
-    after_transition :starting => :in_progress, do: [:start_first_round]
     before_transition :in_progress => :finished, do: [:assign_winner]
 
     state :in_progress do
@@ -98,6 +97,8 @@ class Game < ApplicationRecord
   end
 
   def next_round
+    self.start! if self.ready?
+
     raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.in_progress?
     raise Exceptions::RoundOrderViolation.new I18n.t('violations.round_order') unless self.rounds.empty? || self.rounds.last.finished?
 
@@ -118,7 +119,7 @@ class Game < ApplicationRecord
   end
 
   def ready?
-    self.starting? and self.players.count >= MIN_PLAYERS
+    self.in_progress? or (self.starting? and self.players.count >= MIN_PLAYERS)
   end
 
   def has_lobby_user?(lobby_user)
@@ -143,10 +144,6 @@ class Game < ApplicationRecord
       false
     end
     true
-  end
-
-  def start_first_round
-    self.next_round
   end
 
   def assign_default_expansions

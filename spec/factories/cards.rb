@@ -12,7 +12,7 @@
 FactoryGirl.define do
   factory :card do
     expansion
-    text { Faker::Lorem.sentence }
+    text { Faker::Beer.name }
 
     factory :story, class: Card::Story do
       text '%{fool} + %{crisis} = %{bad_decision}'

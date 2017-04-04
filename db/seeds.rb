@@ -8,4 +8,16 @@
 
 # = USERS
 
-FactoryGirl.create :user, username: 'admin', email: 'admin@example.com', password: 'fishsticks', admin: true
+unless User.exists?(username: 'admin')
+  FactoryGirl.create :user, username: 'admin', email: 'admin@example.com', password: 'fishsticks', admin: true
+end
+
+#== Cards
+
+unless Card.any?
+  e = FactoryGirl.create :expansion
+
+  [:fool, :crisis, :bad_decision, :story].each do |card|
+    30.times { FactoryGirl.create card, expansion: e }
+  end
+end

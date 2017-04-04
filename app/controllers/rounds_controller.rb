@@ -3,7 +3,7 @@ class RoundsController < ApplicationController
 
   def create
     @round = @game.next_round
-    respond_with @round, serializer: RoundSerializer
+    respond_with @round, serializer: RoundSerializer, location: nil
   end
 
   private
