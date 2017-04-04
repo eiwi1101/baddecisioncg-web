@@ -1,8 +1,8 @@
 class LobbyChannel < ApplicationCable::Channel
   def subscribed
-    @lobby = Lobby.find_by(token: params[:token])
+    @lobby = Lobby.find_by(token: params[:lobbyId])
 
-    if @lobby&.has_user?(params[:lobby_user_id])
+    if @lobby&.has_user?(params[:userId])
       stream_for @lobby
     else
       Rails.logger.warn "Rejecting #{@lobby} connection from #{params[:lobby_user_id]}"

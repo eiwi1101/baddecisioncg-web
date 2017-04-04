@@ -28,9 +28,13 @@
 
   _handleJoinGame: (e) ->
     Model.post "#{@state.game.path}/players.json", { user_id: @props.currentUser.id }, (player) =>
-      p = @state.players
-      p.push(player)
-      @setState players: p
+      found = @state.players.find (i) -> i.id == player.id
+
+      if !found?
+        p = @state.players
+        p.push(player)
+        @setState players: p
+
     e.preventDefault()
 
 

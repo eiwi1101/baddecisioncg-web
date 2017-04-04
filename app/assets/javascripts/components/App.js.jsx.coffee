@@ -33,7 +33,7 @@
       .unload =>
         @_deleteCurrentUser(@props.currentUserId)
 
-    LobbyChannel.subscribe lobbyId: @props.lobbyId
+    LobbyChannel.subscribe lobbyId: @props.lobbyId, userId: @props.currentUserId
 
   componentWillUnmount: ->
     @_deleteCurrentUser(@props.currentUserId)

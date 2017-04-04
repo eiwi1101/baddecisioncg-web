@@ -34,7 +34,6 @@ class Game < ApplicationRecord
   state_machine :status, initial: :starting do
     after_transition any => any, do: [:broadcast!]
     after_transition :starting => :in_progress, do: [:start_first_round]
-    after_transition any => :abandoned, do: [:abandoned_game]
     before_transition :in_progress => :finished, do: [:assign_winner]
 
     state :in_progress do
@@ -74,6 +73,8 @@ class Game < ApplicationRecord
     player.broadcast!
 
     self.save
+    self.broadcast!
+
     player
   end
 
@@ -87,9 +88,9 @@ class Game < ApplicationRecord
 
     if self.players.length < MIN_PLAYERS
       self.rounds.any? ? self.finish : self.abandon
-    else
-      true
     end
+
+    self.broadcast!
   end
 
   def current_round
@@ -150,9 +151,5 @@ class Game < ApplicationRecord
 
   def assign_default_expansions
     self.expansions << Expansion.default
-  end
-
-  def abandoned_game
-    raise "ABANDONED"
   end
 end
