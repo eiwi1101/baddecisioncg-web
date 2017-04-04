@@ -7,7 +7,7 @@ class LobbyUsersController < ApplicationController
 
   def destroy
     @lobby_user&.leave!
-    redirect_to lobbies_path, flash: { notice: 'Thanks for playing!' }
+    respond_with @lobby_user, serializer: LobbyUserSerializer
   end
 
   private

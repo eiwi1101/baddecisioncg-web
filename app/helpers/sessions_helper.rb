@@ -12,15 +12,21 @@ module SessionsHelper
   end
 
   def sign_in_lobby_user(lobby_user)
-    cookies.signed[:lobby_user_id] = lobby_user.id
+    session[:lobby_user_ids] ||= []
+    session[:lobby_user_ids] << lobby_user.guid
+
+    cookies.signed[:lobby_user_ids] = session[:lobby_user_ids].join(',')
+
     @current_lobby_user = lobby_user
-    Rails.logger.info "#{lobby_user.name} has signed in."
   end
 
-  def current_lobby_user
-    @current_lobby_user ||= LobbyUser.find_by(id: cookies.signed[:lobby_user_id])
-    cookies.signed[:lobby_user_id] = @current_lobby_user&.id
-    @current_lobby_user
+  def current_lobby_user(lobby=nil)
+    if @current_lobby_user&.lobby == lobby
+      @current_lobby_user
+    else
+      # noinspection RailsChecklist05
+      @current_lobby_user = LobbyUser.find_by(guid: session[:lobby_user_ids], lobby: lobby)
+    end
   end
 
   def logged_in?

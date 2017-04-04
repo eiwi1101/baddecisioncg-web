@@ -12,6 +12,7 @@
     currentUser: null
     users: null
     isLoading: 0
+    error: null
 
   getChildContext: ->
     currentUser: @state.currentUser
@@ -28,6 +29,12 @@
       .on 'app:loading:stop', (e) =>
         @_loadStop()
 
+    $(window)
+      .unload =>
+        @_deleteCurrentUser(@props.currentUserId)
+
+    LobbyChannel.subscribe lobbyId: @props.lobbyId
+
   componentWillUnmount: ->
     @_deleteCurrentUser(@props.currentUserId)
 
@@ -37,7 +44,9 @@
 
   _getLobby: (lobbyId) ->
     Model.fetch "/l/#{lobbyId}.json", (data) =>
-      @setState lobby: data.lobby, users: data.lobby.users
+      @setState lobby: data.lobby, users: data.lobby?.users
+    , (error) =>
+      @setState error: error.error
 
   _getCurrentUser: (currentUserId) ->
     Model.fetch "/lobby_users/#{currentUserId}.json", (data) =>
@@ -59,11 +68,14 @@
 
 
   render: ->
-    if this.state.isLoading > 0
+    if @state.error?
+      return `<Error error={ this.state.error } />`
+
+    if @state.isLoading > 0
       loading =
         `<LoadingOverlay depth={ this.state.isLoading } />`
 
-    if this.state.lobby? and this.state.currentUser?
+    if @state.lobby? and @state.currentUser?
       game =
         `<Game lobby={ this.state.lobby }
                currentUser={ this.state.currentUser }

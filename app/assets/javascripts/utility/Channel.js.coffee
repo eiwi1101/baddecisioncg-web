@@ -4,11 +4,12 @@ class window.Channel
   connection: null
 
   constructor: (@channel) ->
+    window.AppConsumer ||= ActionCable.createConsumer()
 
   subscribe: (data, callbacks={}) =>
     data.channel = @channel
 
-    @connection = App.cable.subscriptions.create data,
+    @connection = AppConsumer.subscriptions.create data,
       received: @dispatch
       connected: @connected
       disconnected: @disconnected

@@ -26,6 +26,9 @@
 //= require masonry.pkgd
 //= require ahoy
 
+//= require action_cable
+//= require_tree ./utility
+//= require_tree ./channels
 //= require components
-//= require cable
+
 //= require_tree .

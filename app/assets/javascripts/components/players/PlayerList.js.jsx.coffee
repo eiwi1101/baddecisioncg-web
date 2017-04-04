@@ -1,7 +1,7 @@
 @PlayerList = React.createClass
   propTypes:
     players: React.PropTypes.array.isRequired
-    currentPlayer: React.PropTypes.array
+    currentPlayer: React.PropTypes.object
 
 
   render: ->

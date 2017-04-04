@@ -18,6 +18,7 @@ class GameSerializer < ActiveModel::Serializer
   attributes :id,
              :score_limit,
              :status,
+             :isReady,
              :path
 
   has_one  :current_round, serializer: RoundSerializer
@@ -25,6 +26,10 @@ class GameSerializer < ActiveModel::Serializer
 
   def id
     object.guid
+  end
+
+  def isReady
+    object.ready?
   end
 
   def path

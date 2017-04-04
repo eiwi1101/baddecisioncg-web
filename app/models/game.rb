@@ -15,6 +15,8 @@
 class Game < ApplicationRecord
   include HasGuid
 
+  MIN_PLAYERS = Rails.env.production? ? 2 : 1
+
   belongs_to :lobby
   belongs_to :winning_user, class_name: LobbyUser
   has_many :players, autosave: true
@@ -32,6 +34,7 @@ class Game < ApplicationRecord
   state_machine :status, initial: :starting do
     after_transition any => any, do: [:broadcast!]
     after_transition :starting => :in_progress, do: [:start_first_round]
+    after_transition any => :abandoned, do: [:abandoned_game]
     before_transition :in_progress => :finished, do: [:assign_winner]
 
     state :in_progress do
@@ -82,7 +85,7 @@ class Game < ApplicationRecord
     self.players.delete(player)
     player.broadcast!
 
-    if self.players.length < 2
+    if self.players.length < MIN_PLAYERS
       self.rounds.any? ? self.finish : self.abandon
     else
       true
@@ -113,6 +116,10 @@ class Game < ApplicationRecord
     new_round
   end
 
+  def ready?
+    self.starting? and self.players.count >= MIN_PLAYERS
+  end
+
   def has_lobby_user?(lobby_user)
     self.players.exists?(lobby_user: lobby_user)
   end
@@ -130,8 +137,8 @@ class Game < ApplicationRecord
   end
 
   def validate_player_count
-    if self.players.length < 2
-      self.errors[:players] << 'minimum 2 players'
+    if self.players.length < MIN_PLAYERS
+      self.errors[:players] << "minimum #{MIN_PLAYERS} players"
       false
     end
     true
@@ -143,5 +150,9 @@ class Game < ApplicationRecord
 
   def assign_default_expansions
     self.expansions << Expansion.default
+  end
+
+  def abandoned_game
+    raise "ABANDONED"
   end
 end

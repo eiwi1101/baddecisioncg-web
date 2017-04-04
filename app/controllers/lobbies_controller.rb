@@ -17,12 +17,28 @@ class LobbiesController < ApplicationController
   end
 
   def show
-    @lobby_user = current_lobby_user || @lobby.join(current_user)
-    sign_in_lobby_user @lobby_user
+    if !@lobby
+      respond_to do |format|
+        error = 'Game lobby not found.'
+        format.json { render json: { error: error }, status: :not_found }
+        format.html { redirect_to lobbies_path, flash: { error: error } }
+      end
+    elsif @lobby.deleted?
+      respond_to do |format|
+        error = 'This lobby has closed.'
+        format.json { render json: { error: error }, status: :not_found }
+        format.html { redirect_to lobbies_path, flash: { error: error } }
+      end
+    else
+      unless (@lobby_user = current_lobby_user(@lobby.id))
+        @lobby_user = @lobby.join(current_user)
+        sign_in_lobby_user @lobby_user
+      end
 
-    respond_to do |format|
-      format.json { render json: @lobby, serializer: LobbyStateSerializer }
-      format.html
+      respond_to do |format|
+        format.json { render json: @lobby, serializer: LobbyStateSerializer }
+        format.html
+      end
     end
   end
 
@@ -41,15 +57,6 @@ class LobbiesController < ApplicationController
   private
 
   def get_lobby
-    @lobby = Lobby.with_deleted
-        .find_by!(token: params[:id])
-
-    if !@lobby
-      redirect_to lobbies_path, flash: { error: 'Game lobby not found.' }
-      false
-    elsif @lobby.deleted?
-      redirect_to lobbies_path, flash: { error: 'This lobby has closed.' }
-      false
-    end
+    @lobby = Lobby.with_deleted.find_by(token: params[:id])
   end
 end

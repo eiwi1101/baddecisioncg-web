@@ -30,7 +30,7 @@
       playerCards =
         `<div>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
 
-    else
+    else if @props.game.isReady
       newRound =
         `<a href='#' onClick={ this._handleNewRound }>New Round</a>`
 

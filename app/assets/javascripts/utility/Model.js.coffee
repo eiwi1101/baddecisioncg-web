@@ -20,10 +20,12 @@
 
       error: (e) =>
         msg = e.responseJSON || e.responseText
-
         console.error msg
-        Materialize.toast msg.error, 3000, 'red' if msg.error
-        error(msg) if error?
+
+        if error
+          error(msg)
+        else
+          Materialize.toast msg.error, 3000, 'red' if msg.error
 
       complete: =>
         $(document).trigger 'app:loading:stop'
