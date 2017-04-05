@@ -27,17 +27,14 @@ class Lobby < ApplicationRecord
 
   scope :for_user, -> (user) { joins(:lobby_users).where('lobby_users.user' => user) }
 
-  def join(user, password=nil)
+  def join(user=nil, password=nil)
     raise Exceptions::LobbyClosedViolation.new if deleted?
 
     if has_password?
       raise Exceptions::LobbyPermissionViolation.new if password != self.password
     end
 
-    if user.nil?
-      lobby_user = LobbyUser.new(admin: lobby_users.empty?, lobby: self)
-      lobby_users << lobby_user
-    elsif has_user? user
+    if has_user? user
       lobby_user = lobby_users.find_by(user: user)
     else
       lobby_user = LobbyUser.new(user: user, admin: lobby_users.empty?, lobby: self)

@@ -3,18 +3,24 @@ module ApplicationCable
     identified_by :current_lobby_user
 
     def connect
-      self.current_lobby_user = find_lobby_user
-      Rails.logger.info "Connected as #{self.current_lobby_user&.name}"
+      unless Rails.env.test?
+        self.current_lobby_user = find_lobby_user
+        Rails.logger.info "Connected as #{self.current_lobby_user&.name}"
+      end
     end
 
     private
 
     def find_lobby_user
-      if (current_lobby_user = LobbyUser.find_by(id: cookies.signed[:lobby_user_id]))
-        current_lobby_user
-      else
-        Rails.logger.warn "Issue finding current user: #{cookies.signed[:lobby_user_id].inspect}"
-        Rails.logger.warn cookies.signed.inspect
+      lobby = Lobby.find_by guid: request.params[:lobbyId]
+      user = if Rails.env.test?
+               LobbyUser.find_by(id: request.params[:userId], lobby: lobby)
+             else
+               LobbyUser.find_by(id: cookies.signed[:lobby_user_ids].split(','), lobby: request.params[:lobbyId])
+             end
+
+      unless user
+        Rails.logger.warn "Issue finding current user: #{cookies.signed[:lobby_user_ids].inspect}"
         reject_unauthorized_connection
       end
     end

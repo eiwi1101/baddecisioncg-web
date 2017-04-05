@@ -10,8 +10,8 @@
         `<Player key={ player.id } player={ player } />`
 
     `<div className='players-container'>
-        <div>Players: { JSON.stringify(this.props.players) }</div>
-        <div>Current Player: { JSON.stringify(this.props.currentPlayer) }</div>
+        <div id='game-players'>Players: { JSON.stringify(this.props.players) }</div>
+        <div id='current-player'>Current Player: { JSON.stringify(this.props.currentPlayer) }</div>
 
         { players }
     </div>`

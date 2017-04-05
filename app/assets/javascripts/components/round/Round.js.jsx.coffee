@@ -17,7 +17,7 @@
 
 
   _handleNewRound: (e) ->
-    Model.post "#{@props.game.path}/rounds.json", (round) ->
+    Model.post "#{@props.game.path}/rounds.json", {}, (round) =>
       @setState round: round, story: round.story, playerCards: round.player_cards
     e.preventDefault()
 
@@ -31,14 +31,14 @@
         `<div>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
 
     else if @props.game.isReady
-      newRound =
-        `<a href='#' onClick={ this._handleNewRound }>New Round</a>`
+      startGame =
+        `<a href='#' onClick={ this._handleNewRound }>Start Game</a>`
 
     `<div className='round-container'>
-        <div>Round: { JSON.stringify(this.state.round) }</div>
+        <div id='round-data'>Round: { JSON.stringify(this.state.round) }</div>
 
         { story }
         { playerCards }
 
-        { newRound }
+        { startGame }
     </div>`

@@ -62,3 +62,4 @@ end
 
 Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
+Capybara.server = :puma

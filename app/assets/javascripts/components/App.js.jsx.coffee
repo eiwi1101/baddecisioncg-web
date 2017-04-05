@@ -91,9 +91,9 @@
     `<div id='app-main'>
         { loading }
 
-        <div>Lobby: { JSON.stringify(this.state.lobby) }</div>
-        <div>Current User: { JSON.stringify(this.state.currentUser) }</div>
-        <div>Users: { JSON.stringify(this.state.users) }</div>
+        <div id='lobby-data'>Lobby: { JSON.stringify(this.state.lobby) }</div>
+        <div id='current-user'>Current User: { JSON.stringify(this.state.currentUser) }</div>
+        <div id='lobby-users'>Users: { JSON.stringify(this.state.users) }</div>
 
         { game }
     </div>`

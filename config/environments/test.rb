@@ -3,6 +3,8 @@ Rails.application.configure do
 
   config.middleware.use RackSessionAccess::Middleware
 
+  config.action_cable.disable_request_forgery_protection = true
+
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped

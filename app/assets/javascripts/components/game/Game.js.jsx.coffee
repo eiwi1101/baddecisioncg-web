@@ -18,6 +18,7 @@
 
     LobbyChannel
       .on 'game', (game) =>
+        console.log "WE GOT A GAME UPDATE: " + JSON.stringify(game)
         @setState game: game, currentRound: game.current_round, players: game.players
 
 
@@ -28,20 +29,19 @@
 
   _handleJoinGame: (e) ->
     Model.post "#{@state.game.path}/players.json", { user_id: @props.currentUser.id }, (player) =>
-      found = @state.players.find (i) -> i.id == player.id
-
-      if !found?
+      if !@_findPlayer(player.user_id)
         p = @state.players
         p.push(player)
         @setState players: p
-
     e.preventDefault()
+
+  _findPlayer: (userId) ->
+    @state.players? and (i for i in @state.players when i.user_id is userId)[0]
 
 
   render: ->
     if @state.game?
-      currentPlayer = @state.players.find (i) =>
-        i.user_id == @props.currentUser.id
+      currentPlayer = @_findPlayer(@props.currentUser.id)
 
       if !currentPlayer? # And game is accepting players?
         joinGame =
@@ -67,7 +67,7 @@
         `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
 
     `<div className="game">
-        <div>Game: { JSON.stringify(this.state.game) }</div>
+        <div id='game-data'>Game: { JSON.stringify(this.state.game) }</div>
 
         { newGame }
         { joinGame }
