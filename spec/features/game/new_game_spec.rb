@@ -71,4 +71,7 @@ feature 'New Game', js: true do
     reload_page
     expect_content 'round-data', game.rounds.last.guid
   end
+
+  scenario 'user sees user join'
+  scenario 'user sees player join'
 end
