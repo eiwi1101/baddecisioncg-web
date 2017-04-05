@@ -1,3 +1,4 @@
+<% if Rails.env.production? %>
 var _rollbarConfig = {
     accessToken: "e0a87d082ca544e3b3ff1ee44c771a18",
     captureUncaught: true,
@@ -181,3 +182,4 @@ var _rollbarConfig = {
 }]);
 
 // End Rollbar Snippet
+<% end %>

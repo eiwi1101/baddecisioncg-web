@@ -34,11 +34,15 @@ class Lobby < ApplicationRecord
       raise Exceptions::LobbyPermissionViolation.new if password != self.password
     end
 
-    if has_user? user
+    lobby_user = nil
+
+    if user.present? and has_user? user
       lobby_user = lobby_users.find_by(user: user)
-    else
+    end
+
+    if lobby_user.nil?
       lobby_user = LobbyUser.new(user: user, admin: lobby_users.empty?, lobby: self)
-      lobby_users << lobby_user
+      self.lobby_users << lobby_user
     end
 
     save

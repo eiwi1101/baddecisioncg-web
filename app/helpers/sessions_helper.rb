@@ -25,6 +25,7 @@ module SessionsHelper
       @current_lobby_user
     else
       # noinspection RailsChecklist05
+      Rails.logger.info "LOOKING FOR #{session[:lobby_user_ids]}"
       @current_lobby_user = LobbyUser.find_by(guid: session[:lobby_user_ids], lobby: lobby)
     end
   end
