@@ -33,7 +33,23 @@
       .unload =>
         @_deleteCurrentUser(@props.currentUserId)
 
-    LobbyChannel.subscribe lobbyId: @props.lobbyId, userId: @props.currentUserId
+    LobbyChannel.subscribe { lobbyId: @props.lobbyId, userId: @props.currentUserId },
+      user: (u) =>
+        users = $.grep @state.users, (i) ->
+          i.id != u.id
+        users.push u
+
+        if u.is_deleted
+          $(document).trigger 'app:user:leave', u
+          Materialize.toast "#{u.name} has left.", 3000, 'blue-grey'
+        else if users.length == @state.users.length
+          $(document).trigger 'app:user:update', u
+        else
+          $(document).trigger 'app:user:join', u
+          Materialize.toast "#{u.name} has joined the lobby.", 3000, 'blue-grey'
+
+        @setState users: users
+
 
   componentWillUnmount: ->
     @_deleteCurrentUser(@props.currentUserId)
@@ -67,6 +83,12 @@
     @setState isLoading: level
 
 
+  _onlineUsers: ->
+    if @state.users
+      u = $.grep @state.users, (u) ->
+        !u.is_deleted
+
+
   render: ->
     if @state.error?
       return `<Error error={ this.state.error } />`
@@ -93,7 +115,7 @@
 
         <div id='lobby-data'>Lobby: { JSON.stringify(this.state.lobby) }</div>
         <div id='current-user'>Current User: { JSON.stringify(this.state.currentUser) }</div>
-        <div id='lobby-users'>Users: { JSON.stringify(this.state.users) }</div>
+        <div id='lobby-users'>Users: { JSON.stringify(this._onlineUsers()) }</div>
 
         { game }
     </div>`

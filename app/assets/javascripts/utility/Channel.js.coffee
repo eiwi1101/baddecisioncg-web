@@ -22,19 +22,19 @@ class window.Channel
     @connection.perform(command, args)
       
   disconnected: =>
-    console.log "Disconnected from #{@channel}"
+    console.debug "[Action Cable] Disconnected from #{@channel}"
     @dispatch disconnect: null
 
   connected: =>
-    console.log "Connected to #{@channel}"
+    console.debug "[Action Cable] Connected to #{@channel}"
     @dispatch connect: null
 
   rejected: =>
-    console.log "Rejected from #{@channel}"
+    console.debug "[Action Cable] Rejected from #{@channel}"
     @dispatch reject: null
 
   dispatch: (data) =>
-    console.log "#{@channel} got ", data
+    console.debug "[Action Cable] #{@channel} got #{JSON.stringify(data)}"
     command = Object.keys(data)[0]
 
     if @callbacks[command]
@@ -42,6 +42,5 @@ class window.Channel
         callback(data[command])
 
   on: (command, callback) =>
-    console.log "#{@channel}.on #{command}"
     @callbacks[command] = [] unless @callbacks[command] != undefined
     @callbacks[command].push callback

@@ -32,12 +32,17 @@ feature 'New Game', js: true do
       visit lobby_path lobby
     end
 
-    scenario 'user sees user join' do
+    scenario 'user sees user updates' do
       expect_content 'current-user', user.guid
       expect_content 'lobby-users', user.guid
 
       new_user = lobby.join
+      expect(page).to have_content "#{new_user.name} has joined"
       expect_content 'lobby-users', new_user.guid
+
+      lobby.leave new_user
+      expect(page).to have_content "#{new_user.name} has left"
+      expect(page).to have_no_content new_user.guid
     end
 
     context 'with game' do

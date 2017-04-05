@@ -1,7 +1,6 @@
 # Come online and listen to global push notifications.
 #
 $(document).on 'turbolinks:load', ->
-  console.log 'Running init script'
 
 #  User.subscribe()
 

@@ -54,7 +54,9 @@ class Lobby < ApplicationRecord
   def leave(user_or_id)
     raise Exceptions::LobbyClosedViolation.new if deleted?
 
-    if user_or_id.is_a? String
+    if user_or_id.is_a? LobbyUser
+      lobby_user = user_or_id
+    elsif user_or_id.is_a? String
       lobby_user = lobby_users.find_by(guid: user_or_id)
     else
       lobby_user = lobby_users.find_by(user: user_or_id)
@@ -63,6 +65,7 @@ class Lobby < ApplicationRecord
     return false unless lobby_user
 
     lobby_users.delete(lobby_user)
+    lobby_user.destroy
 
     if current_game&.has_lobby_user?(lobby_user)
       current_game.leave(lobby_user)
