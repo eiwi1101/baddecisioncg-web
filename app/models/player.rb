@@ -25,6 +25,8 @@ class Player < ApplicationRecord
   has_guid
   acts_as_paranoid
 
+  default_scope -> { joins(:lobby_user).where('lobby_users.deleted_at' => nil) }
+
   validates_presence_of :lobby_user
   validates_presence_of :game
 

@@ -79,7 +79,7 @@ class Lobby < ApplicationRecord
     end
 
     if lobby_users.length == 0
-      self.delete
+      self.destroy
       self.broadcast!
     end
 
