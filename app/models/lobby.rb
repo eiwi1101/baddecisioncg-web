@@ -64,7 +64,6 @@ class Lobby < ApplicationRecord
 
     return false unless lobby_user
 
-    lobby_users.delete(lobby_user)
     lobby_user.destroy
 
     if current_game&.has_lobby_user?(lobby_user)

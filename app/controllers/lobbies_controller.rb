@@ -35,6 +35,11 @@ class LobbiesController < ApplicationController
         sign_in_lobby_user @lobby_user
       end
 
+      if @lobby_user.deleted?
+        @lobby_user.restore recursive: true
+        @lobby_user.broadcast!
+      end
+
       respond_to do |format|
         format.json { render json: @lobby, serializer: LobbyStateSerializer }
         format.html

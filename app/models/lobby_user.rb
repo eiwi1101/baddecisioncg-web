@@ -17,7 +17,7 @@ class LobbyUser < ApplicationRecord
 
   belongs_to :lobby
   belongs_to :user
-  has_many :players
+  has_many :players, dependent: :destroy
 
   acts_as_paranoid
   has_guid
@@ -25,6 +25,7 @@ class LobbyUser < ApplicationRecord
   validates_presence_of :lobby
 
   before_validation :generate_guest_name
+  after_restore { self.broadcast! }
 
   scope :admins, -> { where(admin: true) }
 
@@ -44,12 +45,16 @@ class LobbyUser < ApplicationRecord
     end
   end
 
+  def current_player
+    self.players.last
+  end
+
   def guest?
     self.user.nil?
   end
 
   def leave!
-    self.lobby&.leave self.user
+    self.lobby&.leave self
   end
 
   def broadcast!

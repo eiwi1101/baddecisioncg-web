@@ -63,3 +63,4 @@ end
 Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
 Capybara.server = :puma
+Capybara.default_max_wait_time = 5.seconds

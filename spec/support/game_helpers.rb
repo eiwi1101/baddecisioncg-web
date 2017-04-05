@@ -11,3 +11,11 @@ def set_lobby_user(user)
   return if user.nil?
   page.set_rack_session lobby_user_ids: [user.guid]
 end
+
+def wait_until
+  require 'timeout'
+  Timeout.timeout(Capybara.default_max_wait_time) do
+    sleep(0.1) until (value = yield)
+    value
+  end
+end
