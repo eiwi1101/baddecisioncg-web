@@ -17,6 +17,8 @@ class Game < ApplicationRecord
 
   MIN_PLAYERS = Rails.env.production? ? 2 : 1
 
+  mattr_accessor :min_players
+
   belongs_to :lobby
   belongs_to :winning_user, class_name: LobbyUser
   has_many :players, autosave: true
@@ -82,14 +84,17 @@ class Game < ApplicationRecord
     raise Exceptions::PlayerExistsViolation.new I18n.t('violations.not_player_exists') unless has_lobby_user?(lobby_user)
 
     player = self.players.find_by!(lobby_user: lobby_user)
+    return false unless player
+
     self.players.delete(player)
     player.broadcast!
 
-    if self.players.length < MIN_PLAYERS
+    if self.players.length < min_players
       self.rounds.any? ? self.finish : self.abandon
     end
 
     self.broadcast!
+    true
   end
 
   def current_round
@@ -97,7 +102,7 @@ class Game < ApplicationRecord
   end
 
   def next_round
-    self.start! if self.ready?
+    self.start! if self.ready? and self.starting?
 
     raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.in_progress?
     raise Exceptions::RoundOrderViolation.new I18n.t('violations.round_order') unless self.rounds.empty? || self.rounds.last.finished?
@@ -119,7 +124,7 @@ class Game < ApplicationRecord
   end
 
   def ready?
-    self.in_progress? or (self.starting? and self.players.count >= MIN_PLAYERS)
+    self.in_progress? or (self.starting? and self.players.count >= min_players)
   end
 
   def has_lobby_user?(lobby_user)
@@ -132,6 +137,10 @@ class Game < ApplicationRecord
 
   private
 
+  def min_players
+    @@min_players || MIN_PLAYERS
+  end
+
   def assign_winner
     winning_player = self.players.order(:score).first
     self.winning_user = winning_player.try :lobby_user
@@ -139,8 +148,8 @@ class Game < ApplicationRecord
   end
 
   def validate_player_count
-    if self.players.length < MIN_PLAYERS
-      self.errors[:players] << "minimum #{MIN_PLAYERS} players"
+    if self.players.length < min_players
+      self.errors[:players] << "minimum #{min_players} players"
       false
     end
     true

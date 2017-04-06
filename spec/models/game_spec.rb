@@ -71,7 +71,7 @@ describe Game, type: :model do
     let(:game) { build :game, lobby: lobby }
 
     it 'joins player to game' do
-      expect(game.join(user)).to eq true
+      expect(game.join(user)).to be_truthy
       expect(game.players.first.user).to eq user.user
     end
 
@@ -86,7 +86,7 @@ describe Game, type: :model do
     end
 
     it 'rejects user already in game' do
-      expect(game.join(user)).to eq true
+      expect(game.join(user)).to be_truthy
       expect { game.join(user) }.to raise_exception Exceptions::PlayerExistsViolation
       expect(game.players).to have(1).items
     end
@@ -95,7 +95,6 @@ describe Game, type: :model do
   describe '#start!' do
     let(:lobby) { build :lobby, :with_users }
     let(:game) { build :game, lobby: lobby }
-    before { game.join(lobby.lobby_users.first) }
 
     it 'will not start without players' do
       expect(game.start).to eq false
@@ -104,14 +103,14 @@ describe Game, type: :model do
     end
 
     it 'starts with at least two players' do
-      game.join(lobby.lobby_users.last)
+      game.join(lobby.lobby_users.first)
       expect(game.start).to eq true
       expect(game.status).to eq 'in_progress'
     end
 
     it 'starts and initializes a round' do
       game.join(lobby.lobby_users.last)
-      expect(game.start).to eq true
+      expect(game.next_round).to be_truthy
       expect(game.rounds).to have_at_least(1).item
     end
   end
@@ -135,16 +134,19 @@ describe Game, type: :model do
     end
 
     it 'complains about users not in the game' do
-      expect(game.leave(lobby.lobby_users.last)).to eq true
+      expect(game.leave(lobby.lobby_users.last)).to be_truthy
       expect { game.leave(lobby.lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
     end
 
     it 'ends game if we drop below two people' do
+      Game.min_players = 2
+      game.rounds << build(:round, game: game)
       expect(game.leave(lobby.lobby_users.first)).to eq true
       expect(game.leave(lobby.lobby_users.last)).to eq true
       expect(game.status).to eq 'finished'
       expect(game.players.length).to eq 1
       expect(game.winning_user).to eq lobby.lobby_users.second
+      Game.min_players = 1
     end
   end
 

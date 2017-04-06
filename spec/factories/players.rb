@@ -22,15 +22,18 @@ FactoryGirl.define do
       end
 
       after :build do |player, evaluator|
-        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:fool))
-        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:crisis))
-        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:bad_decision))
+        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:fool, expansion: player.game.expansions.first))
+        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:crisis, expansion: player.game.expansions.first))
+        player.player_cards << build_list(:player_card, evaluator.hand_size, card: build(:bad_decision, expansion: player.game.expansions.first))
+        player.valid?
       end
     end
 
     trait :with_discarded do
+      game { build :game, :with_expansion }
+
       after :build do |player|
-        player.player_cards << build_list(:player_card, 10, :discarded, card: build(:fool))
+        player.player_cards << build_list(:player_card, 10, :discarded, card: build(:fool, expansion: player.game.expansions.first))
       end
     end
   end

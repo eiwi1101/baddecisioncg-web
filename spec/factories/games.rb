@@ -16,6 +16,11 @@ FactoryGirl.define do
   factory :game do
     score_limit 13
     lobby
+    expansions { build_list :expansion, 1 }
+
+    trait :without_expansion do
+      expansions
+    end
 
     trait :with_players do
       lobby { build :lobby, :with_users, user_attributes: [] }

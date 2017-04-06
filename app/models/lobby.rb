@@ -64,11 +64,11 @@ class Lobby < ApplicationRecord
 
     return false unless lobby_user
 
-    lobby_user.destroy
-
-    if current_game&.has_lobby_user?(lobby_user)
+    if self.current_game&.has_lobby_user?(lobby_user)
       current_game.leave(lobby_user)
     end
+
+    lobby_user.destroy
 
     if lobby_users.admins.length == 0
       if (admin = lobby_users.first)
@@ -77,7 +77,7 @@ class Lobby < ApplicationRecord
       end
     end
 
-    if lobby_users.length == 0
+    if lobby_users.count == 0
       self.destroy
       self.broadcast!
     end

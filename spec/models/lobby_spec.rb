@@ -60,17 +60,19 @@ describe Lobby, type: :model do
     end
 
     context 'when spectating' do
-      before { lobby.leave(lobby.lobby_users.last.user) }
+      before { lobby.leave(lobby.lobby_users.last.user); lobby.reload }
       its(:lobby_users) { is_expected.to have(2).items }
     end
 
     context 'when in a game' do
       let(:game) { create :game, lobby: lobby }
+      let(:user) { lobby.lobby_users.last }
 
       before do
-        game.join(lobby.lobby_users.last)
-        lobby.leave(lobby.lobby_users.last.user)
+        game.join(user)
+        lobby.leave(user.user)
         game.reload
+        lobby.reload
       end
 
       it { expect(game).to be_abandoned }
@@ -81,7 +83,7 @@ describe Lobby, type: :model do
       let(:lobby) { create :lobby, :with_users, user_count: 1 }
       before { lobby.leave(lobby.lobby_users.last.user) }
 
-      it { is_expected.to be_deleted }
+      it { expect(lobby.reload).to be_deleted }
     end
   end
 
