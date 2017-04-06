@@ -91,6 +91,7 @@ feature 'New Game', js: true do
 
           visit lobbies_path
           expect(page).to have_no_content player.guid
+          wait_until { player.reload.deleted? }
 
           visit lobby_path lobby
           expect(page).to have_content 'lobby has closed'
@@ -112,6 +113,7 @@ feature 'New Game', js: true do
           wait_until { !user.reload.deleted? }
           expect(user).to_not be_deleted
           expect(player.reload).to_not be_deleted
+
           expect_content 'lobby-users', user.guid
           expect_content 'game-players', player.guid
         end

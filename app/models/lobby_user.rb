@@ -58,7 +58,7 @@ class LobbyUser < ApplicationRecord
   end
 
   def broadcast!
-    self.lobby.broadcast user: LobbyUserSerializer.new(self).as_json
+    self.lobby&.broadcast user: LobbyUserSerializer.new(self).as_json
   end
 
   def broadcast(data)

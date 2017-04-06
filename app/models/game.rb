@@ -86,10 +86,10 @@ class Game < ApplicationRecord
     player = self.players.find_by!(lobby_user: lobby_user)
     return false unless player
 
-    self.players.delete(player)
+    player.destroy
     player.broadcast!
 
-    if self.players.length < min_players
+    if self.players.count < min_players
       self.rounds.any? ? self.finish : self.abandon
     end
 

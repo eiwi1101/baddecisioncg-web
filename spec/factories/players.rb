@@ -30,8 +30,6 @@ FactoryGirl.define do
     end
 
     trait :with_discarded do
-      game { build :game, :with_expansion }
-
       after :build do |player|
         player.player_cards << build_list(:player_card, 10, :discarded, card: build(:fool, expansion: player.game.expansions.first))
       end

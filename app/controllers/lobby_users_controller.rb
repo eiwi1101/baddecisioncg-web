@@ -13,6 +13,6 @@ class LobbyUsersController < ApplicationController
   private
 
   def get_lobby_user
-    @lobby_user = LobbyUser.find_by!(guid: params[:id])
+    @lobby_user = LobbyUser.with_deleted.find_by!(guid: params[:id])
   end
 end

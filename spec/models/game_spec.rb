@@ -116,15 +116,14 @@ describe Game, type: :model do
   end
 
   describe '#leave' do
-    let(:lobby) { build :lobby, :with_users, user_count: 3 }
-    let(:game) { build :game, lobby: lobby }
+    let(:lobby) { create :lobby, :with_users, user_count: 3 }
+    let(:game) { create :game, lobby: lobby }
     before { lobby.lobby_users.each { |u| game.join(u) } }
     before { game.start! }
 
     it 'leaves player' do
-      expect(game.players.length).to eq 3
+      expect(game.players.count).to eq 3
       game.leave(lobby.lobby_users.last)
-      expect(game.players.length).to eq 2
       expect(game.reload.players.length).to eq 2
     end
 
@@ -138,16 +137,20 @@ describe Game, type: :model do
       expect { game.leave(lobby.lobby_users.last) }.to raise_exception Exceptions::PlayerExistsViolation
     end
 
-    it 'ends game if we drop below two people' do
-      Game.min_players = 2
-      game.rounds << build(:round, game: game)
-      expect(game.leave(lobby.lobby_users.first)).to eq true
-      expect(game.leave(lobby.lobby_users.last)).to eq true
-      expect(game.status).to eq 'finished'
-      expect(game.players.length).to eq 1
-      expect(game.winning_user).to eq lobby.lobby_users.second
-      Game.min_players = 1
+    context 'with two player limit' do
+      before { Game.min_players = 2 }
+      after { Game.min_players = 1 }
+
+      it 'ends game if we drop below two people' do
+        game.rounds << build(:round, game: game)
+        expect(game.leave(lobby.lobby_users.first)).to eq true
+        expect(game.leave(lobby.lobby_users.last)).to eq true
+        expect(game.status).to eq 'finished'
+        expect(game.reload.players.count).to eq 1
+        expect(game.winning_user).to eq lobby.lobby_users.second
+      end
     end
+
   end
 
   describe '#finish!' do
