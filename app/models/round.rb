@@ -76,10 +76,10 @@ class Round < ApplicationRecord
   end
 
   def play(player, player_card)
-    player.bard? ? bard_play(player_card) : player_play(player_card)
+    player.bard? ? bard_play(player_card, player) : player_play(player_card, player)
   end
 
-  def bard_play(player_card)
+  def bard_play(player_card, player=nil)
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player != self.bard_player
     raise Exceptions::RoundOrderViolation.new unless self.setup?
@@ -91,11 +91,18 @@ class Round < ApplicationRecord
 
     player_card.update_attributes(round: self)
     self.update_attributes(player_card.card.type_string + '_pc' => player_card)
-    self.bard_in? ? self.reveal! : self.broadcast!
+
+    if self.bard_in?
+      self.reveal!
+      player&.broadcast!
+    else
+      self.broadcast!
+    end
+
     true
   end
 
-  def player_play(player_card)
+  def player_play(player_card, player=nil)
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player == self.bard_player
     raise Exceptions::RoundOrderViolation.new unless self.player_pick?
@@ -107,6 +114,7 @@ class Round < ApplicationRecord
 
     player_card.update_attributes(round: self)
     self.player_cards << player_card
+    player&.broadcast!
     self.all_in? ? self.all_in! : self.broadcast!
     true
   end

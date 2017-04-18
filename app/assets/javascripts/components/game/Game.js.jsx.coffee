@@ -23,15 +23,22 @@
     currentPlayer: null
 
 
+  load: (game=null) ->
+    if game
+      o = game: game
+      o.currentRound = game.currentRound if game.currentRound
+      o.players = game.players if game.players
+      @setState o
+    else
+      Model.fetch "/games/#{@props.lobby.current_game_id}.json", @load
+
   componentWillMount: ->
     if !@state.game? && @props.lobby.current_game_id?
-      Model.fetch "/games/#{@props.lobby.current_game_id}.json", (game) =>
-        @setState game: game, currentRound: game.current_round, players: game.players
+      @load()
 
     LobbyChannel
       .on 'game', (game) =>
-        console.log "WE GOT A GAME UPDATE: " + JSON.stringify(game)
-        @setState game: game, currentRound: game.current_round, players: game.players
+        @load(game)
 
 
   _handleNewRound: (round) ->

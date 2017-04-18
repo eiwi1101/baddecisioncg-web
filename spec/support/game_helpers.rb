@@ -1,5 +1,6 @@
-def expect_content(id, content)
-  expect(page.find "##{id}").to have_content content
+def expect_content(id, content, expect=true)
+  method = expect ? :have_content : :have_no_content
+  expect(page.find "##{id}").to self.send(method, content)
 end
 
 def click(link_text)

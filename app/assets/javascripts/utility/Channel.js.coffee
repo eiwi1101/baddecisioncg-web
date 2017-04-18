@@ -1,10 +1,11 @@
 class window.Channel
   channel: null
-  callbacks: {}
+  callbacks: null
   connection: null
 
   constructor: (@channel) ->
     window.AppConsumer ||= ActionCable.createConsumer()
+    @callbacks = {}
 
   subscribe: (data, callbacks={}) =>
     data.channel = @channel
@@ -17,6 +18,8 @@ class window.Channel
 
     for action, callback of callbacks
       @on action, callback
+
+    console.log "[Action Cable] Subscribing to #{@channel}"
 
   perform: (command, args=null) =>
     @connection.perform(command, args)

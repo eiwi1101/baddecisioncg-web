@@ -30,6 +30,7 @@ feature 'Round Play', js: true do
     end
 
     expect_content 'fool-blank', fool.guid
+    expect_content 'fool-hand', fool.guid
 
     within "#card-#{decision.guid}" do
       click_link 'Play'
@@ -42,6 +43,10 @@ feature 'Round Play', js: true do
     end
 
     expect_content 'crisis-blank', crisis.guid
+
+    # Card is removed from hand when bard plays.
+    expect_content 'crisis-hand', crisis.guid, false
+    expect_content 'fool-hand', fool.guid, false
   end
 
   scenario 'player sees bard slot fills'

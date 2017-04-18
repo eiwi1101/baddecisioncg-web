@@ -17,6 +17,7 @@
     LobbyUserChannel
       .on 'player', (player) =>
         console.log "LobbyUserChannel.on cards: ", player.player_cards
+        console.log "Player: #{JSON.stringify(player)}"
         @setState cards: player.player_cards if player.player_cards
 
 

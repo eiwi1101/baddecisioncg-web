@@ -3,12 +3,7 @@ class Rounds::CardsController < ApplicationController
   before_action :get_card, only: [:create]
 
   def create
-    if @player.bard?
-      @round.bard_play @card
-    else
-      @round.player_play @card
-    end
-
+    @round.play @player, @card
     respond_with @card, serializer: PlayerCardSerializer, location: nil
   end
 
