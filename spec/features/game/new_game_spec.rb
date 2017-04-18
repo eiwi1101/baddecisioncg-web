@@ -56,7 +56,6 @@ feature 'New Game', js: true do
         expect(game.reload.players).to have(1).items
         expect_content 'game-players', game.players.first.guid
         expect_content 'current-player', game.players.first.guid
-        expect_content 'round-data', 'null'
 
         reload_page
         expect_content 'current-player', game.players.first.guid
@@ -69,7 +68,7 @@ feature 'New Game', js: true do
           expect_content 'current-player', player.guid
 
           click 'Start Game'
-          expect(game.reload.rounds).to have(1).items
+          wait_until { game.reload.rounds.count >= 1 }
           expect_content 'round-data', game.rounds.last.guid
           expect(page).to have_content 'in_progress'
           expect_content 'game-data', 'in_progress'
