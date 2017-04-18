@@ -1,5 +1,17 @@
 class PlayerCardSerializer < ActiveModel::Serializer
-  attributes :guid, :type, :text, :is_discarded
+  attributes :id,
+             :card_id,
+             :type,
+             :text,
+             :is_discarded
+
+  def id
+    object.guid
+  end
+
+  def card_id
+    object.card.uuid
+  end
 
   def type
     object.card.type_string

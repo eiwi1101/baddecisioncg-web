@@ -16,18 +16,12 @@ Rails.application.routes.draw do
     resources :lobby_users, only: [:index, :show, :destroy], shallow: true
 
     resources :games, only: [:create, :show], shallow: true do
-      resources :players, only: [:create], shallow: true
-
-      resources :rounds, only: [:create, :show], shallow: true do
-        resources :player_cards, only: [:create], shallow: true do
-          collection do
-            post :winner
-          end
-        end
+      resources :players, only: [:create], shallow: true do
+        resources :cards, only: [:create, :update, :index], controller: 'players/cards'
       end
 
-      member do
-        post :start
+      resources :rounds, only: [:create, :show], shallow: true do
+        resources :cards, only: [:create, :update], controller: 'rounds/cards'
       end
     end
   end

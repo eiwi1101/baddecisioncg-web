@@ -51,6 +51,12 @@
         joinGame =
           `<div>Waiting for others...</div>`
 
+      else
+        playerHands =
+          `<PlayerHands currentUser={ this.props.currentUser }
+                        currentPlayer={ currentPlayer }
+                        cards={ currentPlayer.cards } />`
+
       round =
         `<Round round={ this.state.currentRound } game={ this.state.game } />`
 
@@ -74,5 +80,6 @@
 
         { playerList }
         { round }
+        { playerHands }
         { children }
     </div>`

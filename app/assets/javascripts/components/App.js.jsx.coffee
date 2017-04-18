@@ -50,6 +50,8 @@
 
         @setState users: users
 
+    LobbyUserChannel.subscribe lobbyId: @props.lobbyId, userId: @props.currentUserId
+
 
   componentWillUnmount: ->
     @_deleteCurrentUser(@props.currentUserId)
@@ -105,9 +107,6 @@
 
             <ChatLog lobby={ this.state.lobby }
                      messages={ this.state.lobby.messages } />
-
-            <PlayerHands currentUser={ this.state.currentUser }
-                         cards={ this.state.currentUser.cards } />
         </Game>`
 
     `<div id='app-main'>

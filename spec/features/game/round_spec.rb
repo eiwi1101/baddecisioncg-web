@@ -16,7 +16,6 @@ feature 'Round Play', js: true do
   scenario 'user has cards' do
     expect_content 'current-player', player.guid
     expect_content 'round-data', round.guid
-    save_and_open_screenshot
     expect_content 'round-story', round.story_card.uuid
     expect_content 'player-cards', player.cards.first.uuid
   end

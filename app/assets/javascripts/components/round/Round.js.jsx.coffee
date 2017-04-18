@@ -10,10 +10,13 @@
     playerCards: @props.round?.player_cards
 
 
+  load: ->
+    Model.fetch "/rounds/#{@props.game.current_round_id}.json", (round) =>
+      @setState round: round, story: round.story, playerCards: round.player_cards
+
   componentWillMount: ->
     if !@props.round && @props.game? && @props.game.current_round_id?
-      Model.fetch "/rounds/#{@props.game.current_round_id}.json", (round) =>
-        @setState round: round, story: round.story, playerCards: round.player_cards
+      @load()
 
 
   _handleNewRound: (e) ->
