@@ -15,9 +15,9 @@
         @setState cards: cards
 
     LobbyUserChannel
-      .on 'cards', (cards) =>
-        console.log "LobbyUserChannel.on cards: ", cards
-        @setState cards: cards
+      .on 'player', (player) =>
+        console.log "LobbyUserChannel.on cards: ", player.player_cards
+        @setState cards: player.player_cards if player.player_cards
 
 
   render: ->

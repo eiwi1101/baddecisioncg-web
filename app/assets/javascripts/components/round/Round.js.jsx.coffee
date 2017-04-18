@@ -2,6 +2,7 @@
   propTypes:
     game: React.PropTypes.object.isRequired
     round: React.PropTypes.object
+    onChange: React.PropTypes.func
 
 
   getInitialState: ->
@@ -13,10 +14,15 @@
   load: ->
     Model.fetch "/rounds/#{@props.game.current_round_id}.json", (round) =>
       @setState round: round, story: round.story, playerCards: round.player_cards
+      @props.onChange round if @props.onChange
 
   componentWillMount: ->
     if !@props.round && @props.game? && @props.game.current_round_id?
       @load()
+
+    LobbyChannel
+      .on 'round', (round) =>
+        @setState round: round, story: round.story, playerCards: round.player_cards
 
 
   _handleNewRound: (e) ->
@@ -28,10 +34,15 @@
   render: ->
     if @state.round?
       story =
-        `<div id='round-story'>Story: { JSON.stringify(this.state.story) }</div>`
+        `<Story id='round-story'
+                card={ this.state.story }
+                fool={ this.state.round.fool }
+                crisis={ this.state.round.crisis }
+                badDecision={ this.state.round.bad_decision }
+        />`
 
       playerCards =
-        `<div id='round-player-cards'>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
+        `<Hand id='round-player-cards' cards={ this.state.playerCards } />`
 
     else if @props.game.isReady
       startGame =

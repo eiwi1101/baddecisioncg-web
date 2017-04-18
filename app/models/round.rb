@@ -83,7 +83,7 @@ class Round < ApplicationRecord
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player != self.bard_player
     raise Exceptions::RoundOrderViolation.new unless self.setup?
-    raise Exceptions::CardTypeViolation.new if self.story_card.card_order.last == player_card.card.type_string
+    raise Exceptions::CardTypeViolation.new I18n.t('violations.card_type') if self.story_card.card_order.last == player_card.card.type_string
 
     if (slot = self.send(player_card.card.type_string + '_pc'))
       slot.update_attributes(round: nil)
@@ -99,7 +99,7 @@ class Round < ApplicationRecord
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player == self.bard_player
     raise Exceptions::RoundOrderViolation.new unless self.player_pick?
-    raise Exceptions::CardTypeViolation.new unless self.story_card.card_order.last == player_card.card.type_string
+    raise Exceptions::CardTypeViolation.new I18n.t('violations.card_type') unless self.story_card.card_order.last == player_card.card.type_string
 
     if (slot = self.player_cards.where(player: player_card.player)).any?
       slot.each { |pc| pc.update_attributes(round: nil) }
@@ -114,7 +114,7 @@ class Round < ApplicationRecord
   def bard_pick(player, player_card)
     raise Exceptions::PlayerRoleViolation.new I18n.t('violations.player_role') unless player.bard?
     raise Exceptions::RoundMismatchViolation.new unless player_card.round == self
-    raise Exceptions::CardTypeViolation.new unless self.story_card.card_order.last == player_card.card.type_string
+    raise Exceptions::CardTypeViolation.new I18n.t('violations.card_type') unless self.story_card.card_order.last == player_card.card.type_string
     raise Exceptions::RoundOrderViolation.new unless self.bard_pick?
 
     self.update_attributes(player_card.card.type_string + '_pc' => player_card)

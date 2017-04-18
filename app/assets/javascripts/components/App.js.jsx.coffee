@@ -60,6 +60,10 @@
       .off 'app:loading'
       .off 'app:loading:stop'
 
+  componentDidUpdate: ->
+    window.scrollTo 0, document.body.scrollHeight
+
+
   _getLobby: (lobbyId) ->
     Model.fetch "/l/#{lobbyId}.json", (data) =>
       @setState lobby: data.lobby, users: data.lobby?.users

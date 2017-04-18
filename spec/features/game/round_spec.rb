@@ -21,27 +21,27 @@ feature 'Round Play', js: true do
   end
 
   scenario 'user fills bard slots' do
-    expect_content 'bard-slot-1', 'fool'
-    expect_content 'bard-slot-2', 'crisis'
-    expect_content 'bard-slot-3', 'decision'
+    fool = player.player_cards.fools.first
+    crisis = player.player_cards.crisis.first
+    decision = player.player_cards.bad_decisions.first
 
-    within '#fool-hand' do
-      click 'Play'
+    within "#card-#{fool.guid}" do
+      click_link 'Play'
     end
 
-    expect_content 'round-story', player.cards.fools.first.uuid
+    expect_content 'fool-blank', fool.guid
 
-    within '#decision-hand' do
-      click 'Play'
+    within "#card-#{decision.guid}" do
+      click_link 'Play'
     end
 
-    expect(page).to have_content 'Can\'t do that.'
+    expect(page).to have_content "card doesn't fit"
 
-    within '#crisis-hand' do
-      click 'Play'
+    within "#card-#{crisis.guid}" do
+      click_link 'Play'
     end
 
-    expect_content 'round-story', player.cards.crisis.first.uuid
+    expect_content 'crisis-blank', crisis.guid
   end
 
   scenario 'player sees bard slot fills'

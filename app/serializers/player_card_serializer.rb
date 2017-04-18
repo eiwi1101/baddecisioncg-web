@@ -3,7 +3,8 @@ class PlayerCardSerializer < ActiveModel::Serializer
              :card_id,
              :type,
              :text,
-             :is_discarded
+             :is_discarded,
+             :path
 
   def id
     object.guid
@@ -23,5 +24,9 @@ class PlayerCardSerializer < ActiveModel::Serializer
 
   def is_discarded
     object.discarded?
+  end
+
+  def path
+    "/cards/#{object.guid}"
   end
 end

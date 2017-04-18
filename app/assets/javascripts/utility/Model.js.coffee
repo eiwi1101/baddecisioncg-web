@@ -5,6 +5,9 @@
   post: (path, data, success, error) ->
     @request('POST', path, data, success, error)
 
+  put: (path, data, success, error) ->
+    @request('PUT', path, data, success, error)
+
   delete: (path, success, error) ->
     @request('DELETE', path, {}, success, error)
 
@@ -20,7 +23,7 @@
 
       error: (e) =>
         msg = e.responseJSON || e.responseText
-        console.error msg
+        console.warn "Error sending request: #{JSON.stringify(msg)}"
 
         if error
           error(msg)

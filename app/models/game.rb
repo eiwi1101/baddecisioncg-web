@@ -83,7 +83,7 @@ class Game < ApplicationRecord
     raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
     raise Exceptions::PlayerExistsViolation.new I18n.t('violations.not_player_exists') unless has_lobby_user?(lobby_user)
 
-    player = self.players.find_by!(lobby_user: lobby_user)
+    player = self.players.find_by(lobby_user: lobby_user)
     return false unless player
 
     player.destroy

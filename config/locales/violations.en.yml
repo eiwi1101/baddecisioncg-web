@@ -6,3 +6,4 @@ en:
     player_exists: You are already in this game.
     not_player_exists: You are not in this game.
     player_role: You are not the bard.
+    card_type: "That card doesn't fit a blank!"

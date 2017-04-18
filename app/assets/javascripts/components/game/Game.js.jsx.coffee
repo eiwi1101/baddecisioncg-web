@@ -4,11 +4,23 @@
     lobby: React.PropTypes.object.isRequired
     game: React.PropTypes.object
 
+  childContextTypes:
+    currentRound: React.PropTypes.object
+    currentGame: React.PropTypes.object
+    currentPlayer: React.PropTypes.object
 
+
+  getChildContext: ->
+    currentRound: @state.currentRound
+    currentGame: @state.game
+    currentPlayer: @state.currentPlayer
+
+  # TODO -> Current player.
   getInitialState: ->
     game: @props.game
     currentRound: @props.game?.current_round
     players: @props.game?.players
+    currentPlayer: null
 
 
   componentWillMount: ->
@@ -21,6 +33,9 @@
         console.log "WE GOT A GAME UPDATE: " + JSON.stringify(game)
         @setState game: game, currentRound: game.current_round, players: game.players
 
+
+  _handleNewRound: (round) ->
+    @setState currentRound: round
 
   _handleNewGame: (e) ->
     Model.post "#{@props.lobby.path}/games.json", {}, (game) =>
@@ -58,7 +73,10 @@
                         cards={ currentPlayer.cards } />`
 
       round =
-        `<Round round={ this.state.currentRound } game={ this.state.game } />`
+        `<Round round={ this.state.currentRound }
+                game={ this.state.game }
+                onChange={ this._handleNewRound }
+        />`
 
       playerList =
         `<PlayerList players={ this.state.players }

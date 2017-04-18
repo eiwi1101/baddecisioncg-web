@@ -17,6 +17,7 @@ class LobbyUser < ApplicationRecord
 
   belongs_to :lobby
   belongs_to :user
+  has_many :games, through: :lobby
   has_many :players, dependent: :destroy
 
   acts_as_paranoid

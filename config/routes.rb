@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
     resources :games, only: [:create, :show], shallow: true do
       resources :players, only: [:create], shallow: true do
-        resources :cards, only: [:create, :update, :index], controller: 'players/cards'
+        resources :cards, only: [:create, :index], controller: 'players/cards'
       end
 
       resources :rounds, only: [:create, :show], shallow: true do
