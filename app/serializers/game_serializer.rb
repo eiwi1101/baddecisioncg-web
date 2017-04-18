@@ -16,16 +16,20 @@ class GameSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
   attributes :id,
+             :current_round_id,
              :score_limit,
              :status,
              :isReady,
              :path
 
-  has_one  :current_round, serializer: RoundSerializer
   has_many :players, serializer: PlayerSerializer
 
   def id
     object.guid
+  end
+
+  def current_round_id
+    object.current_round&.guid
   end
 
   def isReady

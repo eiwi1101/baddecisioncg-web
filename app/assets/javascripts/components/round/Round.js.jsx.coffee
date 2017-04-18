@@ -11,7 +11,7 @@
 
 
   componentWillMount: ->
-    if !@state.round? && @props.game? && @props.game.current_round_id?
+    if !@props.round && @props.game? && @props.game.current_round_id?
       Model.fetch "/rounds/#{@props.game.current_round_id}.json", (round) =>
         @setState round: round, story: round.story, playerCards: round.player_cards
 
@@ -25,10 +25,10 @@
   render: ->
     if @state.round?
       story =
-        `<div>Story: { JSON.stringify(this.state.story) }</div>`
+        `<div id='round-story'>Story: { JSON.stringify(this.state.story) }</div>`
 
       playerCards =
-        `<div>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
+        `<div id='round-player-cards'>Player Cards: { JSON.stringify(this.state.playerCards) }</div>`
 
     else if @props.game.isReady
       startGame =

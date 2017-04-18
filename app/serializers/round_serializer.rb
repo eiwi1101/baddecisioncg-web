@@ -18,7 +18,22 @@
 #
 
 class RoundSerializer < ActiveModel::Serializer
-  attributes :guid, :status, :bard_player_guid, :winning_player_guid, :story_html, :story_text, :blank_cards, :player_cards
+  attributes :id,
+             :status,
+             :bard_player_guid,
+             :winning_player_guid,
+             :blank_cards,
+             :player_cards
+
+  has_one :story, serializer: CardSerializer
+
+  def id
+    object.guid
+  end
+
+  def story
+    object.story_card
+  end
 
   def player_cards
     object.submitted_player_cards&.collect { |p| PlayerCardSerializer.new(p).as_json }

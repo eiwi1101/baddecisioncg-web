@@ -1,3 +1,4 @@
+
 @PlayerHands = React.createClass
   propTypes:
     currentUser: React.PropTypes.object.isRequired
@@ -10,5 +11,5 @@
 
   render: ->
     `<div className='player-hands'>
-        Cards: { JSON.stringify(this.state.cards) }
+        <div id='player-cards'>Cards: { JSON.stringify(this.state.cards) }</div>
     </div>`
