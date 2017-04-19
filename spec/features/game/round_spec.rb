@@ -8,6 +8,7 @@ feature 'Round Play', js: true do
   let!(:game) { lobby.new_game }
   let!(:bard) { game.join bard_user }
   let!(:player) { game.join user }
+  let!(:player_2) { game.join lobby.join }
   let!(:round) { game.next_round }
 
   def play_card(card)
@@ -78,7 +79,23 @@ feature 'Round Play', js: true do
       expect_content 'crisis-blank', crisis.guid
     end
 
-    scenario 'player plays cards'
+    scenario 'player plays cards' do
+      fool = bard.player_cards.fools.first
+      crisis = bard.player_cards.crisis.first
+      decision = player.player_cards.bad_decisions.first
+      decision_2 = player_2.player_cards.bad_decisions.first
+
+      round.play bard, fool
+      round.play bard, crisis
+
+      play_card decision
+      expect_content 'round-player-cards', 'bad_decision'
+      expect_content 'round-player-cards', decision.guid, false
+
+      round.play player_2, decision_2
+      expect_content 'round-player-cards', decision.guid
+      expect_content 'round-player-cards', decision_2.guid
+    end
   end
 
   scenario 'bard picks winner'

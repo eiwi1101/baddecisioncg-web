@@ -51,7 +51,7 @@ class RoundSerializer < ActiveModel::Serializer
       object.submitted_player_cards&.collect { |p| PlayerCardSerializer.new(p).as_json }
     else
       object.submitted_player_cards&.collect do |p|
-        { type: p.type, guid: nil }
+        { type: p.type, id: Digest::MD5.hexdigest(p.guid) }
       end
     end
   end

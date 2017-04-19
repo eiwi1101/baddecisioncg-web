@@ -14,10 +14,6 @@ class PlayerCardSerializer < ActiveModel::Serializer
     object.card.uuid
   end
 
-  def type
-    object.card.type_string
-  end
-
   def text
     object.card.display_text(object.round)
   end
