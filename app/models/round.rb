@@ -82,7 +82,7 @@ class Round < ApplicationRecord
   def bard_play(player_card, player=nil)
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player != self.bard_player
-    raise Exceptions::RoundOrderViolation.new unless self.setup?
+    raise Exceptions::RoundOrderViolation.new I18n.t('violations.round_order') unless self.setup?
     raise Exceptions::CardTypeViolation.new I18n.t('violations.card_type') if self.story_card.card_order.last == player_card.card.type_string
 
     if (slot = self.send(player_card.card.type_string + '_pc'))
@@ -94,10 +94,11 @@ class Round < ApplicationRecord
 
     if self.bard_in?
       self.reveal!
-      player&.broadcast!
     else
       self.broadcast!
     end
+
+    player&.broadcast!
 
     true
   end
@@ -105,7 +106,7 @@ class Round < ApplicationRecord
   def player_play(player_card, player=nil)
     raise Exceptions::DiscardedCardViolation.new if player_card.discarded?
     raise Exceptions::PlayerHandViolation.new if player_card.player == self.bard_player
-    raise Exceptions::RoundOrderViolation.new unless self.player_pick?
+    raise Exceptions::RoundOrderViolation.new I18n.t('violations.round_order') unless self.player_pick?
     raise Exceptions::CardTypeViolation.new I18n.t('violations.card_type') unless self.story_card.card_order.last == player_card.card.type_string
 
     if (slot = self.player_cards.where(player: player_card.player)).any?

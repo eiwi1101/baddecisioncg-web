@@ -30,6 +30,10 @@ class Player < ApplicationRecord
   
   after_restore { self.broadcast! }
 
+  def current_round
+    self.game&.current_round
+  end
+
   def bard?
     game&.current_round&.bard_player == self
   end

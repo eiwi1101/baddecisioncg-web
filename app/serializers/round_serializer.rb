@@ -34,8 +34,26 @@ class RoundSerializer < ActiveModel::Serializer
     object.guid
   end
 
+  def fool_pc
+    object.setup? ? nil : object.fool_pc
+  end
+
+  def crisis_pc
+    object.setup? ? nil : object.crisis_pc
+  end
+
+  def bad_decision_pc
+    object.setup? ? nil : object.bad_decision_pc
+  end
+
   def player_cards
-    object.submitted_player_cards&.collect { |p| PlayerCardSerializer.new(p).as_json }
+    if object.bard_pick?
+      object.submitted_player_cards&.collect { |p| PlayerCardSerializer.new(p).as_json }
+    else
+      object.submitted_player_cards&.collect do |p|
+        { type: p.type, guid: nil }
+      end
+    end
   end
 
   def bard_player_guid

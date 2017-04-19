@@ -24,6 +24,15 @@
       .on 'round', (round) =>
         @setState round: round, story: round.story, playerCards: round.player_cards
 
+    LobbyUserChannel
+      .on 'player', (player) =>
+        if player.bard_setup
+          round = @state.round
+          round.fool = player.bard_setup.fool_pc
+          round.crisis = player.bard_setup.crisis_pc
+          round.bad_decision = player.bard_setup.bad_decision_pc
+          @setState round: round
+
 
   _handleNewRound: (e) ->
     Model.post "#{@props.game.path}/rounds.json", {}, (round) =>
