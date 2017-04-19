@@ -51,7 +51,7 @@
         />`
 
       playerCards =
-        `<Hand id='round-player-cards' cards={ this.state.playerCards } />`
+        `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound />`
 
     else if @props.game.isReady
       startGame =

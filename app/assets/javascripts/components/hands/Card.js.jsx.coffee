@@ -4,12 +4,20 @@
 
   propTypes:
     card: React.PropTypes.object.isRequired
+    isRound: React.PropTypes.bool
 
 
   _handlePlay: (e) ->
     console.log "Play Card: ", @context.currentRound
+
+    if @props.isRound
+      endpoint = 'winner'
+    else
+      endpoint = 'cards'
+
     if @context.currentRound
-      Model.post "/rounds/#{this.context.currentRound.id}/cards.json", card_id: @props.card.id
+      Model.post "/rounds/#{this.context.currentRound.id}/#{endpoint}.json", card_id: @props.card.id
+
     e.preventDefault()
 
 

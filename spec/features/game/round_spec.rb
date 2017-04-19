@@ -45,6 +45,28 @@ feature 'Round Play', js: true do
       expect_content 'crisis-hand', crisis.guid, false
       expect_content 'fool-hand', fool.guid, false
     end
+
+    scenario 'bard picks winner' do
+      fool = bard.player_cards.fools.first
+      crisis = bard.player_cards.crisis.first
+      decision = player.player_cards.bad_decisions.first
+      decision_2 = player_2.player_cards.in_hand.bad_decisions.first
+      round.play bard, fool
+      round.play bard, crisis
+      round.play player_2, decision_2
+      round.play player, decision
+
+      wait_until { round.bard_pick? }
+      play_card decision_2
+
+      # THE BARD SHALL DO A WINNING
+      new_p2_d = player_2.player_cards.in_hand.bad_decisions.first
+      expect(new_p2_d).to_not eq decision_2
+
+      wait_until { player_2.reload.score == 1 }
+
+      expect_content 'bad-decision-blank', decision_2.guid
+    end
   end
 
   context 'as player' do
@@ -97,8 +119,6 @@ feature 'Round Play', js: true do
       expect_content 'round-player-cards', decision_2.guid
     end
   end
-
-  scenario 'bard picks winner'
 
   scenario 'game reaches max score'
 end

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
       resources :rounds, only: [:create, :show], shallow: true do
         resources :cards, only: [:create, :update], controller: 'rounds/cards'
+        resource :winner, only: [:create], controller: 'rounds/winners'
       end
     end
   end
