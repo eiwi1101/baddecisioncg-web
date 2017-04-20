@@ -17,6 +17,7 @@ class PlayerSerializer < ActiveModel::Serializer
              :score,
              :name,
              :avatar_url,
+             :score,
              :is_deleted
 
   def id
@@ -24,23 +25,19 @@ class PlayerSerializer < ActiveModel::Serializer
   end
 
   def user_id
-    object.lobby_user.guid
+    object.lobby_user&.guid
   end
 
   def name
-    object.lobby_user.name
+    object.lobby_user&.name
   end
 
   def avatar_url
-    object.lobby_user.avatar_url
+    object.lobby_user&.avatar_url
   end
 
   def score
     object.score || 0
-  end
-
-  def lobby_user_id
-    object.lobby_user.guid
   end
 
   def is_deleted

@@ -93,6 +93,10 @@
         React.cloneElement child,
           game: this.state.game
 
+      if @state.game.status == 'finished'
+        newGame =
+          `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
+
     else
       newGame =
         `<a href='#' onClick={ this._handleNewGame }>New Game</a>`

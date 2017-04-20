@@ -53,9 +53,14 @@
       playerCards =
         `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound />`
 
+      if @state.round.status == 'finished'
+        nextRound =
+          `<a href='#' onClick={ this._handleNewRound }>Next Round</a>`
+
     else if @props.game.isReady
-      startGame =
+      nextRound =
         `<a href='#' onClick={ this._handleNewRound }>Start Game</a>`
+
 
     `<div className='round-container'>
         <div id='round-data'>Round: { JSON.stringify(this.state.round) }</div>
@@ -63,5 +68,5 @@
         { story }
         { playerCards }
 
-        { startGame }
+        { nextRound }
     </div>`

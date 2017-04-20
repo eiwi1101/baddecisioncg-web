@@ -39,7 +39,7 @@ class Round < ApplicationRecord
     after_transition any => any, do: [:broadcast!]
 
     before_transition nil => :setup, do: [:draw_story, :players_draw]
-    before_transition any => :finished, do: [:mark_winner]
+    before_transition any => :finished, do: [:mark_winner, :update_game]
 
     state :setup do
       validates_presence_of :story_card
@@ -195,6 +195,10 @@ class Round < ApplicationRecord
 
   def mark_winner
     self.winning_player = self.card_blanks.last.player if self.bard_picked?
+  end
+
+  def update_game
+    self.game.round_finished!
   end
 
   def validate_all_players_submitted

@@ -131,6 +131,12 @@ class Game < ApplicationRecord
     self.players.exists?(lobby_user: lobby_user)
   end
 
+  def round_finished!
+    if self.rounds.count >= self.score_limit
+      self.finish!
+    end
+  end
+
   def broadcast!
     self.lobby.broadcast game: GameSerializer.new(self).as_json
   end

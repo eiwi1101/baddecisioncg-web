@@ -66,6 +66,30 @@ feature 'Round Play', js: true do
       wait_until { player_2.reload.score == 1 }
 
       expect_content 'bad-decision-blank', decision_2.guid
+
+      click 'Next Round'
+      expect_content 'bad-decision-blank', decision_2.guid, false
+    end
+
+    scenario 'game reaches max score' do
+      game.update_attributes score_limit: 1
+      fool = bard.player_cards.fools.first
+      crisis = bard.player_cards.crisis.first
+      decision = player.player_cards.bad_decisions.first
+      decision_2 = player_2.player_cards.in_hand.bad_decisions.first
+      round.play bard, fool
+      round.play bard, crisis
+      round.play player_2, decision_2
+      round.play player, decision
+
+      wait_until { round.bard_pick? }
+      play_card decision_2
+
+      expect_content 'current-player', bard.guid
+
+      wait_until { game.reload.finished? }
+      click 'New Game'
+      expect_content 'current-player', bard.guid, false
     end
   end
 
@@ -119,6 +143,4 @@ feature 'Round Play', js: true do
       expect_content 'round-player-cards', decision_2.guid
     end
   end
-
-  scenario 'game reaches max score'
 end

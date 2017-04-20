@@ -53,7 +53,7 @@ class Player < ApplicationRecord
 
   def broadcast!
     return if @defer_broadcast
-    lobby.broadcast player: PlayerSerializer.new(self).as_json if lobby
-    lobby_user.broadcast player: PrivatePlayerSerializer.new(self).as_json if lobby_user
+    lobby.broadcast player: PlayerSerializer.new(self).as_json if self.lobby
+    lobby_user.broadcast player: PrivatePlayerSerializer.new(self).as_json if self.lobby_user
   end
 end
