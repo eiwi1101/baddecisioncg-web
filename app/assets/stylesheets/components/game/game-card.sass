@@ -74,7 +74,7 @@ $background: #6bc1b4
     font-weight: 200
     color: $fool
     position: absolute
-    bottom: 0rem
+    bottom: 0.5rem
     right: 0.5rem
     font-size: 2.5rem
 
@@ -156,7 +156,9 @@ $background: #6bc1b4
       font-weight: 300
       color: white
       font-size: 2rem
+      text-transform: lowercase
 
+  input.blank
     &:active, &:focus
       border-bottom: none !important
       box-shadow: none !important
@@ -173,9 +175,11 @@ $background: #6bc1b4
       color: white
       color: rgba(white, 0.8)
 
-  .blank.last
+  .blank.last-slot,
+  .not-blank.last-slot
     position: relative
     flex-grow: 1
+    border-bottom-width: 1rem
 
     .text
       position: absolute
@@ -183,9 +187,6 @@ $background: #6bc1b4
       right: 0.5rem
       font-weight: 200
       font-size: 2.5rem
-
-  .last-slot
-    border-bottom-width: 1rem
 
   .first-slot
     border-top-width: 1rem

@@ -1,4 +1,6 @@
 class CardSerializer < ActiveModel::Serializer
-  attributes :uuid
+  attributes :uuid,
+             :text
+
   attribute :to_html, key: :html
 end

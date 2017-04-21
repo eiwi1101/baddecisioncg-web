@@ -22,7 +22,13 @@
 
 
   render: ->
-    `<div className='game-card-noform' id={ 'card-' + this.props.card.id }>
-        <div className='card-data'>{ JSON.stringify(this.props.card) }</div>
-        <a href='#' onClick={ this._handlePlay }>Play</a>
-    </div>`
+    classNames = ['game-card']
+    classNames.push "card-#{Util.typeClasses[@props.card.type]}"
+
+    `<a href='#' onClick={ this._handlePlay } id={ 'card-' + this.props.card.id }>
+        <div className={ classNames.join(' ') }>
+            { this.props.card.text }
+        </div>
+
+        <div className='debug-data card-data'>{ JSON.stringify(this.props.card) }</div>
+    </a>`
