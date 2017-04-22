@@ -112,12 +112,12 @@
                      messages={ this.state.lobby.messages } />
         </Game>`
 
-    `<div id='app-main' className='play-area'>
+    `<div id='app-main'>
         { loading }
 
-        <div id='lobby-data'>Lobby: { JSON.stringify(this.state.lobby) }</div>
-        <div id='current-user'>Current User: { JSON.stringify(this.state.currentUser) }</div>
-        <div id='lobby-users'>Users: { JSON.stringify(this._onlineUsers()) }</div>
+        <div id='lobby-data' className='debug-data'>Lobby: { JSON.stringify(this.state.lobby) }</div>
+        <div id='current-user' className='debug-data'>Current User: { JSON.stringify(this.state.currentUser) }</div>
+        <div id='lobby-users' className='debug-data'>Users: { JSON.stringify(this._onlineUsers()) }</div>
 
         { game }
     </div>`

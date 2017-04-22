@@ -56,6 +56,11 @@ $card-border-radius: $card-border-size
   position: relative
   background-color: white
 
+  @at-root
+    .card-container
+      transform-origin: bottom left
+      transition: all 0.3s ease
+
   label, input
     font-size: inherit
     background-color: transparent

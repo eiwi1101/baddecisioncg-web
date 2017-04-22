@@ -101,8 +101,8 @@
       newGame =
         `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
 
-    `<div className="game">
-        <div id='game-data'>Game: { JSON.stringify(this.state.game) }</div>
+    `<div className='play-area'>
+        <div id='game-data' className='debug-data'>Game: { JSON.stringify(this.state.game) }</div>
 
         { newGame }
         { joinGame }
