@@ -4,7 +4,6 @@
   left: 0
   right: 0
   bottom: 300px
-  background-color: rgba(blue, 0.2)
 
   #round-story
     position: absolute
@@ -18,5 +17,7 @@
     bottom: 0
     left: 0
     right: 0
-    z-index: 155
-    background-color: rgba(red, 0.2)
+
+    &.card-hand, &.card-hand.active
+      position: absolute
+      z-index: 155

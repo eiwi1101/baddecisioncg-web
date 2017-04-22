@@ -55,15 +55,15 @@
 
       if @state.round.status == 'finished'
         nextRound =
-          `<a href='#' onClick={ this._handleNewRound }>Next Round</a>`
+          `<a href='#' className='action-button' onClick={ this._handleNewRound }>Next Round</a>`
 
     else if @props.game.isReady
       nextRound =
-        `<a href='#' onClick={ this._handleNewRound }>Start Game</a>`
+        `<a href='#' className='action-button' onClick={ this._handleNewRound }>Start Game</a>`
 
 
     `<div className='round-container'>
-        <div id='round-data'>Round: { JSON.stringify(this.state.round) }</div>
+        <div id='round-data' className='debug-data'>Round: { JSON.stringify(this.state.round) }</div>
 
         { story }
         { playerCards }

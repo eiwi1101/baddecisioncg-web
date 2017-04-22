@@ -66,10 +66,15 @@ class Game < ApplicationRecord
 
   def join(lobby_user)
     raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
-    raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.starting?
+    # raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.starting?
     raise Exceptions::PlayerExistsViolation.new I18n.t('violations.player_exists') if self.players.exists?(lobby_user: lobby_user)
 
     player = Player.new(lobby_user: lobby_user, game: self)
+
+    unless self.starting?
+      player.draw!
+    end
+
     self.players << player
     player.broadcast!
 

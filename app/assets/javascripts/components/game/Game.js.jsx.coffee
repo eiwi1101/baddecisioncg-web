@@ -67,11 +67,11 @@
 
       if !currentPlayer? # And game is accepting players?
         joinGame =
-          `<a href='#' onClick={ this._handleJoinGame }>Join Game</a>`
+          `<a href='#' className='action-button' onClick={ this._handleJoinGame }>Join Game</a>`
 
       else if !@state.game.isReady
         joinGame =
-          `<div>Waiting for others...</div>`
+          `<div className='status-box'>Waiting for others...</div>`
 
       else
         playerHands =
@@ -95,11 +95,11 @@
 
       if @state.game.status == 'finished'
         newGame =
-          `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
+          `<a href='#' className='action-button' onClick={ this._handleNewGame }>New Game</a>`
 
     else
       newGame =
-        `<a href='#' onClick={ this._handleNewGame }>New Game</a>`
+        `<a href='#' className='action-button' onClick={ this._handleNewGame }>New Game</a>`
 
     `<div className='play-area'>
         <div id='game-data' className='debug-data'>Game: { JSON.stringify(this.state.game) }</div>

@@ -4,3 +4,19 @@
   height: 100vh
   width: 100vw
   overflow: hidden
+
+  .action-button, .status-box
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    z-index: 300
+
+  .action-button
+    @extend .btn
+    @extend .btn-large
+    @extend .waves-effect
+    @extend .waves-light
+
+  .status-box
+    @extend .card-panel
