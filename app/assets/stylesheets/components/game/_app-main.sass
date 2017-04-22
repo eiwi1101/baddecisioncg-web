@@ -4,17 +4,3 @@
     top: 0
     left: 0
     color: transparent
-
-  div, a
-    &:not(.game-card, .blank, .not-blank)
-      display: block
-      position: relative
-
-      &:before
-        position: absolute
-        display: block
-        color: color('green', 'lighten-2')
-        content: "." attr(class) " #" attr(id)
-        top: 0
-        left: 0.5rem
-        font-size: 0.8rem

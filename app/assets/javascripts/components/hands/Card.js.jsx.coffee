@@ -25,7 +25,7 @@
     classNames = ['game-card']
     classNames.push "card-#{Util.typeClasses[@props.card.type]}"
 
-    `<a href='#' onClick={ this._handlePlay } id={ 'card-' + this.props.card.id }>
+    `<a href='#' onClick={ this._handlePlay } id={ 'card-' + this.props.card.id } className='card-container'>
         <div className={ classNames.join(' ') }>
             { this.props.card.text }
         </div>

@@ -33,9 +33,9 @@
       hand[card.type].push card
 
     `<div className='player-hands'>
-        <div id='player-cards'>Cards: { JSON.stringify(this.state.cards) }</div>
-
         <Hand id='fool-hand' cards={ hand.fool } />
         <Hand id='crisis-hand' cards={ hand.crisis } />
         <Hand id='decision-hand' cards={ hand.bad_decision } />
+
+        <div id='player-cards' className='debug-data'>Cards: { JSON.stringify(this.state.cards) }</div>
     </div>`
