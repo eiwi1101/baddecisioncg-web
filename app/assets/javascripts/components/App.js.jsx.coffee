@@ -11,7 +11,7 @@
     lobby: null
     currentUser: null
     users: null
-    isLoading: 0
+    isLoading: 1
     error: null
 
   getChildContext: ->
@@ -19,9 +19,6 @@
 
 
   componentWillMount: ->
-    @_getLobby(@props.lobbyId)
-    @_getCurrentUser(@props.currentUserId)
-
     $(document)
       .on 'app:loading', (e) =>
         @_loadStart()
@@ -52,6 +49,11 @@
 
     LobbyUserChannel.subscribe lobbyId: @props.lobbyId, userId: @props.currentUserId
 
+  componentDidMount: ->
+    @setState loading: 0, =>
+      @_getLobby(@props.lobbyId)
+      @_getCurrentUser(@props.currentUserId)
+
 
   componentWillUnmount: ->
     @_deleteCurrentUser(@props.currentUserId)
@@ -59,9 +61,6 @@
     $(document)
       .off 'app:loading'
       .off 'app:loading:stop'
-
-  componentDidUpdate: ->
-    window.scrollTo 0, document.body.scrollHeight
 
 
   _getLobby: (lobbyId) ->
@@ -113,7 +112,7 @@
                      messages={ this.state.lobby.messages } />
         </Game>`
 
-    `<div id='app-main'>
+    `<div id='app-main' className='play-area'>
         { loading }
 
         <div id='lobby-data'>Lobby: { JSON.stringify(this.state.lobby) }</div>

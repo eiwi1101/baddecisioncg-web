@@ -11,5 +11,5 @@
     items = if this.props.depth > 1 then 'items' else 'item'
 
     `<div className='loading-overlay'>
-        Loading { this.props.depth } { items }...
+        <div className='loading-text'>Loading { this.props.depth } { items }...</div>
     </div>`

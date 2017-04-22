@@ -5,6 +5,16 @@
   propTypes:
     card: React.PropTypes.object.isRequired
     isRound: React.PropTypes.bool
+    index: React.PropTypes.number
+    onActive: React.PropTypes.func
+
+
+  componentDidMount: ->
+    console.log "Card mounted:", @props
+    $(@refs.card)
+      .mouseover =>
+        console.log "Card MouseOver: #{@props.onActive}"
+        @props.onActive(@props.index) if @props.onActive
 
 
   _handlePlay: (e) ->
@@ -25,7 +35,7 @@
     classNames = ['game-card']
     classNames.push "card-#{Util.typeClasses[@props.card.type]}"
 
-    `<a href='#' onClick={ this._handlePlay } id={ 'card-' + this.props.card.id } className='card-container'>
+    `<a href='#' ref='card' onClick={ this._handlePlay } data-index={ this.props.index } id={ 'card-' + this.props.card.id } className='card-container'>
         <div className={ classNames.join(' ') }>
             { this.props.card.text }
         </div>

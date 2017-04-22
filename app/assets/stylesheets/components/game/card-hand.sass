@@ -1,5 +1,4 @@
 .card-hand
-  background-color: powderblue
   position: relative
   height: 300px
 
@@ -10,3 +9,9 @@
 
   .game-card
     display: inline-block
+
+    &.active
+      z-index: 501
+
+  &.active
+    z-index: 500

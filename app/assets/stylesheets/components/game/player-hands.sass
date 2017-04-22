@@ -1,0 +1,29 @@
+.player-hands
+  position: absolute
+  bottom: 0
+  right: 0
+  left: 300px
+  background-color: powderblue
+
+  .card-hand
+    position: absolute
+    left: 0
+    width: 33%
+
+    &.active
+      width: 66%
+
+    &#fool-hand
+      left: 0
+
+    &#crisis-hand
+      left: (100% / 3)
+
+      &.active
+        left: (100% / 6)
+
+    &#decision-hand
+      left: ((100% / 3) * 2)
+
+      &.active
+        left: ((100% / 6) * 2)

@@ -28,14 +28,30 @@ $story-bg: lighten($story, 10%)
 
 $background: #6bc1b4
 
+// Card Measurements
+
+$card-width: 300px
+$card-height: $card-width * 1.25
+$story-card-width: $card-width
+$story-card-height: $story-card-width * 1.25
+
+$card-font-size: 1.5rem
+$card-story-font-size: $card-font-size * 0.9
+$card-placeholder-size: 3rem
+$card-name-size: 2.5rem
+
+$card-padding: 1rem
+$card-border-size: $card-padding
+$card-border-radius: $card-border-size
+
 .game-card
   display: flex
   flex-direction: column
-  font-size: 1.5rem
-  border-radius: 1rem
-  width: 300px
-  height: 400px
-  padding: 1rem
+  font-size: $card-font-size
+  border-radius: $card-border-radius
+  width: $card-width
+  height: $card-height
+  padding: $card-padding
   overflow: hidden
   position: relative
   background-color: white
@@ -49,33 +65,35 @@ $background: #6bc1b4
     color: inherit
 
   &.card-fool
-    border: 1rem solid $fool
+    border: $card-border-size solid $fool
     &:after
       content: 'fool'
 
   &.card-crisis
-    border: 1rem solid $crisis
+    border: $card-border-size solid $crisis
     &:after
       content: 'crisis'
       color: $crisis
 
   &.card-decision
-    border: 1rem solid $decision
+    border: $card-border-size solid $decision
     &:after
       content: 'bad decision'
       color: $decision
 
   &.card-story
-    font-size: 1.2rem
+    font-size: $card-story-font-size
+    width: $story-card-width
+    height: $story-card-height
     padding: 0
 
   &:after, &:before
     font-weight: 200
     color: $fool
     position: absolute
-    bottom: 0.5rem
-    right: 0.5rem
-    font-size: 2.5rem
+    bottom: $card-padding / 2
+    right: $card-padding / 2
+    font-size: $card-name-size
 
   &:before
     top: 0
@@ -83,11 +101,11 @@ $background: #6bc1b4
     transform: initial
 
   &.card-back
-    border: 1rem solid
+    border: $card-border-size solid
     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/423767/LogoSmallFade.png)
     background-position: center
     background-repeat: no-repeat
-    background-size: 180px
+    background-size: $card-width / 2
 
     &:after, &:before
       position: absolute
@@ -132,8 +150,8 @@ $background: #6bc1b4
     display: block
     border-color: $story
     border-style: solid
-    border-width: 0 1rem
-    padding: 0.5rem 1rem
+    border-width: 0 $card-border-size
+    padding: 0.5rem $card-padding
     width: 100%
     box-sizing: border-box
     height: auto
@@ -141,9 +159,9 @@ $background: #6bc1b4
 
   .blank
     display: block
-    padding: 0.5rem 1rem
+    padding: 0.5rem $card-padding
     border-style: solid
-    border-width: 0 1rem
+    border-width: 0 $card-border-size
     color: white
     position: relative
     width: 100%
@@ -154,7 +172,7 @@ $background: #6bc1b4
     .text
       font-weight: 300
       color: white
-      font-size: 2rem
+      font-size: $card-placeholder-size
       text-transform: lowercase
 
   input.blank
@@ -178,14 +196,14 @@ $background: #6bc1b4
   .not-blank.last-slot
     position: relative
     flex-grow: 1
-    border-bottom-width: 1rem
+    border-bottom-width: $card-border-size
 
     .text
       position: absolute
-      bottom: 0.5rem
-      right: 0.5rem
+      bottom: $card-padding / 2
+      right: $card-padding / 2
       font-weight: 200
-      font-size: 2.5rem
+      font-size: $card-name-size
 
   .first-slot
-    border-top-width: 1rem
+    border-top-width: $card-border-size
