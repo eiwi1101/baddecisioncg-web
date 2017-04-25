@@ -80,9 +80,9 @@ describe Game, type: :model do
       expect { game.join(user) }.to raise_exception Exceptions::UserLobbyViolation
     end
 
-    it 'rejects joins on in_progress game' do
+    it 'allows even on in_progress game' do
       game = build :game, :in_progress, lobby: lobby
-      expect { game.join(user) }.to raise_exception Exceptions::GameStatusViolation
+      expect(game.join(user)).to be_truthy
     end
 
     it 'rejects user already in game' do

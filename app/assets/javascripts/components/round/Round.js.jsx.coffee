@@ -3,6 +3,7 @@
     game: React.PropTypes.object.isRequired
     round: React.PropTypes.object
     onChange: React.PropTypes.func
+    currentPlayer: React.PropTypes.object
 
 
   getInitialState: ->
@@ -22,7 +23,8 @@
 
     LobbyChannel
       .on 'round', (round) =>
-        @setState round: round, story: round.story, playerCards: round.player_cards
+        unless round.status == 'setup' and @context.currentPlayer?.is_bard
+          @setState round: round, story: round.story, playerCards: round.player_cards
 
     LobbyUserChannel
       .on 'player', (player) =>
@@ -57,7 +59,7 @@
         nextRound =
           `<a href='#' className='action-button' onClick={ this._handleNewRound }>Next Round</a>`
 
-    else if @props.game.isReady
+    else if @props.game.isReady #and @props.currentPlayer
       nextRound =
         `<a href='#' className='action-button' onClick={ this._handleNewRound }>Start Game</a>`
 

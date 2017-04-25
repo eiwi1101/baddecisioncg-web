@@ -12,9 +12,7 @@ feature 'Round Play', js: true do
   let!(:round) { game.next_round }
 
   def play_card(card)
-    within "#card-#{card.guid}" do
-      click_link 'Play'
-    end
+    find("#card-#{card.guid}").trigger 'click'
   end
 
   context 'as bard' do

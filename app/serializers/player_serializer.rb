@@ -18,7 +18,8 @@ class PlayerSerializer < ActiveModel::Serializer
              :name,
              :avatar_url,
              :score,
-             :is_deleted
+             :is_deleted,
+             :is_bard
 
   def id
     object.guid
@@ -42,5 +43,9 @@ class PlayerSerializer < ActiveModel::Serializer
 
   def is_deleted
     object.deleted?
+  end
+
+  def is_bard
+    object.bard?
   end
 end

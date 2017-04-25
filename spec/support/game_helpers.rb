@@ -4,7 +4,7 @@ def expect_content(id, content, expect=true)
 end
 
 def click(link_text)
-  click_link link_text
+  find_link(link_text).trigger 'click'
   expect(page).to have_no_content link_text
 end
 

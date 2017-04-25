@@ -40,7 +40,7 @@
       </div>`
 
     `<div id={ this.props.id }>
-        <div className='game-card card-story' id={ this.props.id }>
+        <div className='game-card card-story'>
             { blanks }
         </div>
 

@@ -21,7 +21,7 @@ feature 'New Game', js: true do
 
   scenario 'user creates game' do
     click 'New Game'
-    expect(lobby.reload.games).to have(1).items
+    wait_until { lobby.reload.games.count >= 1 }
     expect_content 'game-players', '[]'
     expect_content 'game-data', lobby.games.first.guid
 
@@ -53,7 +53,7 @@ feature 'New Game', js: true do
         expect_content 'game-data', 'isReady":false'
 
         click 'Join Game'
-        expect(game.reload.players).to have(1).items
+        wait_until { game.reload.players.count >= 1 }
         expect_content 'game-players', game.players.first.guid
         expect_content 'current-player', game.players.first.guid
 
@@ -66,7 +66,6 @@ feature 'New Game', js: true do
 
         scenario 'user starts round' do
           expect_content 'current-player', player.guid
-
           click 'Start Game'
           wait_until { game.reload.rounds.count >= 1 }
           expect_content 'round-data', game.rounds.last.guid
