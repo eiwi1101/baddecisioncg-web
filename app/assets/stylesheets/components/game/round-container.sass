@@ -8,7 +8,7 @@
   #round-story
     position: absolute
     left: 50%
-    top: 25%
+    top: 200px
     z-index: 150
     transform: translate(-50%, -25%)
 
@@ -17,7 +17,11 @@
     bottom: 0
     left: 0
     right: 0
+    top: 400px
 
     &.card-hand, &.card-hand.active
       position: absolute
-      z-index: 155
+      z-index: 1
+
+      .game-card
+        z-index: 155

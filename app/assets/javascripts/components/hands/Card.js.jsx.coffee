@@ -10,10 +10,8 @@
 
 
   componentDidMount: ->
-    console.log "Card mounted:", @props
     $(@refs.card)
       .mouseover =>
-        console.log "Card MouseOver: #{@props.onActive}"
         @props.onActive(@props.index) if @props.onActive
 
 

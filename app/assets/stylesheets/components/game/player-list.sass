@@ -1,0 +1,54 @@
+.player-list
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 300px
+  width: 100%
+  z-index: 1
+  background-color: rgba(pink, 0.3)
+
+  .player
+    position: absolute
+    top: 50%
+    left: 50%
+    z-index: 1999
+    text-align: center
+    transform: translate(-50%,-50%)
+
+    &.current
+      .avatar
+        border: 2px solid white
+
+    &.bard
+      .avatar
+        @extend .z-depth-3
+
+      .player-score
+        background-color: color('green', 'darken-4')
+
+      .player-name
+        text-shadow: 0 0 3px color('green', 'darken-4')
+
+    .avatar
+      width: 100px
+      height: 100px
+
+    .player-name
+      text-shadow: 0 0 2px black
+      color: white
+      font-size: 1.5rem
+      margin-top: 1rem
+
+    .player-score
+      @extend .z-depth-1
+      min-width: 3rem
+      height: 2rem
+      text-align: center
+      color: white
+      background-color: color('indigo', 'darken-1')
+      left: 50%
+      top: 80px
+      transform: translateX(-50%)
+      position: absolute
+      line-height: 2rem
+      border-radius: 1rem
