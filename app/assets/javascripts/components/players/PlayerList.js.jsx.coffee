@@ -33,6 +33,9 @@
   componentDidMount: ->
     @_initialize()
 
+  componentDidUpdate: ->
+    @_initialize()
+
   render: ->
     if @props.players? and @props.players.length
       players = @props.players?.map (player) =>
