@@ -56,7 +56,7 @@ class Game < ApplicationRecord
     end
 
     event :abandon do
-      transition any => :abandoned
+      transition :in_progress => :abandoned
     end
   end
 
