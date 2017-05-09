@@ -28,7 +28,7 @@
 
     LobbyUserChannel
       .on 'player', (player) =>
-        if player.bard_setup
+        if player.bard_setup and @state.round
           round = @state.round
           round.fool = player.bard_setup.fool_pc
           round.crisis = player.bard_setup.crisis_pc
