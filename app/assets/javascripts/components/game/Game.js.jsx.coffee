@@ -69,11 +69,11 @@
         joinGame =
           `<a href='#' className='action-button' onClick={ this._handleJoinGame }>Join Game</a>`
 
-      else if !@state.game.isReady
-        joinGame =
-          `<div className='status-box'>Waiting for others...</div>`
-
       else
+        if !@state.game.isReady
+          joinGame =
+            `<div className='status-box'>Waiting for others...</div>`
+
         playerHands =
           `<PlayerHands currentUser={ this.props.currentUser }
                         currentPlayer={ currentPlayer }

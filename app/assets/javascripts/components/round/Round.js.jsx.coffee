@@ -59,7 +59,7 @@
         nextRound =
           `<a href='#' className='action-button' onClick={ this._handleNewRound }>Next Round</a>`
 
-    else if @props.game.isReady #and @props.currentPlayer
+    else if @props.game.isReady and @props.currentPlayer
       nextRound =
         `<a href='#' className='action-button' onClick={ this._handleNewRound }>Start Game</a>`
 
