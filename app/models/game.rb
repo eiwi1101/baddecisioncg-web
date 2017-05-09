@@ -56,6 +56,7 @@ class Game < ApplicationRecord
     end
 
     event :abandon do
+      transition :starting => :abandoned, if: :empty?
       transition :in_progress => :abandoned
     end
   end
@@ -130,6 +131,10 @@ class Game < ApplicationRecord
 
   def ready?
     self.in_progress? or (self.starting? and self.players.count >= min_players)
+  end
+
+  def empty?
+    self.players.count == 0
   end
 
   def has_lobby_user?(lobby_user)

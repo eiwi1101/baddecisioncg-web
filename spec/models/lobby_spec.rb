@@ -68,15 +68,30 @@ describe Lobby, type: :model do
       let(:game) { create :game, lobby: lobby }
       let(:user) { lobby.lobby_users.last }
 
-      before do
-        game.join(user)
-        lobby.leave(user.user)
-        game.reload
-        lobby.reload
+      context 'only user' do
+        before do
+          game.join(user)
+          lobby.leave(user.user)
+          game.reload
+          lobby.reload
+        end
+
+        it { expect(game).to be_abandoned }
+        its(:lobby_users) { is_expected.to have(2).items }
       end
 
-      it { expect(game).to be_abandoned }
-      its(:lobby_users) { is_expected.to have(2).items }
+      context 'many user' do
+        before do
+          game.join(user)
+          game.join(lobby.join)
+          lobby.leave(user.user)
+          game.reload
+          lobby.reload
+        end
+
+        it { expect(game).to be_starting }
+        its(:lobby_users) { is_expected.to have(3).items }
+      end
     end
 
     context 'when last person' do
