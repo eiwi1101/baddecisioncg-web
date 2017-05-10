@@ -8,13 +8,11 @@
     $list = $(@refs.playerList)
     $players = $list.children '.player'
 
-    console.log "Arranging #{$players.length} players..."
-
     width = $list.width()
     height = $list.height()
-    radius = Math.min(width, height) / 2
+    radius = Math.min(width, height) / 2.5
 
-    console.log "Width: #{width}, height: #{height}, radius: #{radius}"
+    console.debug "[PlayerList] Width: #{width}, height: #{height}, radius: #{radius}"
 
     angle = 0
     step = (2*Math.PI) / @props.players.length
@@ -24,13 +22,14 @@
       y = Math.round(height / 2 + radius * Math.sin(angle))
       angle += step
 
-      console.log "Placing card at (#{x},#{y})..."
+      console.debug "[PlayerList] Placing player at (#{x},#{y})..."
       $(this).animate
         left: x
         top: y
 
 
   componentDidMount: ->
+    $(window).resize @_initialize
     @_initialize()
 
   componentDidUpdate: ->

@@ -35,7 +35,7 @@
       if !@state.active
         zoom = 0.6
       else
-        zoom = 1.0
+        zoom = 0.9
 
       $card.css
         left: cardOffset * i + shift_x
@@ -45,8 +45,8 @@
 
 
   componentDidMount: ->
-    @_initialize()
     $(window).resize @_initialize
+    @_initialize()
 
     $(@refs.hand)
       .mouseover =>
@@ -63,7 +63,6 @@
 
   _handleCardActive: (index) ->
     @setState activeCardIndex: index
-    console.log "Hover over #{index}"
 
 
   render: ->

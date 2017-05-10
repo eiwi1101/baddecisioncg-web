@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # config.action_cable.allowed_request_origins = ['http://localhost:3011']
+  config.action_cable.allowed_request_origins = ['http://localhost:3000']
   config.action_cable.disable_request_forgery_protection = true
 
   # In the development environment your application's code is reloaded on

@@ -42,6 +42,7 @@
 
 
   _handleNewRound: (round) ->
+    console.debug '[Game] New Round: ' + round.id
     @setState currentRound: round
 
   _handleNewGame: (e) ->

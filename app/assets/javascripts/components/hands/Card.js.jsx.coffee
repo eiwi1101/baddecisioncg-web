@@ -1,6 +1,6 @@
 @Card = React.createClass
   contextTypes:
-    currentRound: React.PropTypes.object
+    currentGame: React.PropTypes.object
 
   propTypes:
     card: React.PropTypes.object.isRequired
@@ -16,15 +16,15 @@
 
 
   _handlePlay: (e) ->
-    console.log "Play Card: ", @context.currentRound
+    console.log "Play Card: ", @context.currentGame.current_round_id
 
     if @props.isRound
       endpoint = 'winner'
     else
       endpoint = 'cards'
 
-    if @context.currentRound
-      Model.post "/rounds/#{this.context.currentRound.id}/#{endpoint}.json", card_id: @props.card.id
+    if @context.currentGame?.current_round_id
+      Model.post "/rounds/#{this.context.currentGame.current_round_id}/#{endpoint}.json", card_id: @props.card.id
 
     e.preventDefault()
 
