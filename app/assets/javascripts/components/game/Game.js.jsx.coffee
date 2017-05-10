@@ -83,6 +83,7 @@
         `<Round round={ this.state.currentRound }
                 game={ this.state.game }
                 onChange={ this._handleNewRound }
+                currentPlayer={ currentPlayer }
         />`
 
       playerList =
