@@ -5,7 +5,7 @@
   .card-container
     position: absolute
     left: 0
-    bottom: 0
+    bottom: 30px
 
   .game-card
     display: inline-block
@@ -15,3 +15,33 @@
 
   &.active
     z-index: 500
+
+  &:not(.active)
+    .game-card
+      opacity: 0.8
+
+  .hand-control
+    @extend .z-depth-1
+    position: absolute
+    left: 0
+    bottom: 0
+    right: 0
+    height: 56px
+    background-color: color('blue-grey', 'darken-1')
+    line-height: 56px
+    font-size: 1.8rem
+    text-align: center
+    color: white
+    z-index: 200
+    font-weight: 200
+    border-radius: 1rem 1rem 0 0
+    cursor: pointer
+
+  .hand-activate
+    position: absolute
+    left: 0
+    bottom: 0
+    right: 0
+    top: 0
+    z-index: 201
+    cursor: pointer

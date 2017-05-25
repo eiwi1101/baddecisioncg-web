@@ -106,6 +106,25 @@
     `<div className='play-area'>
         <div id='game-data' className='debug-data'>Game: { JSON.stringify(this.state.game) }</div>
 
+        <div className='lobby-data'>
+            <div className='right'>
+                <div className='current-user'>
+                    <img className='avatar' src={ this.props.currentUser.avatar_url } alt={ this.props.currentUser.name } />
+                    <div className='username'>{ this.props.currentUser.name }</div>
+                </div>
+            </div>
+
+            <div className='left'>
+                <div className='lobby-name'>{ this.props.lobby.name }</div>
+            </div>
+
+            <div className='center'>
+                <div className='branded'>
+                    Bad Decisions
+                </div>
+            </div>
+        </div>
+
         { newGame }
         { joinGame }
 

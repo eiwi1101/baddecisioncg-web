@@ -1,11 +1,13 @@
 .player-list
   position: absolute
-  top: 0
+  top: 100px
   left: 0
-  bottom: 300px
+  bottom: 100px
   width: 100%
   z-index: 1
-  background-color: rgba(pink, 0.3)
+
+  body.chat-open &
+    left: 300px
 
   .player
     position: absolute

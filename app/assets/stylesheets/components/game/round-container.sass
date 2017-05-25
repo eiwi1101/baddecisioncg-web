@@ -1,9 +1,12 @@
 .round-container
   position: absolute
-  top: 0
+  top: 100px
   left: 0
   right: 0
-  bottom: 300px
+  bottom: 100px
+
+  body.chat-open &
+    left: 300px
 
   #round-story
     position: absolute
@@ -14,10 +17,10 @@
 
   #round-player-cards
     position: absolute
-    bottom: 0
-    left: 0
-    right: 0
-    top: 400px
+    bottom: 300px
+    left: 300px
+    right: 300px
+    z-index: 820
 
     &.card-hand, &.card-hand.active
       position: absolute

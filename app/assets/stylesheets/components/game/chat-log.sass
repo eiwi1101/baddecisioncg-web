@@ -1,8 +1,13 @@
 .chat-log
+  @extend .z-depth-1
   position: absolute
   top: 0
   left: 0
   bottom: 0
-  width: 300px
-  z-index: 0
-  background-color: rgba(white, 0.2)
+  width: 0
+  z-index: 1
+  background-color: rgba(white, 0.9)
+  overflow: hidden
+
+  body.chat-open
+    width: 300px

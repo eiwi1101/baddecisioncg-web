@@ -48,11 +48,13 @@
     $(window).resize @_initialize
     @_initialize()
 
-    $(@refs.hand)
-      .mouseover =>
+    $(@refs.handControl)
+      .click =>
+        @setState active: !@state.active
+
+    $(@refs.handActivate)
+      .click =>
         @setState active: true
-      .mouseout =>
-        @setState active: false
 
   componentDidUpdate: ->
     @_initialize()
@@ -75,4 +77,14 @@
 
     `<div ref='hand' className={ classNames.join(' ') } id={ this.props.id }>
         { cards }
+
+        { this.props.type &&
+            <div ref='handControl' className='hand-control'>
+                { this.props.type }
+            </div>
+        }
+
+        { !this.state.active &&
+            <div ref='handActivate' className='hand-activate' />
+        }
     </div>`

@@ -52,8 +52,28 @@
                 badDecision={ this.state.round.bad_decision }
         />`
 
-      playerCards =
-        `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound />`
+      statusBar =
+        `<div className='status-bar round-status'>
+            <div className='right'>
+                <div className='status-data'>
+                    <div className='label'>Round:</div>
+                    <div className='value'>{ this.state.round.id }</div>
+                </div>
+
+                <div className='status-data'>
+                    <div className='label'>Status:</div>
+                    <div className='value'>{ this.state.round.status }</div>
+                </div>
+            </div>
+        </div>`
+
+      if @state.round.status == 'bard_pick'
+        playerCards =
+          `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound />`
+
+      else if @state.round.status == 'player_pick'
+        playerCards =
+          `<div>PILE!</div>`
 
       if @state.round.status == 'finished'
         nextRound =
@@ -66,6 +86,8 @@
 
     `<div className='round-container'>
         <div id='round-data' className='debug-data'>Round: { JSON.stringify(this.state.round) }</div>
+
+        { statusBar }
 
         { story }
         { playerCards }
