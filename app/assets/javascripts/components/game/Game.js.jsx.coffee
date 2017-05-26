@@ -61,6 +61,11 @@
   _findPlayer: (userId) ->
     @state.players? and (i for i in @state.players when i.user_id is userId)[0]
 
+  _handleChatToggle: (e) ->
+    $('body').toggleClass 'chat-open'
+    $(window).trigger 'resize'
+    e.preventDefault()
+
 
   render: ->
     if @state.game?
@@ -114,7 +119,10 @@
                 </div>
             </div>
 
-            <div className='left'>
+            <div className='left' onClick={ this._handleChatToggle }>
+                <div className='expand-chat left'>
+                    <i className='material-icons'>keyboard_arrow_right</i>
+                </div>
                 <div className='lobby-name'>{ this.props.lobby.name }</div>
             </div>
 

@@ -73,7 +73,7 @@
 
       else if @state.round.status == 'player_pick'
         playerCards =
-          `<div>PILE!</div>`
+          `<Pile type={ this.state.story.card_order[2] } cards={ this.state.playerCards } />`
 
       if @state.round.status == 'finished'
         nextRound =

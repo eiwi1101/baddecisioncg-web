@@ -12,18 +12,15 @@
     height = $list.height()
     radius = Math.min(width, height) / 2.5
 
-    console.debug "[PlayerList] Width: #{width}, height: #{height}, radius: #{radius}"
-
     angle = 0
     step = (2*Math.PI) / @props.players.length
 
     $players.each ->
-      x = Math.round(width / 2 + radius * Math.cos(angle))
+      x = Math.round(width / 2 + radius * Math.cos(angle) * 1.3)
       y = Math.round(height / 2 + radius * Math.sin(angle))
       angle += step
 
-      console.debug "[PlayerList] Placing player at (#{x},#{y})..."
-      $(this).animate
+      $(this).css
         left: x
         top: y
 

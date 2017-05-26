@@ -50,6 +50,8 @@
     LobbyUserChannel.subscribe lobbyId: @props.lobbyId, userId: @props.currentUserId
 
   componentDidMount: ->
+    $('body').addClass 'chat-open'
+
     @setState loading: 0, =>
       @_getLobby(@props.lobbyId)
       @_getCurrentUser(@props.currentUserId)
@@ -109,6 +111,7 @@
                game={ this.state.lobby.current_game }>
 
             <ChatLog lobby={ this.state.lobby }
+                     users={ this.state.users }
                      messages={ this.state.lobby.messages } />
         </Game>`
 

@@ -3,7 +3,7 @@
   top: 100px
   left: 0
   right: 0
-  bottom: 100px
+  bottom: 200px
 
   body.chat-open &
     left: 300px
@@ -11,9 +11,12 @@
   #round-story
     position: absolute
     left: 50%
-    top: 200px
+    top: 50%
     z-index: 150
-    transform: translate(-50%, -25%)
+    transform: translate(-50%, -50%)
+
+    .game-card
+      @extend .z-depth-3
 
   #round-player-cards
     position: absolute

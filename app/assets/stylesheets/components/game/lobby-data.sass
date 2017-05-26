@@ -11,12 +11,32 @@
   color: white
   z-index: 901
 
+  .expand-chat
+    width: 56px
+    height: 56px
+    text-align: center
+    background-color: rgba(black, 0.2)
+    cursor: pointer
+
+    i.material-icons
+      transform: rotate(0deg)
+      transition: transform 0.3s
+      transform-origin: center center
+      line-height: 56px
+      font-size: 2rem
+      color: color($primary-color-name, 'lighten-2')
+
+    body.chat-open &
+      i.material-icons
+        transform: rotate(180deg)
+
   .lobby-name
     width: 300px
-    background-color: color('blue-grey', 'darken-3')
+    background-color: color($primary-color-name, 'darken-3')
     font-size: 1.4rem
     font-weight: 300
     text-align: center
+    cursor: pointer
 
   .branded
     font-size: 1.2rem

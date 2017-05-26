@@ -1,13 +1,72 @@
 .chat-log
   @extend .z-depth-1
   position: absolute
-  top: 0
-  left: 0
+  top: 56px
+  left: -300px
+  width: 300px
   bottom: 0
-  width: 0
-  z-index: 1
-  background-color: rgba(white, 0.9)
+  z-index: 801
+  background-color: color($primary-color-name, 'darken-4')
   overflow: hidden
+  color: white
 
-  body.chat-open
-    width: 300px
+  body.chat-open &
+    left: 0
+
+  .user-list
+    max-height: 56px * 5
+    overflow: auto
+
+  .chat-user
+    border-bottom: 1px solid color($primary-color-name, 'darken-3')
+    padding-left: 56px
+    position: relative
+
+    &:after
+      content: ''
+      display: block
+      clear: both
+
+    &.admin .rank
+      color: color('red', 'base')
+
+    &.moderator .rank
+      color: color('blue', 'base')
+
+    &.offline
+      .user-data, .rank, .avatar
+        opacity: 0.5
+
+      .avatar
+        filter: grayscale(100%)
+
+    .rank
+      position: absolute
+      top: 10px
+      right: 10px
+      color: color($primary-color-name, 'lighten-3')
+
+      i.material-icons
+        font-size: 1.1rem
+
+    .avatar
+      position: absolute
+      left: 0
+      top: 0
+      width: 56px
+      height: 56px
+
+    .user-data
+      padding: 7px 10px
+      height: 56px
+
+    .name
+      font-weight: bold
+
+    .username
+      font-size: 0.8rem
+      color: color($primary-color-name, 'lighten-2')
+
+      &.guest
+        color: color($primary-color-name, 'lighten-1')
+        font-style: italic

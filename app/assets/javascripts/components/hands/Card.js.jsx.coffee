@@ -7,6 +7,7 @@
     isRound: React.PropTypes.bool
     index: React.PropTypes.number
     onActive: React.PropTypes.func
+    style: React.PropTypes.object
 
 
   componentDidMount: ->
@@ -31,10 +32,15 @@
 
   render: ->
     classNames = ['game-card']
-    classNames.push "card-#{Util.typeClasses[@props.card.type]}"
+
+    if @props.card.text
+      classNames.push "card-#{Util.typeClasses[@props.card.type]}"
+    else
+      classNames.push 'card-back'
+      classNames.push "card-back-#{Util.typeClasses[@props.card.type]}"
 
     `<a href='#' ref='card' onClick={ this._handlePlay } data-index={ this.props.index } id={ 'card-' + this.props.card.id } className='card-container'>
-        <div className={ classNames.join(' ') }>
+        <div className={ classNames.join(' ') } style={ this.props.style }>
             { this.props.card.text }
         </div>
 
