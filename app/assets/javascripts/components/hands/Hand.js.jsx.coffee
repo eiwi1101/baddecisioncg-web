@@ -64,6 +64,7 @@
 
 
   _handleCardActive: (index) ->
+    # SoundEffect.play 'cardHover' if index isnt @state.index
     @setState activeCardIndex: index
 
 

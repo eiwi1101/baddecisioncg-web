@@ -41,13 +41,18 @@
         @load(game)
 
 
+  _handleGameStart: ->
+    SoundEffect.play 'gameStart'
+
   _handleNewRound: (round) ->
     console.debug '[Game] New Round: ' + round.id
+    @_handleGameStart() unless @state.currentRound
     @setState currentRound: round
 
   _handleNewGame: (e) ->
     Model.post "#{@props.lobby.path}/games.json", {}, (game) =>
       @setState game: game, currentRound: game.current_round, players: game.players
+
     e.preventDefault()
 
   _handleJoinGame: (e) ->
