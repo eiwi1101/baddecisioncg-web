@@ -9,7 +9,7 @@ class LobbiesController < ApplicationController
     @lobby = Lobby.new(name: Faker::Hacker.ingverb.humanize + ' ' + Faker::Team.creature.humanize)
 
     if @lobby.save
-      slack_message "New lobby started!", name: @lobby.name
+      slack_message 'New lobby started!', name: @lobby.name
       redirect_to @lobby
     else
       redirect_to lobbies_path, flash: { notice: 'That hurt.' }
@@ -30,19 +30,33 @@ class LobbiesController < ApplicationController
         format.html { redirect_to lobbies_path, flash: { error: error } }
       end
     else
-      unless (@lobby_user = current_lobby_user(@lobby.id))
-        @lobby_user = @lobby.join(current_user)
-        sign_in_lobby_user @lobby_user
-      end
+      Rails.logger.tagged 'Lobby Load' do
+        Rails.logger.debug 'Starting lobby init (server side, obviously)'
 
-      if @lobby_user.deleted?
-        @lobby_user.restore recursive: true
-        @lobby_user.broadcast!
-      end
+        unless (@lobby_user = current_lobby_user(@lobby.id))
+          Rails.logger.debug 'Could not find lobby in session, creating one...'
 
-      respond_to do |format|
-        format.json { render json: @lobby, serializer: LobbyStateSerializer }
-        format.html
+          @lobby_user = @lobby.join(current_user)
+          sign_in_lobby_user @lobby_user
+
+          Rails.logger.debug 'Created: ' + @lobby_user.inspect
+        end
+
+        if @lobby_user.deleted?
+          Rails.logger.debug 'Restoring from the dead: ' + @lobby_user.inspect
+
+          @lobby_user.restore recursive: true
+          @lobby_user.broadcast!
+
+          Rails.logger.debug 'Necromancy complete.'
+        end
+
+        Rails.logger.debug 'Init complete, sending response.'
+
+        respond_to do |format|
+          format.json { render json: @lobby, serializer: LobbyStateSerializer }
+          format.html
+        end
       end
     end
   end

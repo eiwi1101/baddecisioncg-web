@@ -62,10 +62,16 @@ class Game < ApplicationRecord
   end
 
   def player_for(lobby_user)
-    players.find_by! lobby_user: lobby_user
+    players.find_by lobby_user: lobby_user
   end
 
-  def join(lobby_user)
+  def join(lobby_user, options={})
+    if options[:allow_rejoin] and (p = player_for lobby_user)
+      p.broadcast!
+      self.broadcast!
+      return p
+    end
+
     raise Exceptions::UserLobbyViolation.new I18n.t('violations.user_lobby') unless lobby_user.lobby == self.lobby
     # raise Exceptions::GameStatusViolation.new I18n.t('violations.game_status') unless self.starting?
     raise Exceptions::PlayerExistsViolation.new I18n.t('violations.player_exists') if self.players.exists?(lobby_user: lobby_user)

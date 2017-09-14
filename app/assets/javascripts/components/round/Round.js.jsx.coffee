@@ -69,7 +69,7 @@
 
       if @state.round.status == 'bard_pick'
         playerCards =
-          `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound />`
+          `<Hand id='round-player-cards' cards={ this.state.playerCards } isRound active />`
 
       else if @state.round.status == 'player_pick'
         playerCards =

@@ -47,3 +47,4 @@ class window.Channel
   on: (command, callback) =>
     @callbacks[command] = [] unless @callbacks[command] != undefined
     @callbacks[command].push callback
+    @

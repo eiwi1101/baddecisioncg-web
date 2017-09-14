@@ -4,7 +4,7 @@ class LobbyChannel < ApplicationCable::Channel
 
     @lobby = Lobby.find_by(token: params[:lobbyId])
 
-    if @lobby&.has_user?(params[:userId])
+    if @lobby&.has_user?(params[:userId], necromancy: true)
       stream_for @lobby
     else
       Rails.logger.warn "Rejecting #{@lobby} connection from #{params[:userId]}"

@@ -132,6 +132,9 @@ feature 'Round Play', js: true do
       round.play bard, fool
       round.play bard, crisis
 
+      # BUG - This has been changed to the card pile, we'll fix the text
+      #       when we get there manually to see what it looks like.
+      #
       play_card decision
       expect_content 'round-player-cards', 'bad_decision'
       expect_content 'round-player-cards', decision.guid, false

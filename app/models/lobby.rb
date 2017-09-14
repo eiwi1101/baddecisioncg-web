@@ -103,11 +103,14 @@ class Lobby < ApplicationRecord
     password.present?
   end
 
-  def has_user?(user_or_id)
+  def has_user?(user_or_id, options={})
+    scope = lobby_users
+    scope = scope.with_deleted if options[:necromancy]
+
     if user_or_id.is_a? String
-      lobby_users.exists?(guid: user_or_id)
+      scope.exists?(guid: user_or_id)
     else
-      lobby_users.exists?(user: user_or_id)
+      scope.exists?(user: user_or_id)
     end
   end
 

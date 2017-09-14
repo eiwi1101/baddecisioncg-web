@@ -3,10 +3,11 @@
     id: React.PropTypes.string.isRequired
     cards: React.PropTypes.array
     isRound: React.PropTypes.bool
+    active: React.PropTypes.bool
 
 
   getInitialState: ->
-    active: false
+    active: !!@props.active
     activeCardIndex: 0
 
   _initialize: ->
@@ -71,6 +72,7 @@
   render: ->
     classNames = ['card-hand']
     classNames.push 'active' if @state.active
+    display = if @state.active then 'none' else 'block'
 
     cards = @props.cards.map (card, i) =>
       isRound = @props?.isRound
@@ -85,7 +87,5 @@
             </div>
         }
 
-        { !this.state.active &&
-            <div ref='handActivate' className='hand-activate' />
-        }
+        <div ref='handActivate' className='hand-activate' style={{ display: display }} />
     </div>`

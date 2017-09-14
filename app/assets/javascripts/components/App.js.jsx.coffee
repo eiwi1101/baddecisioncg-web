@@ -32,6 +32,8 @@
 
     LobbyChannel.subscribe { lobbyId: @props.lobbyId, userId: @props.currentUserId },
       user: (u) =>
+        return unless @state.users
+
         users = $.grep @state.users, (i) ->
           i.id != u.id
         users.push u
@@ -39,7 +41,7 @@
         if u.is_deleted
           $(document).trigger 'app:user:leave', u
           Materialize.toast "#{u.name} has left.", 3000, 'blue-grey'
-        else if users.length == @state.users.length
+        else if users.length == @state.users?.length
           $(document).trigger 'app:user:update', u
         else
           $(document).trigger 'app:user:join', u

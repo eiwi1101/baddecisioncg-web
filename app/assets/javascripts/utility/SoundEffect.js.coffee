@@ -13,4 +13,5 @@ class @SoundEffect
       audio = new Audio('/assets/' + fileName)
       audio.play()
     catch exception
-      console.error exception
+      console.warn exception
+      console.warn "Are you using a really old browser, or perhaps an automated test framework, that doesn't support Audio?"

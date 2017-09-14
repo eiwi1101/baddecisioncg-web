@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def rule_violation(e)
+    Rails.logger.warn e.inspect
     render json: { error: e.message }, status: :bad_request
   end
 end

@@ -38,7 +38,13 @@
 
     LobbyChannel
       .on 'game', (game) =>
-        @load(game)
+        @load game
+
+      .on 'player', (player) =>
+        if player.isDeleted
+          StateUtils.removeItem @, 'players', player, 'id'
+        else
+          StateUtils.updateItem @, 'players', player, 'id'
 
 
   _handleGameStart: ->
